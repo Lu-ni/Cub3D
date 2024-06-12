@@ -1,0 +1,8 @@
+# Cub3D
+## Design
+ - Parser
+ - Texture Loader
+ - Screen Drawer (I'm wondering if we can use the multi-threading of minilibx to chunk the screen)
+ - Ray-casting module
+ - Key event handler
+ - GUI module (HUD and menu)
