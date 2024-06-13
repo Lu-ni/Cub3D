@@ -1,6 +1,7 @@
 # Cub3D
 ## Design
  - Parser
+   - The map is not always square, we still need to check if the map is close (maybe using -1 for the outside and then check that each -1 touch a 1)
  - Texture Loader
    - Texture atlas
  - Screen Drawer (I'm wondering if we can use the multi-threading of minilibx to chunk the screen)
