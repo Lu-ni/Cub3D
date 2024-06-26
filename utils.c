@@ -27,4 +27,4 @@ int main(int argc, char **argv)
 	mlx_loop_hook(all.vars.mlx, psy, &all);
 	mlx_loop(all.vars.mlx);
 }
- * /
+ */
