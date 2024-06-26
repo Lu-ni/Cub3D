@@ -35,10 +35,10 @@ int key_hook(int keycode)
 	//	draw_screen(all);
 	//	mlx_put_image_to_window(all->vars.mlx, all->vars.win, all->img.img, 0, 0);
 	//}
-	//else
-	//{
-	//	printf("%i\n", keycode);
-	//}
+	else
+	{
+		printf("%i\n", keycode);
+	}
 	return (0);
 }
 
