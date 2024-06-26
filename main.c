@@ -22,23 +22,8 @@ int key_hook(int keycode)
 		//mlx_destroy_window(all->vars.mlx, all->vars.win);
 		exit (0);
 	}
-	//else if (123 <= keycode && keycode <= 126)
-	//{
-	//	translation(0.05, all, keycode);
-	//	calculate_set(all);
-	//	draw_screen(all);
-	//	mlx_put_image_to_window(all->vars.mlx, all->vars.win, all->img.img, 0, 0);
-	//}
-	//else if (keycode == 49)
-	//{
-	//	all->colors.i = (all->colors.i + 10) % 255;
-	//	draw_screen(all);
-	//	mlx_put_image_to_window(all->vars.mlx, all->vars.win, all->img.img, 0, 0);
-	//}
 	else
-	{
 		printf("%i\n", keycode);
-	}
 	return (0);
 }
 
