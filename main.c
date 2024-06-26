@@ -53,13 +53,16 @@ int	main(void)
 	t_data	img;
 
 	mlx = mlx_init();
-	mlx_win = mlx_new_window(mlx, 500, 500, "Hello world!");
-	img.img = mlx_new_image(mlx, 500, 500);
+	mlx_win = mlx_new_window(mlx, 1200, 686, "Hello world!");
+	img.img = mlx_new_image(mlx, 1200, 686);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
-	my_mlx_pixel_put(&img, 5, 5, 0x00FF0000);
+
+	//my_mlx_pixel_put(&img, 5, 5, 0x00FF0000);
 	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
-	int size = 800;
-	mlx_put_image_to_window(mlx, mlx_win, mlx_xpm_file_to_image(mlx, "teapot.xpm", &size, &size), 0, 0);
+
+	int size;
+	mlx_put_image_to_window(mlx, mlx_win, mlx_xpm_file_to_image(mlx, "intro.xpm", &size, &size), 0, 0);
+
 	mlx_hook(mlx_win, 2, 1L << 0, key_hook, NULL);
 	mlx_hook(mlx_win, 17, 0, close_window, NULL);
 	//mlx_mouse_hook(all.vars.win, mouse_hook, &all);
