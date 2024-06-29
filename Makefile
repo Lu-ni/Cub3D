@@ -1,8 +1,16 @@
 NAME = cub3d
+OS := $(shell uname)
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
-MLX_DIR = mlx
-MLX_FLAGS = -L$(MLX_DIR) -lmlx -framework OpenGL -framework AppKit
+
+ifeq ($(OS),Darwin)
+	MLX_DIR = mlx
+	MLX_FLAGS = -L$(MLX_DIR) -lmlx -framework OpenGL -framework AppKit
+else
+	MLX_DIR = mlx_linux
+	MLX_FLAGS = -L$(MLX_DIR) -lmlx -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz
+endif
+
 SRC = $(wildcard *.c)
 OBJ_DIR = obj
 OBJ = $(patsubst %.c, $(OBJ_DIR)/%.o, $(SRC))

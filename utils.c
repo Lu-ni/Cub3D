@@ -5,7 +5,7 @@ int argb(unsigned char a, unsigned char b, unsigned char c, unsigned char d)
 	val = 0;
 	val += a;
 	val <<= 8;
-	val += b;
+ 	val += b; 
 	val <<= 8;
 	val += c;
 	val <<= 8;
