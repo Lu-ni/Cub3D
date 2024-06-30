@@ -1,11 +1,11 @@
 NAME = cub3d
 OS := $(shell uname)
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS =-g # -Wall -Wextra -Werror
 
 ifeq ($(OS),Darwin)
 	MLX_DIR = mlx
-	MLX_FLAGS = -L$(MLX_DIR) -lmlx -framework OpenGL -framework AppKit
+	MLX_FLAGS = -L$(MLX_DIR) -lmlx -framework OpenGL -framework AppKit -lm
 else
 	MLX_DIR = mlx_linux
 	MLX_FLAGS = -L$(MLX_DIR) -lmlx -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz

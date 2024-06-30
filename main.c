@@ -1,11 +1,5 @@
 #include "cub3d.h"
-typedef struct	s_data {
-	void	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
-}				t_data;
+#include "keys.h"
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
@@ -15,12 +9,44 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-int key_hook(int keycode)
+
+
+int key_hook(int keycode, t_all *a)
 {
+	double rotSpeed = 0.05; // should not be here
+	double moveSpeed = 0.1; // should not be here
 	if (keycode == KEY_ESC)
 	{
 		//mlx_destroy_window(all->vars.mlx, all->vars.win);
 		exit (0);
+	}
+	else if(keycode == KEY_D)
+	{
+		double oldDirX = a->p.dirX;
+		a->p.dirX = a->p.dirX * cos(-rotSpeed) - a->p.dirY * sin(-rotSpeed);
+		a->p.dirY = oldDirX * sin(-rotSpeed) + a->p.dirY * cos(-rotSpeed);
+		double oldPlaneX = a->p.planeX;
+		a->p.planeX = a->p.planeX * cos(-rotSpeed) - a->p.planeY * sin(-rotSpeed);
+		a->p.planeY = oldPlaneX * sin(-rotSpeed) + a->p.planeY * cos(-rotSpeed);
+	}
+	else if (keycode == KEY_A)
+	{
+		double oldDirX = a->p.dirX;
+		a->p.dirX = a->p.dirX * cos(rotSpeed) - a->p.dirY * sin(rotSpeed);
+		a->p.dirY = oldDirX * sin(rotSpeed) + a->p.dirY * cos(rotSpeed);
+		double oldPlaneX = a->p.planeX;
+		a->p.planeX = a->p.planeX * cos(rotSpeed) - a->p.planeY * sin(rotSpeed);
+		a->p.planeY = oldPlaneX * sin(rotSpeed) + a->p.planeY * cos(rotSpeed);
+	}
+	else if (keycode == KEY_W)
+	{
+		a->p.posX += a->p.dirX * moveSpeed;
+		a->p.posY += a->p.dirY * moveSpeed;
+	}
+	else if (keycode == KEY_S)
+	{
+		a->p.posX -= a->p.dirX * moveSpeed;
+		a->p.posY -= a->p.dirY * moveSpeed;
 	}
 	else
 		printf("%i\n", keycode);
@@ -33,24 +59,32 @@ int close_window() {
 
 int	main(void)
 {
-	void	*mlx;
-	void	*mlx_win;
-	t_data	img;
+	t_all a;
+	//t_screen s;
 
-	mlx = mlx_init();
-	mlx_win = mlx_new_window(mlx, 1200, 686, "Hello world!");
-	img.img = mlx_new_image(mlx, 1200, 686);
-	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
+	a.s.mlx = mlx_init();
+	a.s.mlx_win = mlx_new_window(a.s.mlx, screenWidth, screenHeight, "CRYPTO KING");
+	a.s.img.img = mlx_new_image(a.s.mlx, screenWidth, screenHeight);
+	a.s.img.addr = mlx_get_data_addr(a.s.img.img, &a.s.img.bits_per_pixel, &a.s.img.line_length, &a.s.img.endian);
 
+
+	a.p.posX = 22;
+	a.p.posY = 12;      // x and y start position
+	a.p.dirX = -1;
+	a.p.dirY = -1;       // initial direction vector
+	a.p.planeX = 0;
+	a.p.planeY = 0.66;
 	//my_mlx_pixel_put(&img, 5, 5, 0x00FF0000);
-	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
+	mlx_put_image_to_window(a.s.mlx, a.s.mlx_win, a.s.img.img, 0, 0);
 
 	int size;
-	mlx_put_image_to_window(mlx, mlx_win, mlx_xpm_file_to_image(mlx, "intro.xpm", &size, &size), 0, 0);
+	//mlx_put_image_to_window(mlx, mlx_win, mlx_xpm_file_to_image(mlx, "intro.xpm", &size, &size), 0, 0);
 
-	mlx_hook(mlx_win, 2, 1L << 0, key_hook, NULL);
-	mlx_hook(mlx_win, 17, 0, close_window, NULL);
-	//mlx_mouse_hook(all.vars.win, mouse_hook, &all);
-	//mlx_loop_hook(all.vars.mlx, psy, &all);
-	mlx_loop(mlx);
+	mlx_hook(a.s.mlx_win, 2, 1L << 0, key_hook, &a);
+	mlx_hook(a.s.mlx_win, 17, 0, close_window, NULL);
+	//mlx_mouse_hook(all.vara.s.win, mouse_hook, &all);
+	//mlx_loop_hook(all.vara.s.mlx, psy, &all);
+	//draw_screen(&a.s.img);
+	mlx_loop_hook(a.s.mlx, draw_screen,&a);
+	mlx_loop(a.s.mlx);
 }
