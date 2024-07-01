@@ -111,22 +111,22 @@
 # endif
 
 # ifdef __linux__
-#  define KEY_ESC 9
+#  define KEY_ESC 65307
 #  define MOUSE_WHEEL_UP 4
 #  define MOUSE_WHEEL_DOWN 5
 #  define MOUSE_WHEEL_BTN 2
 #  define MOUSE_BTN 1
 #  define MOUSE_BTN_2 3
 
-#  define UP 111
-#  define DOWN 116
-#  define LEFT 113
-#  define RIGHT 114
+#  define UP 65362
+#  define DOWN 65361
+#  define LEFT 65364
+#  define RIGHT 65363
 
-#  define KEY_A 38
-#  define KEY_S 39
-#  define KEY_D 40
-#  define KEY_F 41
+#  define KEY_A 97
+#  define KEY_S 115
+#  define KEY_D 100
+#  define KEY_F 102
 #  define KEY_H 43
 #  define KEY_G 42
 #  define KEY_Z 52
@@ -134,10 +134,10 @@
 #  define KEY_C 54
 #  define KEY_V 55
 #  define KEY_B 56
-#  define KEY_Q 24
-#  define KEY_W 25
-#  define KEY_E 26
-#  define KEY_R 27
+#  define KEY_Q 113
+#  define KEY_W 119
+#  define KEY_E 101
+#  define KEY_R 114
 #  define KEY_Y 29
 #  define KEY_T 28
 #  define KEY_1 10
@@ -171,7 +171,7 @@
 #  define KEY_M 58
 #  define KEY_PERIOD 60
 #  define KEY_TAB 23
-#  define KEY_SPACE 65
+#  define KEY_SPACE 32
 #  define KEY_GRAVE 49
 #  define KEY_DELETE 22
 #  define KEY_ENTER 36
