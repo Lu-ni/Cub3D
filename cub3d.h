@@ -8,12 +8,12 @@
 #include "keys.h"
 
 
-#define screenWidth 1900
-#define screenHeight 1600
-#define texWidth 800
-#define texHeight 800
-#define mapWidth 24
-#define mapHeight 24
+#define screen_width 1900
+#define screen_height 1600
+#define tex_width 800
+#define tex_height 800
+#define map_width 24
+#define map_height 24
 
 typedef struct	s_data {
 	void	*img;
@@ -26,16 +26,18 @@ typedef struct	s_data {
 typedef struct s_screen {
 	void *mlx;
 	void *mlx_win;
+	int width;
+	int height;
 	t_data img;
 } t_screen;
 
 typedef struct s_player {
-	double posX;
-	double posY;
-	double dirX;
-	double dirY;
-	double planeX;
-	double planeY;
+	double pos_x;
+	double pos_y;
+	double dir_x;
+	double dir_y;
+	double plane_x;
+	double plane_y;
 } t_player;
 
 typedef struct s_texture {
@@ -52,8 +54,25 @@ typedef struct s_all {
 	t_screen s;
 	t_player p;
 	t_texture t;
-	int (*world_map)[mapWidth];
+	int (*world_map)[map_width];
 } t_all;
+
+typedef struct s_ray {
+    double ray_dir_x;
+    double ray_dir_y;
+    double delta_dist_x;
+    double delta_dist_y;
+    int step_x;
+    int step_y;
+    double side_dist_x;
+    double side_dist_y;
+    int side;
+    double perp_wall_dist;
+    double wall_x;
+    int line_height;
+    int draw_start;
+    int draw_end;
+} t_ray;
 
 int draw_screen(t_all *a);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);

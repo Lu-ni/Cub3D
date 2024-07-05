@@ -11,7 +11,7 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 }
 
 
-int worldMap[mapWidth][mapHeight] = {
+int worldMap[map_width][map_height] = {
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
     {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
     {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -48,31 +48,31 @@ int key_hook(int keycode, t_all *a)
 	}
 	else if(keycode == KEY_D)
 	{
-		double oldDirX = a->p.dirX;
-		a->p.dirX = a->p.dirX * cos(-rotSpeed) - a->p.dirY * sin(-rotSpeed);
-		a->p.dirY = oldDirX * sin(-rotSpeed) + a->p.dirY * cos(-rotSpeed);
-		double oldPlaneX = a->p.planeX;
-		a->p.planeX = a->p.planeX * cos(-rotSpeed) - a->p.planeY * sin(-rotSpeed);
-		a->p.planeY = oldPlaneX * sin(-rotSpeed) + a->p.planeY * cos(-rotSpeed);
+		double oldDir_x = a->p.dir_x;
+		a->p.dir_x = a->p.dir_x * cos(-rotSpeed) - a->p.dir_y * sin(-rotSpeed);
+		a->p.dir_y = oldDir_x * sin(-rotSpeed) + a->p.dir_y * cos(-rotSpeed);
+		double oldPlane_x = a->p.plane_x;
+		a->p.plane_x = a->p.plane_x * cos(-rotSpeed) - a->p.plane_y * sin(-rotSpeed);
+		a->p.plane_y = oldPlane_x * sin(-rotSpeed) + a->p.plane_y * cos(-rotSpeed);
 	}
 	else if (keycode == KEY_A)
 	{
-		double oldDirX = a->p.dirX;
-		a->p.dirX = a->p.dirX * cos(rotSpeed) - a->p.dirY * sin(rotSpeed);
-		a->p.dirY = oldDirX * sin(rotSpeed) + a->p.dirY * cos(rotSpeed);
-		double oldPlaneX = a->p.planeX;
-		a->p.planeX = a->p.planeX * cos(rotSpeed) - a->p.planeY * sin(rotSpeed);
-		a->p.planeY = oldPlaneX * sin(rotSpeed) + a->p.planeY * cos(rotSpeed);
+		double oldDir_x = a->p.dir_x;
+		a->p.dir_x = a->p.dir_x * cos(rotSpeed) - a->p.dir_y * sin(rotSpeed);
+		a->p.dir_y = oldDir_x * sin(rotSpeed) + a->p.dir_y * cos(rotSpeed);
+		double oldPlane_x = a->p.plane_x;
+		a->p.plane_x = a->p.plane_x * cos(rotSpeed) - a->p.plane_y * sin(rotSpeed);
+		a->p.plane_y = oldPlane_x * sin(rotSpeed) + a->p.plane_y * cos(rotSpeed);
 	}
 	else if (keycode == KEY_W)
 	{
-		a->p.posX += a->p.dirX * moveSpeed;
-		a->p.posY += a->p.dirY * moveSpeed;
+		a->p.pos_x += a->p.dir_x * moveSpeed;
+		a->p.pos_y += a->p.dir_y * moveSpeed;
 	}
 	else if (keycode == KEY_S)
 	{
-		a->p.posX -= a->p.dirX * moveSpeed;
-		a->p.posY -= a->p.dirY * moveSpeed;
+		a->p.pos_x -= a->p.dir_x * moveSpeed;
+		a->p.pos_y -= a->p.dir_y * moveSpeed;
 	}
 	else
 		printf("%i\n", keycode);
@@ -88,19 +88,21 @@ int	main(void)
 	t_all a;
 	//t_screen s;
 
+	a.s.height = screen_height;
+	a.s.width = screen_width;
 	a.s.mlx = mlx_init();
-	a.s.mlx_win = mlx_new_window(a.s.mlx, screenWidth, screenHeight, "CRYPTO KING");
-	a.s.img.img = mlx_new_image(a.s.mlx, screenWidth, screenHeight);
+	a.s.mlx_win = mlx_new_window(a.s.mlx, screen_width, screen_height, "CRYPTO KING");
+	a.s.img.img = mlx_new_image(a.s.mlx, screen_width, screen_height);
 	a.s.img.addr = mlx_get_data_addr(a.s.img.img, &a.s.img.bits_per_pixel, &a.s.img.line_length, &a.s.img.endian);
 
 	a.world_map = worldMap;
 
-	a.p.posX = 22;
-	a.p.posY = 12;      // x and y start position
-	a.p.dirX = -1;
-	a.p.dirY = 0;       // initial direction vector
-	a.p.planeX = 0;
-	a.p.planeY = 0.66;
+	a.p.pos_x = 22;
+	a.p.pos_y = 12;      // x and y start position
+	a.p.dir_x = -1;
+	a.p.dir_y = 0;       // initial direction vector
+	a.p.plane_x = 0;
+	a.p.plane_y = 0.66;
 	//my_mlx_pixel_put(&img, 5, 5, 0x00FF0000);
 	mlx_put_image_to_window(a.s.mlx, a.s.mlx_win, a.s.img.img, 0, 0);
 
