@@ -52,6 +52,7 @@ typedef struct s_all {
 	t_screen s;
 	t_player p;
 	t_texture t;
+	int (*world_map)[mapWidth];
 } t_all;
 
 int draw_screen(t_all *a);
