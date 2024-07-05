@@ -76,12 +76,20 @@ void perform_dda(t_all *a, t_ray *ray, int *map_x, int *map_y, int *hit)
             ray->side_dist_x += ray->delta_dist_x;
             *map_x += ray->step_x;
             ray->side = 0;
+            if (ray->step_x > 0)
+                ray->hit_direction = 2; // East
+            else
+                ray->hit_direction = 3; // West
         }
         else
         {
             ray->side_dist_y += ray->delta_dist_y;
             *map_y += ray->step_y;
             ray->side = 1;
+            if (ray->step_y > 0)
+                ray->hit_direction = 1; // South
+            else
+                ray->hit_direction = 0; // North
         }
         if (a->world_map[*map_x][*map_y] > 0)
             *hit = 1;
@@ -152,4 +160,3 @@ int draw_screen(t_all *a)
     mlx_put_image_to_window(a->s.mlx, a->s.mlx_win, a->s.img.img, 0, 0);
     return 1;
 }
-

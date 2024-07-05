@@ -72,6 +72,7 @@ typedef struct s_ray {
     int line_height;
     int draw_start;
     int draw_end;
+	int hit_direction;  // 0 = North, 1 = South, 2 = East, 3 = West
 } t_ray;
 
 int draw_screen(t_all *a);
