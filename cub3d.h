@@ -57,4 +57,6 @@ typedef struct s_all {
 
 int draw_screen(t_all *a);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+//minimap.c
+void draw_minimap(t_all *a);
 #endif
