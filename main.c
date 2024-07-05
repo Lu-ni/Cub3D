@@ -39,45 +39,67 @@ int worldMap[map_width][map_height] = {
 
 int key_hook(int keycode, t_all *a)
 {
-	double rotSpeed = 0.05; // should not be here
-	double moveSpeed = 0.1; // should not be here
-	if (keycode == KEY_ESC)
-	{
-		//mlx_destroy_window(all->vars.mlx, all->vars.win);
-		exit (0);
-	}
-	else if(keycode == KEY_D)
-	{
-		double oldDir_x = a->p.dir_x;
-		a->p.dir_x = a->p.dir_x * cos(-rotSpeed) - a->p.dir_y * sin(-rotSpeed);
-		a->p.dir_y = oldDir_x * sin(-rotSpeed) + a->p.dir_y * cos(-rotSpeed);
-		double oldPlane_x = a->p.plane_x;
-		a->p.plane_x = a->p.plane_x * cos(-rotSpeed) - a->p.plane_y * sin(-rotSpeed);
-		a->p.plane_y = oldPlane_x * sin(-rotSpeed) + a->p.plane_y * cos(-rotSpeed);
-	}
-	else if (keycode == KEY_A)
-	{
-		double oldDir_x = a->p.dir_x;
-		a->p.dir_x = a->p.dir_x * cos(rotSpeed) - a->p.dir_y * sin(rotSpeed);
-		a->p.dir_y = oldDir_x * sin(rotSpeed) + a->p.dir_y * cos(rotSpeed);
-		double oldPlane_x = a->p.plane_x;
-		a->p.plane_x = a->p.plane_x * cos(rotSpeed) - a->p.plane_y * sin(rotSpeed);
-		a->p.plane_y = oldPlane_x * sin(rotSpeed) + a->p.plane_y * cos(rotSpeed);
-	}
-	else if (keycode == KEY_W)
-	{
-		a->p.pos_x += a->p.dir_x * moveSpeed;
-		a->p.pos_y += a->p.dir_y * moveSpeed;
-	}
-	else if (keycode == KEY_S)
-	{
-		a->p.pos_x -= a->p.dir_x * moveSpeed;
-		a->p.pos_y -= a->p.dir_y * moveSpeed;
-	}
-	else
-		printf("%i\n", keycode);
-	return (0);
+    double rotSpeed = 0.05;
+    double moveSpeed = 0.1;
+    if (keycode == KEY_ESC)
+    {
+        exit(0);
+    }
+    else if (keycode == KEY_D)
+    {
+        double move_x = a->p.dir_y * moveSpeed;
+        double move_y = -a->p.dir_x * moveSpeed;
+        if (a->world_map[(int)(a->p.pos_x + move_x)][(int)(a->p.pos_y)] == 0)
+            a->p.pos_x += move_x;
+        if (a->world_map[(int)(a->p.pos_x)][(int)(a->p.pos_y + move_y)] == 0)
+            a->p.pos_y += move_y;
+    }
+    else if (keycode == KEY_A)
+    {
+        double move_x = -a->p.dir_y * moveSpeed;
+        double move_y = a->p.dir_x * moveSpeed;
+        if (a->world_map[(int)(a->p.pos_x + move_x)][(int)(a->p.pos_y)] == 0)
+            a->p.pos_x += move_x;
+        if (a->world_map[(int)(a->p.pos_x)][(int)(a->p.pos_y + move_y)] == 0)
+            a->p.pos_y += move_y;
+    }
+    else if (keycode == KEY_W)
+    {
+        if (a->world_map[(int)(a->p.pos_x + a->p.dir_x * moveSpeed)][(int)(a->p.pos_y)] == 0)
+            a->p.pos_x += a->p.dir_x * moveSpeed;
+        if (a->world_map[(int)(a->p.pos_x)][(int)(a->p.pos_y + a->p.dir_y * moveSpeed)] == 0)
+            a->p.pos_y += a->p.dir_y * moveSpeed;
+    }
+    else if (keycode == KEY_S)
+    {
+        if (a->world_map[(int)(a->p.pos_x - a->p.dir_x * moveSpeed)][(int)(a->p.pos_y)] == 0)
+            a->p.pos_x -= a->p.dir_x * moveSpeed;
+        if (a->world_map[(int)(a->p.pos_x)][(int)(a->p.pos_y - a->p.dir_y * moveSpeed)] == 0)
+            a->p.pos_y -= a->p.dir_y * moveSpeed;
+    }
+    else if (keycode == RIGHT)
+    {
+        double oldDir_x = a->p.dir_x;
+        a->p.dir_x = a->p.dir_x * cos(-rotSpeed) - a->p.dir_y * sin(-rotSpeed);
+        a->p.dir_y = oldDir_x * sin(-rotSpeed) + a->p.dir_y * cos(-rotSpeed);
+        double oldPlane_x = a->p.plane_x;
+        a->p.plane_x = a->p.plane_x * cos(-rotSpeed) - a->p.plane_y * sin(-rotSpeed);
+        a->p.plane_y = oldPlane_x * sin(-rotSpeed) + a->p.plane_y * cos(-rotSpeed);
+    }
+    else if (keycode == LEFT)
+    {
+        double oldDir_x = a->p.dir_x;
+        a->p.dir_x = a->p.dir_x * cos(rotSpeed) - a->p.dir_y * sin(rotSpeed);
+        a->p.dir_y = oldDir_x * sin(rotSpeed) + a->p.dir_y * cos(rotSpeed);
+        double oldPlane_x = a->p.plane_x;
+        a->p.plane_x = a->p.plane_x * cos(rotSpeed) - a->p.plane_y * sin(rotSpeed);
+        a->p.plane_y = oldPlane_x * sin(rotSpeed) + a->p.plane_y * cos(rotSpeed);
+    }
+    else
+        printf("%i\n", keycode);
+    return (0);
 }
+
 
 int close_window() {
     exit(0);

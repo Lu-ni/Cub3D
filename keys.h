@@ -119,8 +119,8 @@
 #  define MOUSE_BTN_2 3
 
 #  define UP 65362
-#  define DOWN 65361
-#  define LEFT 65364
+#  define DOWN 65364
+#  define LEFT 65361
 #  define RIGHT 65363
 
 #  define KEY_A 97
