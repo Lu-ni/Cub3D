@@ -10,8 +10,8 @@
 
 #define screenWidth 900
 #define screenHeight 600
-#define texWidth 64
-#define texHeight 64
+#define texWidth 800
+#define texHeight 800
 #define mapWidth 24
 #define mapHeight 24
 
@@ -38,9 +38,20 @@ typedef struct s_player {
 	double planeY;
 } t_player;
 
+typedef struct s_texture {
+	int height;
+	int width;
+	char *pix;
+	void *img;
+	int  bits_per_pixel;
+	int  size_line;
+	int  endian;
+} t_texture;
+
 typedef struct s_all {
 	t_screen s;
 	t_player p;
+	t_texture t;
 } t_all;
 
 int draw_screen(t_all *a);

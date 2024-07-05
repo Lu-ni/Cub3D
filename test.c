@@ -29,12 +29,28 @@ int worldMap[mapWidth][mapHeight] = {
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}};
 
-typedef double dd;
+void draw_tex_columm(int column, int start, int end, int color, t_all *a,int texX)
+{
+	float ratio = (float) (end - start) / (float) a->t.height; 	
+
+	int i = 0;
+	int pos = 0;
+	while (i < start)
+		my_mlx_pixel_put(&a->s.img, column, i++, 0x000000FF);
+	while (i < end)
+	{
+		pos = ((float)(i - start) / ratio); 
+		pos = (int) round(pos * a->t.size_line + texX * (float)(a->t.bits_per_pixel / (float)8));
+		my_mlx_pixel_put(&a->s.img, column, i++, (int) a->t.pix[pos]);
+	}
+	while (end < screenHeight)
+		my_mlx_pixel_put(&a->s.img, column, end++, 0x00000000);
+}
 void drawColumm(int column, int start, int end, int color, t_data *img)
 {
 	int i = 0;
 	while (i < start)
-		my_mlx_pixel_put(img, column, i++, 0x00000000);
+		my_mlx_pixel_put(img, column, i++, 0x0000FFFF);
 	while (start < end)
 		my_mlx_pixel_put(img, column, start++, color);
 	while (end < screenHeight)
@@ -50,8 +66,8 @@ int draw_screen(t_all *a)
 		double rayDirY = a->p.dirY + a->p.planeY * cameraX;
 
 		// which box of the map we're in
-		int mapX = (int)a->p.posX;
-		int mapY = (int)a->p.posY;
+		int mapX = (int)(a->p.posX);
+		int mapY = (int)(a->p.posY);
 
 		// length of ray from current position to next x or y-side
 		double sideDistX;
@@ -128,9 +144,20 @@ int draw_screen(t_all *a)
 		else
 			perpWallDist = (sideDistY - deltaDistY);
 
+	//calculate value of wallX
+		double wallX; //where exactly the wall was hit
+		if (side == 0) wallX = a->p.posY + perpWallDist * rayDirY;
+		else           wallX = a->p.posX + perpWallDist * rayDirX;
+		wallX -= floor((wallX));
+
+		//x coordinate on the texture
+		int texX = (int)(wallX * (double)texWidth);
+		if(side == 0 && rayDirX > 0) texX = texWidth - texX - 1;
+		if(side == 1 && rayDirY < 0) texX = texWidth - texX - 1;
+
 		// Calculate height of line to draw on screen
 		double h = screenHeight;
-		int lineHeight = (int) (h / perpWallDist);
+		int lineHeight = (int) round((h / perpWallDist));
 
 		// calculate lowest and highest pixel to fill in current stripe
 		int drawStart = -lineHeight / 2 + h / 2;
@@ -149,8 +176,8 @@ int draw_screen(t_all *a)
 		}
 
 		// draw the pixels of the stripe as a vertical line
-		//verLine(x, drawStart, drawEnd, color);             ///////need correct implementation
-		drawColumm(x, drawStart, drawEnd, color, &a->s.img);
+		draw_tex_columm(x, drawStart, drawEnd, color, a, texX);
+		//drawColumm(x, drawStart, drawEnd, color, &a->s.img);
 	}
 	mlx_put_image_to_window(a->s.mlx, a->s.mlx_win, a->s.img.img, 0, 0);
 	return 1 ;
