@@ -27,7 +27,54 @@ int worldMap[mapWidth][mapHeight] = {
     {1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
     {1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}};
+     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}};
+
+void draw_square (int x, int y, int size, int color, t_all *a)
+{
+	int i = 0;
+	int j = 0;
+	while (j < size)	
+	{
+		i = 0;
+		while ( i < size)
+		{
+			my_mlx_pixel_put(&a->s.img, x + i, y + j, color);
+			i++;
+		}
+		j++;
+	}
+}	
+
+void draw_minimap(t_all *a)
+{
+	int minimap_width = screenWidth / 10;
+	int minimap_height = screenHeight / 10;
+
+	int offset = minimap_width / 10;
+	int i = 0;
+	int j = 0;
+
+	int step = 5;
+	while (j < mapWidth)
+	{
+		i = 0;
+		while (i < mapHeight)
+		{
+			if (worldMap[j][i] == 0)
+			{
+				draw_square(offset + step * i, offset + step * j, step, 0x00FF0000, a);
+			}
+			else if (worldMap[j][i] == 1)
+			{
+				draw_square(offset + step * i, offset + step * j, step, 0x0000FF00, a);
+			}
+				
+			i++;
+		}
+	j++;
+	}
+	draw_square(offset + step * (int)a->p.posY, offset + step * (int) a->p.posX, step, 0x00FFFF00, a);
+}
 
 void draw_tex_columm(int column, int start, int end, int color, t_all *a,int texX)
 {
@@ -46,16 +93,7 @@ void draw_tex_columm(int column, int start, int end, int color, t_all *a,int tex
 	while (end < screenHeight)
 		my_mlx_pixel_put(&a->s.img, column, end++, 0x00000000);
 }
-void drawColumm(int column, int start, int end, int color, t_data *img)
-{
-	int i = 0;
-	while (i < start)
-		my_mlx_pixel_put(img, column, i++, 0x0000FFFF);
-	while (start < end)
-		my_mlx_pixel_put(img, column, start++, color);
-	while (end < screenHeight)
-		my_mlx_pixel_put(img, column, end++, 0x00000000);
-}
+
 int draw_screen(t_all *a)
 {
 	for (int x = 0; x < screenWidth; x++)
@@ -144,7 +182,7 @@ int draw_screen(t_all *a)
 		else
 			perpWallDist = (sideDistY - deltaDistY);
 
-	//calculate value of wallX
+		//calculate value of wallX
 		double wallX; //where exactly the wall was hit
 		if (side == 0) wallX = a->p.posY + perpWallDist * rayDirY;
 		else           wallX = a->p.posX + perpWallDist * rayDirX;
@@ -177,8 +215,8 @@ int draw_screen(t_all *a)
 
 		// draw the pixels of the stripe as a vertical line
 		draw_tex_columm(x, drawStart, drawEnd, color, a, texX);
-		//drawColumm(x, drawStart, drawEnd, color, &a->s.img);
 	}
+	draw_minimap(a);
 	mlx_put_image_to_window(a->s.mlx, a->s.mlx_win, a->s.img.img, 0, 0);
 	return 1 ;
 }
