@@ -31,7 +31,7 @@ char	*get_texture_path(int direction, char *texture_path, t_map *map)
 
 	ft_strlcpy(map->no, texture_path + 2, i);
 
-	printf("line: |%s|`\n", map->no);
+	printf("line: |%s|\n", map->no);
 
 
 	// while (ft_isspace(*texture_path))
