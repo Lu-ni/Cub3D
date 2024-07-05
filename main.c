@@ -58,36 +58,36 @@ int close_window() {
     exit(0);
 }
 
-int	main(void)
-{
-	t_all a;
-	//t_screen s;
+// int	main(void)
+// {
+// 	t_all a;
+// 	//t_screen s;
 
-	a.s.mlx = mlx_init();
-	a.s.mlx_win = mlx_new_window(a.s.mlx, screenWidth, screenHeight, "CRYPTO KING");
-	a.s.img.img = mlx_new_image(a.s.mlx, screenWidth, screenHeight);
-	a.s.img.addr = mlx_get_data_addr(a.s.img.img, &a.s.img.bits_per_pixel, &a.s.img.line_length, &a.s.img.endian);
+// 	a.s.mlx = mlx_init();
+// 	a.s.mlx_win = mlx_new_window(a.s.mlx, screenWidth, screenHeight, "CRYPTO KING");
+// 	a.s.img.img = mlx_new_image(a.s.mlx, screenWidth, screenHeight);
+// 	a.s.img.addr = mlx_get_data_addr(a.s.img.img, &a.s.img.bits_per_pixel, &a.s.img.line_length, &a.s.img.endian);
 
 
-	a.p.posX = 22;
-	a.p.posY = 12;      // x and y start position
-	a.p.dirX = -1;
-	a.p.dirY = 0;       // initial direction vector
-	a.p.planeX = 0;
-	a.p.planeY = 0.66;
-	//my_mlx_pixel_put(&img, 5, 5, 0x00FF0000);
-	mlx_put_image_to_window(a.s.mlx, a.s.mlx_win, a.s.img.img, 0, 0);
+// 	a.p.posX = 22;
+// 	a.p.posY = 12;      // x and y start position
+// 	a.p.dirX = -1;
+// 	a.p.dirY = 0;       // initial direction vector
+// 	a.p.planeX = 0;
+// 	a.p.planeY = 0.66;
+// 	//my_mlx_pixel_put(&img, 5, 5, 0x00FF0000);
+// 	mlx_put_image_to_window(a.s.mlx, a.s.mlx_win, a.s.img.img, 0, 0);
 
-	//int size;
-	//mlx_put_image_to_window(mlx, mlx_win, mlx_xpm_file_to_image(mlx, "intro.xpm", &size, &size), 0, 0);
-	a.t.img = mlx_xpm_file_to_image(a.s.mlx, "wall.xpm", &a.t.height, &a.t.width);
-	a.t.pix = mlx_get_data_addr(a.t.img, &a.t.bits_per_pixel, &a.t.size_line, &a.t.endian);
+// 	//int size;
+// 	//mlx_put_image_to_window(mlx, mlx_win, mlx_xpm_file_to_image(mlx, "intro.xpm", &size, &size), 0, 0);
+// 	a.t.img = mlx_xpm_file_to_image(a.s.mlx, "wall.xpm", &a.t.height, &a.t.width);
+// 	a.t.pix = mlx_get_data_addr(a.t.img, &a.t.bits_per_pixel, &a.t.size_line, &a.t.endian);
 
-	mlx_hook(a.s.mlx_win, 2, 1L << 0, key_hook, &a);
-	mlx_hook(a.s.mlx_win, 17, 0, close_window, NULL);
-	//mlx_mouse_hook(all.vara.s.win, mouse_hook, &all);
-	//mlx_loop_hook(all.vara.s.mlx, psy, &all);
-	//draw_screen(&a.s.img);
-	mlx_loop_hook(a.s.mlx, draw_screen,&a);
-	mlx_loop(a.s.mlx);
-}
+// 	mlx_hook(a.s.mlx_win, 2, 1L << 0, key_hook, &a);
+// 	mlx_hook(a.s.mlx_win, 17, 0, close_window, NULL);
+// 	//mlx_mouse_hook(all.vara.s.win, mouse_hook, &all);
+// 	//mlx_loop_hook(all.vara.s.mlx, psy, &all);
+// 	//draw_screen(&a.s.img);
+// 	mlx_loop_hook(a.s.mlx, draw_screen,&a);
+// 	mlx_loop(a.s.mlx);
+// }

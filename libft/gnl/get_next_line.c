@@ -5,132 +5,102 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/31 10:12:41 by lferro            #+#    #+#             */
-/*   Updated: 2024/04/30 20:48:50 by lferro           ###   ########.fr       */
+/*   Created: 2023/10/31 17:01:15 by lnicolli          #+#    #+#             */
+/*   Updated: 2024/07/05 18:22:59 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <string.h>
+#include <limits.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
-// read fd and return raw line with \n and the leftover
-// from the buffer (stash var)
-char	*line_read(int fd, char *buf, char *stash)
+void	reset_struct(t_utils *u)
 {
-	int		bread;
-	char	*temp_stash;
+	u->buffer = 0;
+	u->bufferstart = 0;
+	u->state = 0;
+	u->eol = 0;
+	u->start = 0;
+	u->end = 0;
+	u->fd = 0;
+}
 
-	bread = 1;
-	while (bread > 0)
+int	free_n_state(t_utils *u, int state, char *str2free)
+{
+	if (str2free)
+		free(str2free);
+	if (state == EOL_STATE)
+		u->eol = 1;
+	else if (state)
+		u->state = state;
+	return (1);
+}
+
+int	get_data(t_utils *u)
+{
+	char	*tmp;
+	ssize_t	end;
+
+	while (!ft_strchr(u, '\n') || u->eol)
 	{
-		bread = read(fd, buf, BUFFER_SIZE);
-		if (bread < 0)
-			return (NULL);
-		else if (bread == 0)
-			break ;
-		buf[bread] = 0;
-		if (!stash)
-			stash = ft_strdup("");
-		temp_stash = stash;
-		stash = ft_strjoin(temp_stash, buf);
-		free(temp_stash);
-		if (ft_strchr(stash, '\n'))
-			break ;
+		tmp = malloc(BUFFER_SIZE + 1);
+		if (!tmp)
+			return (1);
+		end = read(u->fd, tmp, BUFFER_SIZE);
+		if (end < 0 && free_n_state(u, -1, tmp))
+			return (1);
+		if (end == 0 && free_n_state(u, EOL_STATE, tmp))
+			return (0);
+		if (end < BUFFER_SIZE)
+			u->eol = 1;
+		tmp[end] = '\0';
+		u->buffer = ft_strjoin(u, tmp);
+		if (!u->buffer)
+			return (1);
+		free(tmp);
 	}
-	return (stash);
+	return (0);
 }
 
-// SUB_LINE
-// params:	raw line to remove residual from
-// return:	clean line with \n at the end
-char	*sub_line(char *line)
+int	init_struct(t_utils *u)
 {
-	char	*newline;
-	int		i;
-
-	i = 0;
-	newline = palloc(ft_strlen(line) + 1, sizeof(char));
-	while (line[i] && line[i] != '\n')
-	{
-		newline[i] = line[i];
-		i++;
-	}
-	if (line[i] == '\n')
-		newline[i++] = '\n';
-	newline[i] = '\0';
-	return (newline);
+	u->buffer = malloc(BUFFER_SIZE + 1);
+	u->end = read(u->fd, u->buffer, BUFFER_SIZE);
+	if (u->end < 1 && free_n_state(u, ERROR_STATE, u->buffer))
+		return (1);
+	u->buffer[u->end] = '\0';
+	u->bufferstart = u->buffer;
+	u->state = INIT_DONE;
+	return (0);
 }
 
-// GET_RESIDUAL
-// params:	raw line to get residual from
-// return:	string after the \n from line
-char	*get_residual(char *line)
-{
-	t_get_residual	var;
-
-	var.i = 0;
-	var.j = 0;
-	if (!line || !ft_strlen(line))
-		return (ft_strdup(""));
-	var.residual = palloc(ft_strlen(line), sizeof(char));
-	if (!var.residual)
-		return (NULL);
-	while (line[var.i] && line[var.i] != '\n')
-		var.i++;
-	if (line[var.i] == '\n')
-		var.i++;
-	while (line[var.i])
-		var.residual[var.j++] = line[var.i++];
-	var.residual[var.j] = 0;
-	return (var.residual);
-}
-
-// GET_NEXT_LINE
-// After error handling, get raw line, get residual, cut line.
-// params: file descriptor to return line from
-// return: current line
 char	*get_next_line(int fd)
 {
-	char		*buf;
-	char		*line;
-	static char	*stash;
-	char		*res;
+	static t_utils	u;
+	char			*line;
 
-	if (BUFFER_SIZE <= 0 || read(fd, 0, 0) == -1)
-		return (freeyator(&stash));
-	buf = palloc(BUFFER_SIZE + 1, sizeof(char));
-	if (!buf)
+	line = (char *) 0;
+	if (u.state == ERROR_STATE || u.state == ALL_DONE)
+		reset_struct(&u);
+	u.fd = fd;
+	if (BUFFER_SIZE < 1)
 		return (NULL);
-	line = line_read(fd, buf, stash);
-	freeyator(&buf);
-	if (!line)
-		return (freeyator(&line));
-	res = sub_line(line);
-	stash = get_residual(line);
-	freeyator(&line);
-	if (*res == '\0')
-		freeyator(&stash);
-	if (*res == '\0')
-		return (freeyator(&res));
-	return (res);
+	if (u.state == 0 && init_struct(&u))
+		return ((char *) 0);
+	if (get_data(&u) && free_n_state(&u, ERROR_STATE, u.bufferstart))
+		return ((char *) 0);
+	if (ft_strchr(&u, '\n'))
+	{
+		line = ft_substr(u.buffer, 0, u.next_nl - u.buffer + 1);
+		u.buffer = u.next_nl + 1;
+	}
+	else if (u.eol && u.state != ALL_DONE)
+	{
+		line = ft_substr(u.buffer, 0, ft_strlen(u.buffer));
+		u.state = ALL_DONE;
+		free(u.bufferstart);
+	}
+	return (line);
 }
-
-char	*freeyator(char **s)
-{
-	free(*s);
-	*s = 0;
-	return (NULL);
-}
-
-// int main()
-// {
-// 	int fd = open("file.txt", O_RDONLY);
-
-// 	char	*str;
-// 	while((str = get_next_line(fd)))
-// 		printf("%s", str);
-// 	close(fd);
-// 	free(str);
-
-// 	return (0);
-// }

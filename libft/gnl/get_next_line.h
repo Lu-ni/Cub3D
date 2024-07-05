@@ -5,38 +5,37 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/25 17:48:21 by lferro            #+#    #+#             */
-/*   Updated: 2023/11/13 17:11:37 by lferro           ###   ########.fr       */
+/*   Created: 2023/10/31 17:01:34 by lnicolli          #+#    #+#             */
+/*   Updated: 2024/07/05 18:11:29 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
+# include <sys/types.h>
+#include "../libft.h"
+
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 8
+#  define BUFFER_SIZE 10
 # endif
+# define INIT_DONE 1
+# define READ_DONE 2
+# define ERROR_STATE 3
+# define ALL_DONE 4
+# define EOL_STATE 5
 
-# include <fcntl.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include "../libft.h"
-
-typedef struct s_get_residual
+typedef struct s_utlils
 {
-	int		i;
-	int		j;
-	char	*residual;
-}			t_get_residual;
+	char	*buffer;
+	char	*bufferstart;
+	int		state;
+	int		eol;
+	size_t	start;
+	ssize_t	end;
+	int		fd;
+	char	*next_nl;
+}			t_utils;
 
-char		*freeyator(char **s);
-char		*strdup_or_strchr(const char *s, int mode, int c);
-// char		*ft_strdup(const char *s);
-// char		*ft_strchr(const char *s, int c);
-char		*sub_line(char *line);
-char		*get_residual(char *stash);
 char		*get_next_line(int fd);
-char		*line_read(int fd, char *buf, char *stash);
-
 #endif
