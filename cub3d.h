@@ -8,8 +8,8 @@
 #include "keys.h"
 
 
-#define screenWidth 900
-#define screenHeight 600
+#define screenWidth 1900
+#define screenHeight 1600
 #define texWidth 800
 #define texHeight 800
 #define mapWidth 24

@@ -72,7 +72,7 @@ int	main(void)
 	a.p.posX = 22;
 	a.p.posY = 12;      // x and y start position
 	a.p.dirX = -1;
-	a.p.dirY = -1;       // initial direction vector
+	a.p.dirY = 0;       // initial direction vector
 	a.p.planeX = 0;
 	a.p.planeY = 0.66;
 	//my_mlx_pixel_put(&img, 5, 5, 0x00FF0000);
