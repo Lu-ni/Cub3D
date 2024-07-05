@@ -1,8 +1,9 @@
 
 #ifndef MAP_H
-# define INVALID_MAP 1
-# define VALID_MAP 0
+# define INVALID_MAP -1
+# define INVALID_COLOR -2
 
+# define VALID_MAP 0
 
 # define NO 1
 # define SO 2
@@ -18,8 +19,6 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
-
-
 
 typedef struct s_map_data
 {
@@ -38,8 +37,6 @@ typedef struct s_map
 	t_map_data	map;
 }				t_map;
 
-#define PL printf("line: %d file: %s\n", __LINE__, __FILE__);
+# define PL printf("line: %d file: %s\n", __LINE__, __FILE__);
 
 #endif
-
-
