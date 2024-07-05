@@ -3,6 +3,9 @@ OS := $(shell uname)
 CC = gcc
 CFLAGS =-g # -Wall -Wextra -Werror
 
+LIBFT_DIR = libft
+LIBFT = $(LIBFT_DIR)/libft.a
+
 ifeq ($(OS),Darwin)
 	MLX_DIR = mlx
 	MLX_FLAGS = -L$(MLX_DIR) -lmlx -framework OpenGL -framework AppKit -lm
@@ -29,9 +32,9 @@ $(OBJ_DIR):
 all: $(OBJ_DIR) $(NAME)
 	@echo "$(GREEN)Build complete!$(NO_COLOR)"
 
-$(NAME): $(OBJ)
+$(NAME): $(LIBFT) $(OBJ)
 	@echo "$(CYAN)Linking...$(NO_COLOR)"
-	$(CC) $(OBJ) $(MLX_FLAGS) -o $(NAME)
+	$(CC) $(OBJ) $(LIBFT) $(MLX_FLAGS) -o $(NAME)
 
 $(OBJ_DIR)/%.o: %.c $(DEPS) | $(OBJ_DIR)
 	@echo "$(YELLOW)Compiling $<...$(NO_COLOR)"

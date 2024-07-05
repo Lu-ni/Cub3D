@@ -84,12 +84,12 @@ int	parse_map(char *map_path)
 
 
 
-int main(int argc, char **argv)
-{
-	char *mapfile = "maps/map.cub";
+// int main(int argc, char **argv)
+// {
+// 	char *mapfile = "maps/map.cub";
 
 
-	parse_map(argv[1]);
+// 	parse_map(argv[1]);
 
-	return (0);
-}
+// 	return (0);
+// }

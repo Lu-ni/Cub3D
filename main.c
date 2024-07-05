@@ -82,7 +82,7 @@ int	main(void)
 	//mlx_put_image_to_window(mlx, mlx_win, mlx_xpm_file_to_image(mlx, "intro.xpm", &size, &size), 0, 0);
 	a.t.img = mlx_xpm_file_to_image(a.s.mlx, "wall.xpm", &a.t.height, &a.t.width);
 	a.t.pix = mlx_get_data_addr(a.t.img, &a.t.bits_per_pixel, &a.t.size_line, &a.t.endian);
-	
+
 	mlx_hook(a.s.mlx_win, 2, 1L << 0, key_hook, &a);
 	mlx_hook(a.s.mlx_win, 17, 0, close_window, NULL);
 	//mlx_mouse_hook(all.vara.s.win, mouse_hook, &all);
