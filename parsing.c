@@ -1,5 +1,4 @@
 #include "cub3d.h"
-#include "map.h"
 
 int	is_mapfile_valid(void)
 {
@@ -96,23 +95,7 @@ int	process_line(char *line, t_map *map)
 	}
 }
 
-// int	process_map_line(char *line, t_map *map)
-// {
-// 	int	i;
 
-// 	char **map;
-
-// 	int longest_line = 0;
-
-// 	i = 0;
-// 	while (line[i])
-// 	{
-// 		if (line[i] > longest_line)
-// 			longest_line = i;
-// 		i++;
-// 	}
-
-// }
 int	count_lines(char *filename)
 {
 	int		fd;
@@ -210,7 +193,7 @@ int	copy_map(int ***map, char **file, int lines_count, t_dim dim)
 	{
 		(*map)[i] = malloc(sizeof(int) * dim.cols);
 		for (int j = 0; j < dim.cols; j++)
-			(*map)[i][j] = 9;
+			(*map)[i][j] = EMPTY_SPACE;
 	}
 	for (int i = 0; i < dim.rows; i++)
 	{
@@ -222,7 +205,7 @@ int	copy_map(int ***map, char **file, int lines_count, t_dim dim)
 			}
 			if (ft_isspace(file[dim.start + i][j]))
 			{
-				(*map)[i][j] = 9;
+				(*map)[i][j] = EMPTY_SPACE;
 			}
 			else
 			{
@@ -252,7 +235,7 @@ int	**expand_map_for_checking(int ***map, int cols, int rows)
 		map_cpy[i] = malloc(sizeof(int) * (cols + 2));
 		for (int j = 0; j < cols + 2; j++)
 		{
-			map_cpy[i][j] = 9;
+			map_cpy[i][j] = EMPTY_SPACE;
 		}
 	}
 	for (int i = 0; i < rows; i++)
@@ -277,8 +260,8 @@ int	is_map_walled(int ***map, t_dim dim)
 		{
 			if (map_cpy[i][j] == 0)
 			{
-				if (map_cpy[i - 1][j] == 9 || map_cpy[i + 1][j] == 9
-					|| map_cpy[i][j - 1] == 9 || map_cpy[i][j + 1] == 9)
+				if (map_cpy[i - 1][j] == EMPTY_SPACE || map_cpy[i + 1][j] == EMPTY_SPACE
+					|| map_cpy[i][j - 1] == EMPTY_SPACE || map_cpy[i][j + 1] == EMPTY_SPACE)
 				{
 					printf("Error\n");
 					return (INVALID_MAP);
@@ -286,27 +269,23 @@ int	is_map_walled(int ***map, t_dim dim)
 			}
 		}
 	}
-	printmap(map_cpy, dim.cols + 2, dim.rows + 2);
+	// printmap(map_cpy, dim.cols + 2, dim.rows + 2);
 	return (VALID_MAP);
 }
 
-int	**parse_map(char *mapfile, t_dim *dim)
+t_map parse_map(char *mapfile)
 {
 	int fd;
-
-	fd = open(mapfile, O_RDONLY);
-
 	char	**file;
 	int		lines_count;
 	int		i;
-	int		**map;
+	t_map m;
 
-	int		cols;
-	int		rows;
-	int		map_start;
+	fd = open(mapfile, O_RDONLY);
 
 
-	lines_count = count_lines("maps/map.cub");
+
+	lines_count = count_lines(mapfile);
 	file = malloc(sizeof(char *) * (lines_count + 1));
 	i = 0;
 	while (1)
@@ -314,18 +293,28 @@ int	**parse_map(char *mapfile, t_dim *dim)
 		file[i] = get_next_line(fd);
 		if (!file[i])
 			break ;
+		process_line(file[i], &m);
 		i++;
 	}
 	file[i] = 0;
-	get_map_dim(dim, file, lines_count);
+	get_map_dim(&m.dim, file, lines_count);
 
-	// get_map_dim(&cols, &rows, file, lines_count, &map_start);
-
-	copy_map(&map, file, lines_count, *dim);
+	copy_map(&m.map, file, lines_count, m.dim);
 	close(fd);
-	is_map_walled(&map, *dim);
+	is_map_walled(&m.map, m.dim);
 
-	return (map);
+
+	printmap(m.map, m.dim.cols, m.dim.rows);
+
+	printf("NO: %s\n", m.no);
+	printf("SO: %s\n", m.so);
+	printf("WE: %s\n", m.we);
+	printf("EA: %s\n", m.ea);
+	printf("F: %x\n", m.f_color);
+	printf("C: %x\n", m.c_color);
+
+
+	return (m);
 
 }
 

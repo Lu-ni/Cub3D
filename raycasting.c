@@ -1,25 +1,25 @@
 #include <math.h>
 #include <float.h>
-#include "cub3d.h" 
+#include "cub3d.h"
 
-void draw_tex_columm(int column, int start, int end, int color, t_all *a,int texX)
+void draw_tex_columm(int column, int start, int end, int color, t_all *a,int texX, int tex_index)
 {
-	float ratio = (float) (end - start) / (float) a->t[0].height; 	
+	float ratio = (float) (end - start) / (float) a->t[tex_index].height;
 	int tex_color;
 
 	int i = 0;
 	int pos = 0;
 	while (i < start)
-		my_mlx_pixel_put(&a->s.img, column, i++, 0x000000FF);
+		my_mlx_pixel_put(&a->s.img, column, i++, a->m.c_color);
 	while (i < end)
 	{
-		pos = ((float)(i - start) / ratio); 
-		pos = (int) round(pos * a->t[0].size_line + texX * (float)(a->t[0].bits_per_pixel / (float)8));
-		tex_color = ((int) a->t[0].pix[pos] & 0x00FFFFFF );
+		pos = ((float)(i - start) / ratio);
+		pos = (int) round(pos * a->t[tex_index].size_line + texX * (float)(a->t[tex_index].bits_per_pixel / (float)8));
+		tex_color = ((int) a->t[tex_index].pix[pos] & 0x00FFFFFF );
 		my_mlx_pixel_put(&a->s.img, column, i++, tex_color);
 	}
 	while (end < screen_height)
-		my_mlx_pixel_put(&a->s.img, column, end++, 0x00000000);
+		my_mlx_pixel_put(&a->s.img, column, end++, a->m.f_color);
 }
 
 void calculate_ray_pos_and_dir(t_all *a, int x, t_ray *ray)
@@ -153,7 +153,23 @@ int draw_screen(t_all *a)
         if (ray.side == 1)
             color = color / 2;
 
-        draw_tex_columm(x, ray.draw_start, ray.draw_end, color, a, tex_x);
+        int tex_index;
+        if (ray.side == 0)
+        {
+            if (ray.ray_dir_x > 0)
+                tex_index = 2;  // EA
+            else
+                tex_index = 3;  // WE
+        }
+        else
+        {
+            if (ray.ray_dir_y > 0)
+                tex_index = 0;  // NO
+            else
+                tex_index = 1;  // SO
+        }
+
+        draw_tex_columm(x, ray.draw_start, ray.draw_end, color, a, tex_x, tex_index);
 
         x++;
     }

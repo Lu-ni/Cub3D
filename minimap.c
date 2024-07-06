@@ -4,7 +4,7 @@ void draw_square (int x, int y, int size, int color, t_all *a)
 {
 	int i = 0;
 	int j = 0;
-	while (j < size)	
+	while (j < size)
 	{
 		i = 0;
 		while ( i < size)
@@ -14,7 +14,7 @@ void draw_square (int x, int y, int size, int color, t_all *a)
 		}
 		j++;
 	}
-}	
+}
 
 void draw_minimap(t_all *a)
 {
@@ -26,10 +26,10 @@ void draw_minimap(t_all *a)
 	int j = 0;
 
 	int step = 5;
-	while (j < map_width)
+	while (j < a->m.dim.rows)
 	{
 		i = 0;
-		while (i < map_height)
+		while (i < a->m.dim.cols)
 		{
 			if (a->world_map[j][i] == 0)
 			{
@@ -39,7 +39,7 @@ void draw_minimap(t_all *a)
 			{
 				draw_square(offset + step * i, offset + step * j, step, 0x0000FF00, a);
 			}
-				
+
 			i++;
 		}
 	j++;

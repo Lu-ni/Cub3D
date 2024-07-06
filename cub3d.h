@@ -6,7 +6,7 @@
 #include <math.h>
 #include <float.h>
 #include "keys.h"
-
+#include "map.h"
 
 #define screen_width 900
 #define screen_height 600
@@ -51,10 +51,12 @@ typedef struct s_texture {
 } t_texture;
 
 typedef struct s_all {
+	t_map m;
 	t_screen s;
 	t_player p;
 	t_texture t[4];
-	int (*world_map)[map_width];
+	// int (*world_map)[map_width];
+	int **world_map;
 } t_all;
 
 typedef struct s_ray {

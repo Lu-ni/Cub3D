@@ -35,7 +35,8 @@ int worldMap[map_width][map_height] = {
     {1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
     {1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}};
+    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+};
 
 int key_hook(int keycode, t_all *a)
 {
@@ -108,6 +109,11 @@ int close_window() {
 int	main(void)
 {
 	t_all a;
+
+
+    a.m = parse_map("maps/map.cub");
+
+
 	//t_screen s;
 
 	a.s.height = screen_height;
@@ -117,7 +123,9 @@ int	main(void)
 	a.s.img.img = mlx_new_image(a.s.mlx, screen_width, screen_height);
 	a.s.img.addr = mlx_get_data_addr(a.s.img.img, &a.s.img.bits_per_pixel, &a.s.img.line_length, &a.s.img.endian);
 
-	a.world_map = worldMap;
+	// a.world_map = worldMap;
+	a.world_map = a.m.map;
+
 
 	a.p.pos_x = 22;
 	a.p.pos_y = 12;      // x and y start position
@@ -130,8 +138,17 @@ int	main(void)
 
 	//int size;
 	//mlx_put_image_to_window(mlx, mlx_win, mlx_xpm_file_to_image(mlx, "intro.xpm", &size, &size), 0, 0);
-	a.t[0].img = mlx_xpm_file_to_image(a.s.mlx, "wall.xpm", &a.t[0].height, &a.t[0].width);
+	a.t[0].img = mlx_xpm_file_to_image(a.s.mlx, a.m.no, &a.t[0].height, &a.t[0].width);
+	a.t[1].img = mlx_xpm_file_to_image(a.s.mlx, a.m.so, &a.t[1].height, &a.t[1].width);
+	a.t[2].img = mlx_xpm_file_to_image(a.s.mlx, a.m.ea, &a.t[2].height, &a.t[2].width);
+	a.t[3].img = mlx_xpm_file_to_image(a.s.mlx, a.m.we, &a.t[3].height, &a.t[3].width);
+
+
 	a.t[0].pix = mlx_get_data_addr(a.t[0].img, &a.t[0].bits_per_pixel, &a.t[0].size_line, &a.t[0].endian);
+	a.t[1].pix = mlx_get_data_addr(a.t[1].img, &a.t[1].bits_per_pixel, &a.t[1].size_line, &a.t[1].endian);
+	a.t[2].pix = mlx_get_data_addr(a.t[2].img, &a.t[2].bits_per_pixel, &a.t[2].size_line, &a.t[2].endian);
+	a.t[3].pix = mlx_get_data_addr(a.t[3].img, &a.t[3].bits_per_pixel, &a.t[3].size_line, &a.t[3].endian);
+
 
 	mlx_hook(a.s.mlx_win, 2, 1L << 0, key_hook, &a);
 	mlx_hook(a.s.mlx_win, 17, 0, close_window, NULL);

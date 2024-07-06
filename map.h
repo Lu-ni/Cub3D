@@ -8,6 +8,7 @@
 # define SO 2
 # define WE 3
 # define EA 4
+# define EMPTY_SPACE 1
 
 # include "libft/libft.h"
 # include "mlx/mlx.h"
@@ -19,10 +20,10 @@
 # include <string.h>
 # include <unistd.h>
 
-typedef struct s_map_data
-{
-	int		**map;
-}				t_map_data;
+// typedef struct s_map_data
+// {
+// 	int		**map;
+// }				t_map_data;
 
 typedef struct s_dim
 {
@@ -43,6 +44,8 @@ typedef struct s_map
 
 	int			**map;
 }				t_map;
+
+t_map parse_map(char *mapfile);
 
 # define PL printf("line: %d file: %s\n", __LINE__, __FILE__);
 
