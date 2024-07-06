@@ -4,7 +4,7 @@
 
 void draw_tex_columm(int column, int start, int end, int color, t_all *a,int texX)
 {
-	float ratio = (float) (end - start) / (float) a->t.height; 	
+	float ratio = (float) (end - start) / (float) a->t[0].height; 	
 	int tex_color;
 
 	int i = 0;
@@ -14,8 +14,8 @@ void draw_tex_columm(int column, int start, int end, int color, t_all *a,int tex
 	while (i < end)
 	{
 		pos = ((float)(i - start) / ratio); 
-		pos = (int) round(pos * a->t.size_line + texX * (float)(a->t.bits_per_pixel / (float)8));
-		tex_color = ((int) a->t.pix[pos] & 0x00FFFFFF );
+		pos = (int) round(pos * a->t[0].size_line + texX * (float)(a->t[0].bits_per_pixel / (float)8));
+		tex_color = ((int) a->t[0].pix[pos] & 0x00FFFFFF );
 		my_mlx_pixel_put(&a->s.img, column, i++, tex_color);
 	}
 	while (end < screen_height)

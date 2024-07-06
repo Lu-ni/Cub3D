@@ -53,7 +53,7 @@ typedef struct s_texture {
 typedef struct s_all {
 	t_screen s;
 	t_player p;
-	t_texture t;
+	t_texture t[4];
 	int (*world_map)[map_width];
 } t_all;
 

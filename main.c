@@ -130,8 +130,8 @@ int	main(void)
 
 	//int size;
 	//mlx_put_image_to_window(mlx, mlx_win, mlx_xpm_file_to_image(mlx, "intro.xpm", &size, &size), 0, 0);
-	a.t.img = mlx_xpm_file_to_image(a.s.mlx, "wall.xpm", &a.t.height, &a.t.width);
-	a.t.pix = mlx_get_data_addr(a.t.img, &a.t.bits_per_pixel, &a.t.size_line, &a.t.endian);
+	a.t[0].img = mlx_xpm_file_to_image(a.s.mlx, "wall.xpm", &a.t[0].height, &a.t[0].width);
+	a.t[0].pix = mlx_get_data_addr(a.t[0].img, &a.t[0].bits_per_pixel, &a.t[0].size_line, &a.t[0].endian);
 
 	mlx_hook(a.s.mlx_win, 2, 1L << 0, key_hook, &a);
 	mlx_hook(a.s.mlx_win, 17, 0, close_window, NULL);
