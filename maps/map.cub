@@ -1,7 +1,7 @@
-NO teapot.xpm
-SO wall.xpm
-WE teapot.xpm
-EA wall.xpm
+NO wall.xpm
+SO teapot.xpm
+WE wall.xpm
+EA teapot.xpm
 
 F 200,50,0
 C 40,100,10
