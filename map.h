@@ -1,9 +1,9 @@
-
 #ifndef MAP_H
-# define INVALID_MAP 1
-# define VALID_MAP 0
 
-
+# define INVALID_MAP 0
+# define VALID_MAP 1
+# define INVALID_COLOR -2
+# define BUFFER_SIZE 10
 # define NO 1
 # define SO 2
 # define WE 3
@@ -19,12 +19,17 @@
 # include <string.h>
 # include <unistd.h>
 
-
-
 typedef struct s_map_data
 {
-	char		**map;
+	int		**map;
 }				t_map_data;
+
+typedef struct s_dim
+{
+	int			cols;	// number of columns
+	int			rows; // number of rows
+	int			start; // start row number
+} 				t_dim;
 
 typedef struct s_map
 {
@@ -32,14 +37,13 @@ typedef struct s_map
 	char		*so;
 	char		*we;
 	char		*ea;
-	int			c_color[3];
-	int			f_color[3];
+	int			c_color;
+	int			f_color;
+	t_dim		dim;
 
-	t_map_data	map;
+	int			**map;
 }				t_map;
 
-#define PL printf("line: %d file: %s\n", __LINE__, __FILE__);
+# define PL printf("line: %d file: %s\n", __LINE__, __FILE__);
 
 #endif
-
-
