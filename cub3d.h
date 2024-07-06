@@ -8,8 +8,8 @@
 #include "keys.h"
 
 
-#define screen_width 1900
-#define screen_height 1600
+#define screen_width 900
+#define screen_height 600
 #define tex_width 800
 #define tex_height 800
 #define map_width 24
@@ -27,7 +27,7 @@ typedef struct s_screen {
 	void *mlx;
 	void *mlx_win;
 	int width;
-	int height;
+	int	height;
 	t_data img;
 } t_screen;
 
@@ -75,8 +75,8 @@ typedef struct s_ray {
 	int hit_direction;  // 0 = North, 1 = South, 2 = East, 3 = West
 } t_ray;
 
-int draw_screen(t_all *a);
+int		draw_screen(t_all *a);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 //minimap.c
-void draw_minimap(t_all *a);
+void	draw_minimap(t_all *a);
 #endif
