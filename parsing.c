@@ -350,22 +350,3 @@ int	parse_scene(char *map_path, t_map *map)
 	// parse_map(fd);
 }
 
-int	main(int argc, char **argv)
-{
-	char	*mapfile;
-	t_map	map;
-	int		fd;
-
-	mapfile = "maps/map.cub";
-	map.map = parse_map(mapfile, &map.dim);
-
-	printmap(map.map, map.dim.cols, map.dim.rows);
-
-	// printf("%s\n", map.no);
-	// printf("%s\n", map.so);
-	// printf("%s\n", map.ea);
-	// printf("%s\n", map.we);
-	// printf("%X\n", map.f_color);
-	// printf("%X\n", map.c_color);
-	return (0);
-}

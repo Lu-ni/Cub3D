@@ -75,6 +75,7 @@ typedef struct s_ray {
 	int hit_direction;  // 0 = North, 1 = South, 2 = East, 3 = West
 } t_ray;
 
+int argb(unsigned char a, unsigned char b, unsigned char c, unsigned char d);
 int		draw_screen(t_all *a);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 //minimap.c
