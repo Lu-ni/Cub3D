@@ -1,6 +1,6 @@
 #include "cub3d.h"
 #include "keys.h"
-#include <endian.h>
+//#include <endian.h>
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
