@@ -102,7 +102,8 @@ int key_hook(int keycode, t_all *a)
 }
 
 
-int close_window() {
+int close_window(t_all *a) {
+    free_map(a->m.map, a->m.dim.rows);
     exit(0);
 }
 

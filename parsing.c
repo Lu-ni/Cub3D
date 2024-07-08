@@ -21,9 +21,6 @@ int	is_mapfile_valid(char *mapfile)
 	return (0);
 }
 
-char	*remove_leading_and_trailing_spaces(char *str)
-{
-}
 
 char	*get_texture_path(char *line)
 {
@@ -45,34 +42,25 @@ char	*get_texture_path(char *line)
 
 int	get_color(char *line)
 {
-	int	*color;
+	char	**colors;
 	int	new_pos;
 	int	comma_pos;
-	int	i;
+	int color_val;
 
-	color = malloc(sizeof(int) * 3);
-	while (ft_isspace(*line))
-		line++;
-	comma_pos = 0;
-	while (line[comma_pos] && line[comma_pos] != ',')
-		comma_pos++;
-	color[0] = ft_atoi(ft_substr(line, 0, comma_pos++));
-	new_pos = comma_pos;
-	while (line[comma_pos] && line[comma_pos] != ',')
-		comma_pos++;
-	color[1] = ft_atoi(ft_substr(line, new_pos, comma_pos - new_pos));
-	new_pos = ++comma_pos;
-	while (line[comma_pos] && line[comma_pos] != ',')
-		comma_pos++;
-	color[2] = ft_atoi(ft_substr(line, new_pos, comma_pos - new_pos));
-	i = 0;
-	while (color[i])
-	{
-		if (color[i] < 0 || color[i] > 255)
-			return (INVALID_COLOR);
-		i++;
-	}
-	return (argb(255, color[0], color[1], color[2]));
+	colors = ft_split(line, ',');
+	int i = 0;
+	if (!colors[0] || !colors[1] || !colors[2])
+		return -1;
+
+
+
+	color_val = argb(255, ft_atoi(colors[0]), ft_atoi(colors[1]), ft_atoi(colors[2]));
+
+	for (int i = 0; i < 3; i++)
+		free(colors[i]);
+	free(colors);
+
+	return (color_val);
 }
 
 int	get_scene_infos(char *line, t_map *map)
@@ -94,6 +82,11 @@ int	get_scene_infos(char *line, t_map *map)
 		map->f_color = get_color(line + 1);
 	else if (line[i] == 'C')
 		map->c_color = get_color(line + 1);
+
+	if (map->f_color == -1 || map->c_color == -1
+		|| !map->no || !map->so || !map->we || !map->ea)
+		return -1;
+	return 0;
 }
 
 int	count_lines(char *filename)
@@ -153,6 +146,7 @@ int	ft_isnewline(char c)
 		return (1);
 	return (0);
 }
+
 int	get_longest_map_line(char **file, int lines_count, int map_start)
 {
 	int	longest_line;
@@ -184,17 +178,23 @@ void	printmap(int **map, int cols, int rows)
 	}
 }
 
+int malloc_set_empty_spaces(int **map, int cols, int rows)
+{
+	for (int i = 0; i < rows; i++)
+	{
+
+		map[i] = malloc(sizeof(int) * cols);
+		for (int j = 0; j < cols; j++)
+			map[i][j] = EMPTY_SPACE;
+	}
+}
+
 int	parse_map(int ***map, char **file, int lines_count, t_dim dim)
 {
 	char	*num_str;
 
-	(*map) = malloc(sizeof(int *) * (lines_count));
-	for (int i = 0; i < dim.rows; i++)
-	{
-		(*map)[i] = malloc(sizeof(int) * dim.cols);
-		for (int j = 0; j < dim.cols; j++)
-			(*map)[i][j] = EMPTY_SPACE;
-	}
+	*map = malloc(sizeof(int *) * (lines_count));
+	malloc_set_empty_spaces(*map, dim.cols, dim.rows);
 	for (int i = 0; i < dim.rows; i++)
 	{
 		for (int j = 0; j < dim.cols; j++)
@@ -243,6 +243,13 @@ int	**expand_map_for_checking(int ***map, int cols, int rows)
 	return (map_cpy);
 }
 
+void	free_map(int **map, int rows)
+{
+	for (int i = 0; i < rows; i++)
+		free(map[i]);
+	free(map);
+}
+
 int	is_map_walled(int ***map, t_dim dim)
 {
 	int	**map_cpy;
@@ -259,19 +266,19 @@ int	is_map_walled(int ***map, t_dim dim)
 					|| map_cpy[i][j + 1] == EMPTY_SPACE)
 				{
 					printf("Error\n");
+					free_map(map_cpy, dim.rows + 2);
 					return (INVALID_MAP);
 				}
 			}
 		}
 	}
-	// printmap(map_cpy, dim.cols + 2, dim.rows + 2);
-	// printf("Valid map\n");
+	free_map(map_cpy, dim.rows + 2);
 	return (VALID_MAP);
 }
 
 
 
-void init_map_null(t_map *m)
+void init_scene_null(t_map *m)
 {
 	m->no = NULL;
 	m->so = NULL;
@@ -284,25 +291,16 @@ void init_map_null(t_map *m)
 int scene_errors(t_map *m)
 {
 	if (!m->no || !m->so || !m->we || !m->ea)
-	{
-		print_errors(ERROR_MISSING_TEXTURE);
 		exit(1);
-	}
 	if (m->f_color == 0 || m->c_color == 0)
-	{
-		print_errors(ERROR_MISSING_COLOR);
 		exit(1);
-	}
 
 	int fd1 = open(m->no, O_RDONLY);
 	int fd2 = open(m->so, O_RDONLY);
 	int fd3 = open(m->ea, O_RDONLY);
 	int fd4 = open(m->we, O_RDONLY);
 	if (fd1 < 0 || fd2 < 0 || fd3 < 0 || fd4 < 0)
-	{
-		print_errors(ERROR_MISSING_TEXTURE);
 		exit(1);
-	}
 }
 
 
@@ -315,7 +313,7 @@ t_map	parse_mapfile(char *mapfile)
 	int		i;
 	t_map	m;
 
-	init_map_null(&m);
+	init_scene_null(&m);
 
 	if (is_mapfile_valid(mapfile))
 		exit(1);
@@ -338,7 +336,6 @@ t_map	parse_mapfile(char *mapfile)
 	close(fd);
 
 	scene_errors(&m);
-
 
 	file[i] = 0;
 

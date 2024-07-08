@@ -7,6 +7,7 @@
 # define ERROR_MISSING_COLOR (char *)"missing color(s) in map file"
 # define ERROR_MISSING_MAP (char *)"missing map"
 # define ERROR_INVALID_MAP (char *)"invalid map"
+# define ERROR_INVALID_COLOR (char *)"invalid color"
 # define ERROR_MISSING_MAPFILE (char *)"mapfile is missing"
 # define ERROR_MAPFILE_DOES_NOT_EXIST (char *)"mapfile does not exist"
 
@@ -59,6 +60,7 @@ typedef struct s_map
 
 
 t_map parse_mapfile(char *mapfile);
+void	free_map(int **map, int rows);
 
 // ERRORS
 void print_errors(char *error);
