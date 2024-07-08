@@ -1,13 +1,23 @@
 #include "cub3d.h"
 
-int	is_mapfile_valid(void)
+
+
+int	is_mapfile_valid(char *mapfile)
 {
-	// is_dotcub();
-	// contains_textures();
-	// contains_colors();
-	// contains_map();
-	// is_closed();
-	// are_char_valid();
+	if (!mapfile_exists(mapfile)
+		&& !is_dotcub(mapfile)
+		// && !has_textures(mapfile)
+	)
+	{
+		return (-1);
+
+	}
+
+	// + contains_colors()
+	// + contains_map()
+	// + is_closed()
+	// + are_char_valid();
+		;
 	return (0);
 }
 
@@ -15,19 +25,19 @@ char	*remove_leading_and_trailing_spaces(char *str)
 {
 }
 
-char	*get_texture_path(char *texture_path)
+char	*get_texture_path(char *line)
 {
-	char	*res;
+	char	*texture_path;
 	int		i;
 
-	res = malloc(sizeof(char) * ft_strlen(texture_path) + 1);
-	while (ft_isspace(*texture_path))
-		texture_path++;
+	texture_path = malloc(sizeof(char) * ft_strlen(line) + 1);
+	while (ft_isspace(*line))
+		line++;
 	i = 0;
-	while (!ft_isspace(*texture_path))
-		res[i++] = *(texture_path++);
-	res[i] = 0;
-	return (res);
+	while (!ft_isspace(*line))
+		texture_path[i++] = *(line++);
+	texture_path[i] = 0;
+	return (texture_path);
 }
 
 int	get_color(char *line)
@@ -62,7 +72,7 @@ int	get_color(char *line)
 	return (argb(255, color[0], color[1], color[2]));
 }
 
-int	process_line(char *line, t_map *map)
+int	get_scene_infos(char *line, t_map *map)
 {
 	int	i;
 
@@ -94,7 +104,6 @@ int	process_line(char *line, t_map *map)
 		map->c_color = get_color(line + 1);
 	}
 }
-
 
 int	count_lines(char *filename)
 {
@@ -184,7 +193,7 @@ void	printmap(int **map, int cols, int rows)
 	}
 }
 
-int	copy_map(int ***map, char **file, int lines_count, t_dim dim)
+int	parse_map(int ***map, char **file, int lines_count, t_dim dim)
 {
 	char	*num_str;
 
@@ -220,10 +229,14 @@ int	copy_map(int ***map, char **file, int lines_count, t_dim dim)
 
 void	get_map_dim(t_dim *dim, char **file, int lines_count)
 {
+	while (is_line_empty(file[lines_count - 1]))
+		lines_count--;
+
 	dim->start = get_map_start(file, lines_count);
 	dim->cols = get_longest_map_line(file, lines_count, dim->start) - 1;
 	dim->rows = lines_count - dim->start;
 }
+
 
 int	**expand_map_for_checking(int ***map, int cols, int rows)
 {
@@ -234,18 +247,13 @@ int	**expand_map_for_checking(int ***map, int cols, int rows)
 	{
 		map_cpy[i] = malloc(sizeof(int) * (cols + 2));
 		for (int j = 0; j < cols + 2; j++)
-		{
 			map_cpy[i][j] = EMPTY_SPACE;
-		}
 	}
 	for (int i = 0; i < rows; i++)
 	{
 		for (int j = 0; j < cols; j++)
-		{
 			map_cpy[i + 1][j + 1] = (*map)[i][j];
-		}
 	}
-	// printmap(map_cpy, cols + 2, rows + 2);
 	return (map_cpy);
 }
 
@@ -260,8 +268,9 @@ int	is_map_walled(int ***map, t_dim dim)
 		{
 			if (map_cpy[i][j] == 0)
 			{
-				if (map_cpy[i - 1][j] == EMPTY_SPACE || map_cpy[i + 1][j] == EMPTY_SPACE
-					|| map_cpy[i][j - 1] == EMPTY_SPACE || map_cpy[i][j + 1] == EMPTY_SPACE)
+				if (map_cpy[i - 1][j] == EMPTY_SPACE || map_cpy[i
+					+ 1][j] == EMPTY_SPACE || map_cpy[i][j - 1] == EMPTY_SPACE
+					|| map_cpy[i][j + 1] == EMPTY_SPACE)
 				{
 					printf("Error\n");
 					return (INVALID_MAP);
@@ -270,20 +279,62 @@ int	is_map_walled(int ***map, t_dim dim)
 		}
 	}
 	// printmap(map_cpy, dim.cols + 2, dim.rows + 2);
+	// printf("Valid map\n");
 	return (VALID_MAP);
 }
 
-t_map parse_map(char *mapfile)
+
+
+void init_map_null(t_map *m)
 {
-	int fd;
+	m->no = NULL;
+	m->so = NULL;
+	m->we = NULL;
+	m->ea = NULL;
+	m->f_color = 0;
+	m->c_color = 0;
+}
+
+int scene_errors(t_map *m)
+{
+	if (!m->no || !m->so || !m->we || !m->ea)
+	{
+		print_errors(ERROR_MISSING_TEXTURE);
+		exit(1);
+	}
+	if (m->f_color == 0 || m->c_color == 0)
+	{
+		print_errors(ERROR_MISSING_COLOR);
+		exit(1);
+	}
+
+	int fd1 = open(m->no, O_RDONLY);
+	int fd2 = open(m->so, O_RDONLY);
+	int fd3 = open(m->ea, O_RDONLY);
+	int fd4 = open(m->we, O_RDONLY);
+	if (fd1 < 0 || fd2 < 0 || fd3 < 0 || fd4 < 0)
+	{
+		print_errors(ERROR_MISSING_TEXTURE);
+		exit(1);
+	}
+}
+
+
+
+t_map	parse_mapfile(char *mapfile)
+{
+	int		fd;
 	char	**file;
 	int		lines_count;
 	int		i;
-	t_map m;
+	t_map	m;
+
+	init_map_null(&m);
+
+	if (is_mapfile_valid(mapfile))
+		exit(1);
 
 	fd = open(mapfile, O_RDONLY);
-
-
 
 	lines_count = count_lines(mapfile);
 	file = malloc(sizeof(char *) * (lines_count + 1));
@@ -293,29 +344,34 @@ t_map parse_map(char *mapfile)
 		file[i] = get_next_line(fd);
 		if (!file[i])
 			break ;
-		process_line(file[i], &m);
+		// if (!is_line_empty(file[i]))
+		get_scene_infos(file[i], &m);
+		// free(file[i]);
 		i++;
 	}
-	file[i] = 0;
-	get_map_dim(&m.dim, file, lines_count);
-
-	copy_map(&m.map, file, lines_count, m.dim);
 	close(fd);
+
+	scene_errors(&m);
+
+
+	file[i] = 0;
+
+	printf("file: %s\n", file[16]);
+
+	get_map_dim(&m.dim, file, lines_count);
+	parse_map(&m.map, file, lines_count, m.dim);
+
+
 	is_map_walled(&m.map, m.dim);
-
-
 	printmap(m.map, m.dim.cols, m.dim.rows);
-
 	printf("NO: %s\n", m.no);
 	printf("SO: %s\n", m.so);
 	printf("WE: %s\n", m.we);
 	printf("EA: %s\n", m.ea);
-	printf("F: %x\n", m.f_color);
-	printf("C: %x\n", m.c_color);
-
-
+	printf("F:  %x\n", m.f_color);
+	printf("C:  %x\n", m.c_color);
+	PL;
 	return (m);
-
 }
 
 int	parse_scene(char *map_path, t_map *map)
@@ -323,7 +379,6 @@ int	parse_scene(char *map_path, t_map *map)
 	int		fd;
 	char	*line;
 
-	// int info[6] = {0, 0, 0, 0, 0, 0};
 	fd = open(map_path, O_RDONLY);
 	line = NULL;
 	while (1)
@@ -331,11 +386,10 @@ int	parse_scene(char *map_path, t_map *map)
 		line = get_next_line(fd);
 		if (!line)
 			break ;
-		process_line(line, map);
+		get_scene_infos(line, map);
 		// else
 		// 	process_map_line(line, map);
 		free(line);
 	}
 	// parse_map(fd);
 }
-

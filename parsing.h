@@ -1,6 +1,18 @@
 #ifndef MAP_H
 
 # define INVALID_MAP 0
+
+# define ERROR_MISSING_DOTCUB (char *)"map file must have .cub extension"
+# define ERROR_MISSING_TEXTURE (char *)"missing textures in map file"
+# define ERROR_MISSING_COLOR (char *)"missing color(s) in map file"
+# define ERROR_MISSING_MAP (char *)"missing map"
+# define ERROR_INVALID_MAP (char *)"invalid map"
+# define ERROR_MISSING_MAPFILE (char *)"mapfile is missing"
+# define ERROR_MAPFILE_DOES_NOT_EXIST (char *)"mapfile does not exist"
+
+
+# define OK 0
+
 # define VALID_MAP 1
 # define INVALID_COLOR -2
 # define BUFFER_SIZE 10
@@ -8,7 +20,7 @@
 # define SO 2
 # define WE 3
 # define EA 4
-# define EMPTY_SPACE 1
+# define EMPTY_SPACE 9
 
 # include "libft/libft.h"
 # include "mlx/mlx.h"
@@ -45,7 +57,18 @@ typedef struct s_map
 	int			**map;
 }				t_map;
 
-t_map parse_map(char *mapfile);
+
+t_map parse_mapfile(char *mapfile);
+
+// ERRORS
+void print_errors(char *error);
+int is_dotcub(char *mapfile);
+int mapfile_exists(char *mapfile);
+int has_textures(char *mapfile);
+int	is_line_empty(char *line);
+
+
+
 
 # define PL printf("line: %d file: %s\n", __LINE__, __FILE__);
 
