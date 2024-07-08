@@ -6,7 +6,7 @@
 #include <math.h>
 #include <float.h>
 #include "keys.h"
-#include "map.h"
+#include "parsing.h"
 
 #define screen_width 900
 #define screen_height 600

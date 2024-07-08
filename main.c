@@ -111,7 +111,7 @@ int	main(void)
 	t_all a;
 
 
-    a.m = parse_map("maps/map.cub");
+    a.m = parse_mapfile("maps/map.cub");
 
 
 	//t_screen s;

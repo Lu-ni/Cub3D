@@ -2,7 +2,6 @@
 
 int	is_line_empty(char *line)
 {
-	PL;
 	if (*line == '\n')
         return (true);
     while (*line)

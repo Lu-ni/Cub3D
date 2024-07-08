@@ -30,6 +30,9 @@ char	*get_texture_path(char *line)
 	char	*texture_path;
 	int		i;
 
+	if (is_line_empty(line))
+		return (NULL);
+
 	texture_path = malloc(sizeof(char) * ft_strlen(line) + 1);
 	while (ft_isspace(*line))
 		line++;
@@ -47,7 +50,7 @@ int	get_color(char *line)
 	int	comma_pos;
 	int	i;
 
-	color = malloc(sizeof(int) * 4);
+	color = malloc(sizeof(int) * 3);
 	while (ft_isspace(*line))
 		line++;
 	comma_pos = 0;
@@ -80,29 +83,17 @@ int	get_scene_infos(char *line, t_map *map)
 	while (ft_isspace(*line))
 		line++;
 	if (line[i] == 'N' && line[i + 1] == 'O')
-	{
 		map->no = get_texture_path(line + 2);
-	}
 	else if (line[i] == 'S' && line[i + 1] == 'O')
-	{
 		map->so = get_texture_path(line + 2);
-	}
 	else if (line[i] == 'E' && line[i + 1] == 'A')
-	{
 		map->we = get_texture_path(line + 2);
-	}
 	else if (line[i] == 'W' && line[i + 1] == 'E')
-	{
 		map->ea = get_texture_path(line + 2);
-	}
 	else if (line[i] == 'F')
-	{
 		map->f_color = get_color(line + 1);
-	}
 	else if (line[i] == 'C')
-	{
 		map->c_color = get_color(line + 1);
-	}
 }
 
 int	count_lines(char *filename)
@@ -209,13 +200,9 @@ int	parse_map(int ***map, char **file, int lines_count, t_dim dim)
 		for (int j = 0; j < dim.cols; j++)
 		{
 			if (file[dim.start + i][j] == '\0')
-			{
-				break ; // End of the line in the file
-			}
+				break ;
 			if (ft_isspace(file[dim.start + i][j]))
-			{
 				(*map)[i][j] = EMPTY_SPACE;
-			}
 			else
 			{
 				num_str = ft_substr(&file[dim.start + i][j], 0, 1);
@@ -224,7 +211,6 @@ int	parse_map(int ***map, char **file, int lines_count, t_dim dim)
 			}
 		}
 	}
-	// printmap(map, dim.cols, dim.rows);
 }
 
 void	get_map_dim(t_dim *dim, char **file, int lines_count)
@@ -363,14 +349,9 @@ t_map	parse_mapfile(char *mapfile)
 
 
 	is_map_walled(&m.map, m.dim);
+
 	printmap(m.map, m.dim.cols, m.dim.rows);
-	printf("NO: %s\n", m.no);
-	printf("SO: %s\n", m.so);
-	printf("WE: %s\n", m.we);
-	printf("EA: %s\n", m.ea);
-	printf("F:  %x\n", m.f_color);
-	printf("C:  %x\n", m.c_color);
-	PL;
+
 	return (m);
 }
 
