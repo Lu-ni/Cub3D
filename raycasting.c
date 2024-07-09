@@ -10,7 +10,7 @@ void draw_tex_columm(int column, int start, int end, int color, t_all *a,int tex
 	int i = 0;
 	int pos = 0;
 	while (i < start)
-		my_mlx_pixel_put(&a->s.img, column, i++, a->m.c_color);
+		my_mlx_pixel_put(&a->s.img, column, i++, a->m.c_color & 0x00FFFFFF );
 	while (i < end)
 	{
 		pos = ((float)(i - start) / ratio);
@@ -19,7 +19,7 @@ void draw_tex_columm(int column, int start, int end, int color, t_all *a,int tex
 		my_mlx_pixel_put(&a->s.img, column, i++, tex_color);
 	}
 	while (end < screen_height)
-		my_mlx_pixel_put(&a->s.img, column, end++, a->m.f_color);
+		my_mlx_pixel_put(&a->s.img, column, end++, a->m.f_color & 0x00FFFFFF );
 }
 
 void calculate_ray_pos_and_dir(t_all *a, int x, t_ray *ray)
