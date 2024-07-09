@@ -6,7 +6,7 @@ int	is_mapfile_valid(char *mapfile)
 {
 	if (!mapfile_exists(mapfile)
 		&& !is_dotcub(mapfile)
-		// && !has_textures(mapfile)
+		&& !has_textures(mapfile)
 	)
 	{
 		return (-1);
@@ -291,16 +291,30 @@ void init_scene_null(t_map *m)
 int scene_errors(t_map *m)
 {
 	if (!m->no || !m->so || !m->we || !m->ea)
-		exit(1);
+	{
+		print_errors(ERROR_MISSING_TEXTURE);
+		return -1;
+	}
 	if (m->f_color == 0 || m->c_color == 0)
-		exit(1);
+	{
+		print_errors(ERROR_MISSING_COLOR);
+		return -1;
+	}
 
-	int fd1 = open(m->no, O_RDONLY);
-	int fd2 = open(m->so, O_RDONLY);
-	int fd3 = open(m->ea, O_RDONLY);
-	int fd4 = open(m->we, O_RDONLY);
-	if (fd1 < 0 || fd2 < 0 || fd3 < 0 || fd4 < 0)
-		exit(1);
+	int fd[4];
+
+	fd[0] = open(m->no, O_RDONLY);
+	fd[1] = open(m->so, O_RDONLY);
+	fd[2] = open(m->we, O_RDONLY);
+	fd[3] = open(m->ea, O_RDONLY);
+
+	if (fd[0] < 0 || fd[1] < 0 || fd[2] < 0 || fd[3] < 0)
+	{
+		print_errors(ERROR_TEXTURE_DOES_NOT_EXIST);
+		return -1;
+	}
+	return 0;
+
 }
 
 
@@ -335,7 +349,8 @@ t_map	parse_mapfile(char *mapfile)
 	}
 	close(fd);
 
-	scene_errors(&m);
+	if (scene_errors(&m))
+		exit(1);
 
 	file[i] = 0;
 

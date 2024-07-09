@@ -8,6 +8,7 @@ void print_errors(char *error)
 
 int has_textures(char *mapfile)
 {
+
 	return (true);
 }
 

@@ -7,6 +7,7 @@
 #include <float.h>
 #include "keys.h"
 #include "parsing.h"
+# include "hud.h"
 
 #define screen_width 900
 #define screen_height 600
@@ -78,4 +79,9 @@ int		draw_screen(t_all *a);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 //minimap.c
 void	draw_minimap(t_all *a);
+
+// hud
+void draw_crosshair(t_all *a);
+
+
 #endif

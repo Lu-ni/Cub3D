@@ -10,7 +10,10 @@
 # define ERROR_INVALID_COLOR (char *)"invalid color"
 # define ERROR_MISSING_MAPFILE (char *)"mapfile is missing"
 # define ERROR_MAPFILE_DOES_NOT_EXIST (char *)"mapfile does not exist"
+# define ERROR_TEXTURE_DOES_NOT_EXIST (char *)"texture file does not exist"
 
+# define TEXTURE_NBR 4
+# define COLOR_NBR 2
 
 # define OK 0
 

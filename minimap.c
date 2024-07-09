@@ -46,3 +46,31 @@ void draw_minimap(t_all *a)
 	}
 	draw_square(offset + step * (int)a->p.pos_y, offset + step * (int) a->p.pos_x, step, 0x00FFFF00, a);
 }
+
+
+
+void draw_crosshair(t_all *a)
+{
+	int v_center = screen_width / 2;
+	int h_center = screen_height/ 2;
+
+	int i = CROSSHAIR_SPACING;
+	while (i < CROSSHAIR_LENGTH)
+	{
+		my_mlx_pixel_put(&a->s.img, v_center + i, h_center  + 1, 0x00000000);
+		my_mlx_pixel_put(&a->s.img, v_center + i, h_center  - 1, 0x00000000);
+		my_mlx_pixel_put(&a->s.img, v_center - i, h_center  + 1, 0x00000000);
+		my_mlx_pixel_put(&a->s.img, v_center - i, h_center  - 1, 0x00000000);
+
+		my_mlx_pixel_put(&a->s.img, v_center   + 1, h_center  - i, 0x00000000);
+		my_mlx_pixel_put(&a->s.img, v_center   - 1, h_center  - i, 0x00000000);
+		my_mlx_pixel_put(&a->s.img, v_center   + 1, h_center  + i, 0x00000000);
+		my_mlx_pixel_put(&a->s.img, v_center   - 1, h_center  + i, 0x00000000);
+
+		my_mlx_pixel_put(&a->s.img, v_center + i, h_center, 0x00FFFFFF);
+		my_mlx_pixel_put(&a->s.img, v_center - i, h_center, 0x00FFFFFF);
+		my_mlx_pixel_put(&a->s.img, v_center, h_center + i, 0x00FFFFFF);
+		my_mlx_pixel_put(&a->s.img, v_center, h_center - i, 0x00FFFFFF);
+		i++;
+	}
+}

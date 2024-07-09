@@ -8,7 +8,7 @@ void draw_tex_columm(int column, int start, int end, t_all *a,int texX, int tex_
 	int offset = 0;
 	if (ray->line_height > a->s.height)
 		offset = ((double)(ray->line_height - a->s.height) / (double)ray->line_height) / 2.0 * a->t[tex_index].height;
-	
+
 
 	int tex_color;
 
@@ -176,6 +176,7 @@ int draw_screen(t_all *a)
     }
 
     draw_minimap(a);
+    draw_crosshair(a);
     mlx_put_image_to_window(a->s.mlx, a->s.mlx_win, a->s.img.img, 0, 0);
     return 1;
 }
