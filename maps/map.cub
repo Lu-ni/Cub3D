@@ -1,9 +1,9 @@
-NO wall.xpm                            teapot.xpm
+NO wall.xpm
 SO teapot.xpm
 WE wall.xpm
 EA teapot.xpm
 
-F 0,122,123
+F 400,200,10
 C 40,100,10
 
 

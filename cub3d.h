@@ -9,8 +9,8 @@
 #include "parsing.h"
 # include "hud.h"
 
-#define screen_width 900
-#define screen_height 600
+#define screen_width 1500
+#define screen_height 1200
 
 typedef struct	s_data {
 	void	*img;
@@ -52,8 +52,11 @@ typedef struct s_all {
 	t_screen s;
 	t_player p;
 	t_texture t[4];
+	t_texture weapon[5];
+	int weapon_anim;
 	// int (*world_map)[map_width];
 	int **world_map;
+	int frame;
 } t_all;
 
 typedef struct s_ray {
@@ -82,6 +85,6 @@ void	draw_minimap(t_all *a);
 
 // hud
 void draw_crosshair(t_all *a);
-
+void draw_weapon(t_all *a, int frame);
 
 #endif

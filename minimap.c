@@ -48,6 +48,31 @@ void draw_minimap(t_all *a)
 }
 
 
+void draw_weapon(t_all *a, int frame)
+{
+    int img_w = a->weapon[frame].width;
+    int img_h = a->weapon[frame].height;
+
+    int weapon_color;
+
+    int offset_x = screen_width - img_w - 50;
+    int offset_y = screen_height - img_h + 20;
+
+    for (int x = 0; x < img_w; x++)
+    {
+        for (int y = 0; y < img_h; y++)
+        {
+            int i = y * a->weapon[frame].size_line + x * (a->weapon[frame].bits_per_pixel / 8);
+            weapon_color = *(int *)(a->weapon[frame].pix + i) & 0x00FFFFFF;
+            if (weapon_color != 0)
+            {
+                my_mlx_pixel_put(&a->s.img, offset_x + x, offset_y + y, weapon_color);
+            }
+        }
+    }
+}
+
+
 
 void draw_crosshair(t_all *a)
 {

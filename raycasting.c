@@ -177,6 +177,10 @@ int draw_screen(t_all *a)
 
     draw_minimap(a);
     draw_crosshair(a);
+
+    draw_weapon(a, 0);
     mlx_put_image_to_window(a->s.mlx, a->s.mlx_win, a->s.img.img, 0, 0);
+
+
     return 1;
 }

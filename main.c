@@ -16,6 +16,12 @@ int key_hook(int keycode, t_all *a)
 {
     double rotSpeed = 0.05;
     double moveSpeed = 0.1;
+    if (keycode == KEY_SPACE)
+    {
+        a->frame = 0;
+        return (0);
+    }
+
     if (keycode == KEY_ESC)
     {
         exit(0);
@@ -81,6 +87,41 @@ int close_window(t_all *a) {
     exit(0);
 }
 
+int weapon_animation(t_all *a)
+{
+    static int frame_counter = 0;
+    static int frame_delay = 10; // Adjust this value to control animation speed
+
+    mlx_clear_window(a->s.mlx, a->s.mlx_win);
+
+    draw_weapon(a, a->frame);
+
+    mlx_put_image_to_window(a->s.mlx, a->s.mlx_win, a->s.img.img, 0, 0);
+
+    frame_counter++;
+    if (frame_counter >= frame_delay)
+    {
+        frame_counter = 0;
+        a->frame++;
+        if (a->frame >= 5)
+        {
+            a->frame = 0;
+        }
+    }
+
+    return 0;
+}
+
+
+int weapon_hook(int keycode, t_all *a)
+{
+    if (keycode = KEY_SPACE)
+    {
+        a->frame = 0;
+    }
+    return 0;
+}
+
 int	main(void)
 {
 	t_all a;
@@ -118,6 +159,17 @@ int	main(void)
 	a.t[2].img = mlx_xpm_file_to_image(a.s.mlx, a.m.ea, &a.t[2].height, &a.t[2].width);
 	a.t[3].img = mlx_xpm_file_to_image(a.s.mlx, a.m.we, &a.t[3].height, &a.t[3].width);
 
+    a.weapon[0].img = mlx_xpm_file_to_image(a.s.mlx, "w1.xpm", &a.weapon[0].height, &a.weapon[0].width);
+    a.weapon[1].img = mlx_xpm_file_to_image(a.s.mlx, "w1.xpm", &a.weapon[1].height, &a.weapon[1].width);
+    a.weapon[2].img = mlx_xpm_file_to_image(a.s.mlx, "w1.xpm", &a.weapon[2].height, &a.weapon[2].width);
+    a.weapon[3].img = mlx_xpm_file_to_image(a.s.mlx, "w1.xpm", &a.weapon[3].height, &a.weapon[3].width);
+    a.weapon[4].img = mlx_xpm_file_to_image(a.s.mlx, "w1.xpm", &a.weapon[4].height, &a.weapon[4].width);
+
+    a.weapon[0].pix = mlx_get_data_addr(a.weapon[0].img, &a.weapon[0].bits_per_pixel, &a.weapon[0].size_line, &a.weapon[0].endian);
+    a.weapon[1].pix = mlx_get_data_addr(a.weapon[1].img, &a.weapon[1].bits_per_pixel, &a.weapon[1].size_line, &a.weapon[1].endian);
+    a.weapon[2].pix = mlx_get_data_addr(a.weapon[2].img, &a.weapon[2].bits_per_pixel, &a.weapon[2].size_line, &a.weapon[2].endian);
+    a.weapon[3].pix = mlx_get_data_addr(a.weapon[3].img, &a.weapon[3].bits_per_pixel, &a.weapon[3].size_line, &a.weapon[3].endian);
+    a.weapon[4].pix = mlx_get_data_addr(a.weapon[4].img, &a.weapon[3].bits_per_pixel, &a.weapon[3].size_line, &a.weapon[3].endian);
 
 	a.t[0].pix = mlx_get_data_addr(a.t[0].img, &a.t[0].bits_per_pixel, &a.t[0].size_line, &a.t[0].endian);
 	a.t[1].pix = mlx_get_data_addr(a.t[1].img, &a.t[1].bits_per_pixel, &a.t[1].size_line, &a.t[1].endian);
@@ -127,9 +179,14 @@ int	main(void)
 
 	mlx_hook(a.s.mlx_win, 2, 1L << 0, key_hook, &a);
 	mlx_hook(a.s.mlx_win, 17, 0, close_window, NULL);
+
 	//mlx_mouse_hook(all.vara.s.win, mouse_hook, &all);
 	//mlx_loop_hook(all.vara.s.mlx, psy, &all);
 	//draw_screen(&a.s.img);
+
+    // a.frame = 0;
+    // mlx_loop_hook(a.s.mlx, (int (*)())weapon_animation, &a);
+
 	mlx_loop_hook(a.s.mlx, draw_screen,&a);
 	mlx_loop(a.s.mlx);
 }
