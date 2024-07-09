@@ -10,10 +10,6 @@
 
 #define screen_width 900
 #define screen_height 600
-#define tex_width 800
-#define tex_height 800
-#define map_width 24
-#define map_height 24
 
 typedef struct	s_data {
 	void	*img;

@@ -2,9 +2,14 @@
 #include <float.h>
 #include "cub3d.h"
 
-void draw_tex_columm(int column, int start, int end, int color, t_all *a,int texX, int tex_index)
+void draw_tex_columm(int column, int start, int end, t_all *a,int texX, int tex_index, t_ray *ray)
 {
-	float ratio = (float) (end - start) / (float) a->t[tex_index].height;
+	double ratio =  (float) a->t[tex_index].height / (float) (ray->line_height);
+	int offset = 0;
+	if (ray->line_height > a->s.height)
+		offset = ((double)(ray->line_height - a->s.height) / (double)ray->line_height) / 2.0 * a->t[tex_index].height;
+	
+
 	int tex_color;
 
 	int i = 0;
@@ -13,7 +18,7 @@ void draw_tex_columm(int column, int start, int end, int color, t_all *a,int tex
 		my_mlx_pixel_put(&a->s.img, column, i++, a->m.c_color & 0x00FFFFFF );
 	while (i < end)
 	{
-		pos = ((float)(i - start) / ratio);
+		pos = ((float)(i - start) * ratio) + offset;
 		pos = (int) round(pos * a->t[tex_index].size_line + texX * (float)(a->t[tex_index].bits_per_pixel / (float)8));
 		tex_color = ((int) a->t[tex_index].pix[pos] & 0x00FFFFFF );
 		my_mlx_pixel_put(&a->s.img, column, i++, tex_color);
@@ -145,13 +150,9 @@ int draw_screen(t_all *a)
 
         calculate_line_height_and_draw_points(&ray);
 
-        int tex_x = (int)(ray.wall_x * (double)tex_width);
-        if (ray.side == 0 && ray.ray_dir_x > 0) tex_x = tex_width - tex_x - 1;
-        if (ray.side == 1 && ray.ray_dir_y < 0) tex_x = tex_width - tex_x - 1;
-
-        int color = 0x000000ff;
-        if (ray.side == 1)
-            color = color / 2;
+        int tex_x = (int)(ray.wall_x * a->t[0].width);
+        if (ray.side == 0 && ray.ray_dir_x > 0) tex_x =	a->t[0].width	 - tex_x - 1;
+        if (ray.side == 1 && ray.ray_dir_y < 0) tex_x =	a->t[0].width	 - tex_x - 1;
 
         int tex_index;
         if (ray.side == 0)
@@ -169,7 +170,7 @@ int draw_screen(t_all *a)
                 tex_index = 1;  // SO
         }
 
-        draw_tex_columm(x, ray.draw_start, ray.draw_end, color, a, tex_x, tex_index);
+        draw_tex_columm(x, ray.draw_start, ray.draw_end, a, tex_x, tex_index, &ray);
 
         x++;
     }
