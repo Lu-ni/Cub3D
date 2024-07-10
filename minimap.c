@@ -17,40 +17,89 @@ void draw_square (int x, int y, int size, int color, t_all *a)
 }
 
 
-void draw_arrow(int x, int y, double dir_x, double dir_y, t_all *a)
+#include <math.h>
+
+void draw_square_rotated(int x, int y, int size, int color, t_all *a, float dir_x, float dir_y)
 {
-    int base_width = 10;  // Width of the base of the arrow
-    int height = 15;      // Height of the arrow
+    int i, j;
+    double angle;
+    double cos_angle, sin_angle;
+    int half_size = size / 2;
+    double new_x, new_y;
 
-    // Calculate the tip of the arrow based on direction
-    int tip_x = x + (int)(height * dir_x);
-    int tip_y = y + (int)(height * dir_y);
+    // Calculate the rotation angle based on direction
+    angle = atan2(dir_y, dir_x);
+    cos_angle = cos(angle);
+    sin_angle = sin(angle);
 
-    // Calculate the base corners of the arrow
-    int left_x = x + (int)(base_width / 2 * cos(atan2(dir_y, dir_x) + M_PI / 2));
-    int left_y = y + (int)(base_width / 2 * sin(atan2(dir_y, dir_x) + M_PI / 2));
+    // Iterate over each pixel in the square
+    for (j = -half_size; j < half_size; j++)
+    {
+        for (i = -half_size; i < half_size; i++)
+        {
+            // Calculate the new rotated coordinates relative to the center of the square
+            new_x = round((cos_angle * i - sin_angle * j) * 10.0) / 10.0;
+            new_y = round((sin_angle * i + cos_angle * j) * 10.0) / 10.0;
 
-    int right_x = x + (int)(base_width / 2 * cos(atan2(dir_y, dir_x) - M_PI / 2));
-    int right_y = y + (int)(base_width / 2 * sin(atan2(dir_y, dir_x) - M_PI / 2));
-
-    // Draw the arrow (as a filled triangle)
-    mlx_pixel_put(a->s.mlx, a->s.mlx_win, tip_x, tip_y, 0x00FF0000); // Tip
-    mlx_pixel_put(a->s.mlx, a->s.mlx_win, left_x, left_y, 0x00FF0000); // Left base
-    mlx_pixel_put(a->s.mlx, a->s.mlx_win, right_x, right_y, 0x00FF0000); // Right base
+            // Place the pixel at the new coordinates relative to the top-left corner (x, y)
+            my_mlx_pixel_put(&a->s.img, x + (int)round(half_size + new_x), y + (int)round(half_size + new_y), color);
+        }
+    }
 }
 
 
 
-void draw_player(double dir_x, double dir_y, int minimap_size, t_all *a)
+// Function to draw a line between two points (Bresenham's line algorithm)
+void draw_line(t_all *a, int x0, int y0, int x1, int y1, int color)
 {
-    int player_x = (int)a->p.pos_y;
-    int player_y = (int)a->p.pos_x;
+    int dx = abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
+    int dy = -abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
+    int err = dx + dy, e2;
 
-    int draw_x = minimap_size + player_x * 20;
-    int draw_y = minimap_size + player_y * 20;
+    while (1)
+    {
+        my_mlx_pixel_put(&a->s.img, x0, y0, color);
+        if (x0 == x1 && y0 == y1) break;
+        e2 = 2 * err;
+        if (e2 >= dy) { err += dy; x0 += sx; }
+        if (e2 <= dx) { err += dx; y0 += sy; }
+    }
+}
 
-    draw_square(draw_x, draw_y, 20, 0x00FF0000, a); // Player position
-    draw_arrow(draw_x + 10, draw_y + 10, dir_x, dir_y, a); // Arrow indicating direction
+void draw_triangle_rotated(int x, int y, int size, int color, t_all *a, float dir_x, float dir_y)
+{
+    double angle;
+    double cos_angle, sin_angle;
+    int half_size = size / 2;
+    double x0, y0, x1, y1, x2, y2;
+
+	int base_width = half_size / 1.5;
+
+    // Calculate the rotation angle based on direction
+    angle = atan2(dir_y, dir_x) + M_PI/2;
+
+    cos_angle = cos(angle);
+    sin_angle = sin(angle);
+
+    // Define the vertices of the triangle
+    x0 = 0; y0 = -half_size;     // Tip of the arrow
+    x1 = -base_width;
+	y1 = half_size;  // Bottom left
+    x2 = base_width;
+	y2 = half_size;   // Bottom right
+
+    // Rotate the vertices
+    double rx0 = cos_angle * x0 - sin_angle * y0;
+    double ry0 = sin_angle * x0 + cos_angle * y0;
+    double rx1 = cos_angle * x1 - sin_angle * y1;
+    double ry1 = sin_angle * x1 + cos_angle * y1;
+    double rx2 = cos_angle * x2 - sin_angle * y2;
+    double ry2 = sin_angle * x2 + cos_angle * y2;
+
+    // Draw the triangle by drawing lines between the rotated vertices
+    draw_line(a, x + (int)round(rx0), y + (int)round(ry0), x + (int)round(rx1), y + (int)round(ry1), color);
+    draw_line(a, x + (int)round(rx1), y + (int)round(ry1), x + (int)round(rx2), y + (int)round(ry2), color);
+    draw_line(a, x + (int)round(rx2), y + (int)round(ry2), x + (int)round(rx0), y + (int)round(ry0), color);
 }
 
 
@@ -58,55 +107,44 @@ void draw_player(double dir_x, double dir_y, int minimap_size, t_all *a)
 
 void draw_minimap(t_all *a)
 {
+	float precision = 0.1;
     int minimap_size = screen_height / 10;
     int size = 8;
-    int center_x = size / 2;
-    int center_y = size / 2;
+    int center = size / 2;
     int step = 20;
 
-    int player_x = (int)a->p.pos_y;
-    int player_y = (int)a->p.pos_x;
+    int player_x = (int)(a->p.pos_y );
+    int player_y = (int)(a->p.pos_x );
 
 	int color;
 
-    for (int i = -center_x; i <= center_x; i++)
+    for (int i = -center; i <= center; i++)
     {
-        for (int j = -center_y; j <= center_y; j++)
+        for (int j = -center; j <= center; j++)
         {
             int map_x = player_x + i;
             int map_y = player_y + j;
-            int draw_x = minimap_size + (center_x + i) * step;
-            int draw_y = minimap_size + (center_y + j) * step;
+            int draw_x = minimap_size + (center + i) * step;
+            int draw_y = minimap_size + (center + j) * step;
 
 			draw_square(draw_x, draw_y, step, 0x00808080, a);
-
             if (map_x >= 0 && map_x < a->m.dim.cols && map_y >= 0 && map_y < a->m.dim.rows)
             {
-                if (i == 0 && j == 0)
-                {
-                    draw_square(draw_x, draw_y, step, 0xFFFFFFFF, a);
-                    draw_square(draw_x + (step / 4), draw_y + (step / 4), step / 2, 0xFFFF0000, a);
-					// draw_player(a->p.dir_x, a->p.dir_y, minimap_size, a); // Player position
-                }
-                else
-                {
-					if (a->m.map[map_y][map_x] == 1) {
-						color = 0x00000000;
-					}
-					else if (a->m.map[map_y][map_x] == 0) {
-						color = 0x00FFFFFF;
-					}
-					else {
-						color = 0x00808080;
-					}
-                    draw_square(draw_x, draw_y, step, color, a);
-                }
+				if (a->m.map[map_y][map_x] == 1) {
+					draw_square(draw_x, draw_y, step, 0x00000000, a);
+				}
+				else if (a->m.map[map_y][map_x] == 0) {
+					draw_square(draw_x, draw_y, step, 0x00FFFFFF, a);
+				}
+				// if (i == 0 && j == 0)
             }
-            // else
-            // {
-            // }
         }
     }
+
+	int player_pos = (minimap_size + center * step) + step / 2;
+
+	draw_triangle_rotated(player_pos, player_pos, step, 0xFFFF0000, a, a->p.dir_y, a->p.dir_x);
+
 }
 
 
