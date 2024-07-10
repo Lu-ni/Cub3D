@@ -178,9 +178,23 @@ int draw_screen(t_all *a)
     draw_minimap(a);
     draw_crosshair(a);
 
-    draw_weapon(a, 0);
+    static int speed;
+    if (a->w.is_anim)
+    {
+        draw_weapon(a, a->w.frame);
+        if (speed++ % 3 == 0)
+        a->w.frame++;
+        if (a->w.frame >= 3) {
+            a->w.is_anim = 0;
+            a->w.frame = 0;
+        }
+    }
+    else
+        draw_weapon(a, 0);
+
     mlx_put_image_to_window(a->s.mlx, a->s.mlx_win, a->s.img.img, 0, 0);
 
+    // printf("dirx: %f diry: %f\n", a->p.dir_x, a->p.dir_y);
 
     return 1;
 }

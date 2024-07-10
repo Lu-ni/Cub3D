@@ -9,6 +9,10 @@
 #include "parsing.h"
 # include "hud.h"
 
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+
 #define screen_width 1500
 #define screen_height 1200
 
@@ -47,13 +51,21 @@ typedef struct s_texture {
 	int  endian;
 } t_texture;
 
+typedef struct s_weapon {
+	t_texture t[5];
+	int frame;
+	int is_anim;
+} t_weapon;
+
 typedef struct s_all {
 	t_map m;
 	t_screen s;
 	t_player p;
 	t_texture t[4];
-	t_texture weapon[5];
-	int weapon_anim;
+	t_weapon w;
+	// t_texture weapon[5];
+	int w_anim;
+
 	// int (*world_map)[map_width];
 	int **world_map;
 	int frame;
@@ -77,6 +89,7 @@ typedef struct s_ray {
 	int hit_direction;  // 0 = North, 1 = South, 2 = East, 3 = West
 } t_ray;
 
+t_map	parse_mapfile(char *mapfile, t_all *a);
 int argb(unsigned char a, unsigned char b, unsigned char c, unsigned char d);
 int		draw_screen(t_all *a);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);

@@ -18,7 +18,8 @@ int key_hook(int keycode, t_all *a)
     double moveSpeed = 0.1;
     if (keycode == KEY_SPACE)
     {
-        a->frame = 0;
+        a->w.is_anim = 1;
+        a->w.frame = 0;
         return (0);
     }
 
@@ -94,7 +95,7 @@ int weapon_animation(t_all *a)
 
     mlx_clear_window(a->s.mlx, a->s.mlx_win);
 
-    draw_weapon(a, a->frame);
+    draw_weapon(a, a->w.frame);
 
     mlx_put_image_to_window(a->s.mlx, a->s.mlx_win, a->s.img.img, 0, 0);
 
@@ -102,10 +103,10 @@ int weapon_animation(t_all *a)
     if (frame_counter >= frame_delay)
     {
         frame_counter = 0;
-        a->frame++;
-        if (a->frame >= 5)
+        a->w.frame++;
+        if (a->w.frame >= 5)
         {
-            a->frame = 0;
+            a->w.frame = 0;
         }
     }
 
@@ -117,7 +118,7 @@ int weapon_hook(int keycode, t_all *a)
 {
     if (keycode = KEY_SPACE)
     {
-        a->frame = 0;
+        a->w.frame = 0;
     }
     return 0;
 }
@@ -127,8 +128,9 @@ int	main(void)
 	t_all a;
 
 
-    a.m = parse_mapfile("maps/map.cub");
+    a.m = parse_mapfile("maps/map3.cub", &a);
 
+    printf("player pos: %f %f\n", a.p.pos_x, a.p.pos_y);
 
 	//t_screen s;
 
@@ -143,8 +145,9 @@ int	main(void)
 	a.world_map = a.m.map;
 
 
-	a.p.pos_x = 22;
-	a.p.pos_y = 12;      // x and y start position
+
+	a.p.pos_x = 2;
+	a.p.pos_y = 2;      // x and y start position
 	a.p.dir_x = -1;
 	a.p.dir_y = 0;       // initial direction vector
 	a.p.plane_x = 0;
@@ -159,23 +162,26 @@ int	main(void)
 	a.t[2].img = mlx_xpm_file_to_image(a.s.mlx, a.m.ea, &a.t[2].height, &a.t[2].width);
 	a.t[3].img = mlx_xpm_file_to_image(a.s.mlx, a.m.we, &a.t[3].height, &a.t[3].width);
 
-    a.weapon[0].img = mlx_xpm_file_to_image(a.s.mlx, "w1.xpm", &a.weapon[0].height, &a.weapon[0].width);
-    a.weapon[1].img = mlx_xpm_file_to_image(a.s.mlx, "w1.xpm", &a.weapon[1].height, &a.weapon[1].width);
-    a.weapon[2].img = mlx_xpm_file_to_image(a.s.mlx, "w1.xpm", &a.weapon[2].height, &a.weapon[2].width);
-    a.weapon[3].img = mlx_xpm_file_to_image(a.s.mlx, "w1.xpm", &a.weapon[3].height, &a.weapon[3].width);
-    a.weapon[4].img = mlx_xpm_file_to_image(a.s.mlx, "w1.xpm", &a.weapon[4].height, &a.weapon[4].width);
+    a.w.t[0].img = mlx_xpm_file_to_image(a.s.mlx, "w1.xpm", &a.w.t[0].height, &a.w.t[0].width);
+    a.w.t[1].img = mlx_xpm_file_to_image(a.s.mlx, "w2.xpm", &a.w.t[1].height, &a.w.t[1].width);
+    a.w.t[2].img = mlx_xpm_file_to_image(a.s.mlx, "w3.xpm", &a.w.t[2].height, &a.w.t[2].width);
+    a.w.t[3].img = mlx_xpm_file_to_image(a.s.mlx, "w4.xpm", &a.w.t[3].height, &a.w.t[3].width);
+    a.w.t[4].img = mlx_xpm_file_to_image(a.s.mlx, "w5.xpm", &a.w.t[4].height, &a.w.t[4].width);
 
-    a.weapon[0].pix = mlx_get_data_addr(a.weapon[0].img, &a.weapon[0].bits_per_pixel, &a.weapon[0].size_line, &a.weapon[0].endian);
-    a.weapon[1].pix = mlx_get_data_addr(a.weapon[1].img, &a.weapon[1].bits_per_pixel, &a.weapon[1].size_line, &a.weapon[1].endian);
-    a.weapon[2].pix = mlx_get_data_addr(a.weapon[2].img, &a.weapon[2].bits_per_pixel, &a.weapon[2].size_line, &a.weapon[2].endian);
-    a.weapon[3].pix = mlx_get_data_addr(a.weapon[3].img, &a.weapon[3].bits_per_pixel, &a.weapon[3].size_line, &a.weapon[3].endian);
-    a.weapon[4].pix = mlx_get_data_addr(a.weapon[4].img, &a.weapon[3].bits_per_pixel, &a.weapon[3].size_line, &a.weapon[3].endian);
+    a.w.t[0].pix = mlx_get_data_addr(a.w.t[0].img, &a.w.t[0].bits_per_pixel, &a.w.t[0].size_line, &a.w.t[0].endian);
+    a.w.t[1].pix = mlx_get_data_addr(a.w.t[1].img, &a.w.t[1].bits_per_pixel, &a.w.t[1].size_line, &a.w.t[1].endian);
+    a.w.t[2].pix = mlx_get_data_addr(a.w.t[2].img, &a.w.t[2].bits_per_pixel, &a.w.t[2].size_line, &a.w.t[2].endian);
+    a.w.t[3].pix = mlx_get_data_addr(a.w.t[3].img, &a.w.t[3].bits_per_pixel, &a.w.t[3].size_line, &a.w.t[3].endian);
+    a.w.t[4].pix = mlx_get_data_addr(a.w.t[4].img, &a.w.t[3].bits_per_pixel, &a.w.t[3].size_line, &a.w.t[3].endian);
 
 	a.t[0].pix = mlx_get_data_addr(a.t[0].img, &a.t[0].bits_per_pixel, &a.t[0].size_line, &a.t[0].endian);
 	a.t[1].pix = mlx_get_data_addr(a.t[1].img, &a.t[1].bits_per_pixel, &a.t[1].size_line, &a.t[1].endian);
 	a.t[2].pix = mlx_get_data_addr(a.t[2].img, &a.t[2].bits_per_pixel, &a.t[2].size_line, &a.t[2].endian);
 	a.t[3].pix = mlx_get_data_addr(a.t[3].img, &a.t[3].bits_per_pixel, &a.t[3].size_line, &a.t[3].endian);
 
+
+    a.w.frame = 0;
+    a.w.is_anim = 0;
 
 	mlx_hook(a.s.mlx_win, 2, 1L << 0, key_hook, &a);
 	mlx_hook(a.s.mlx_win, 17, 0, close_window, NULL);
@@ -187,6 +193,6 @@ int	main(void)
     // a.frame = 0;
     // mlx_loop_hook(a.s.mlx, (int (*)())weapon_animation, &a);
 
-	mlx_loop_hook(a.s.mlx, draw_screen,&a);
+	mlx_loop_hook(a.s.mlx, draw_screen, &a);
 	mlx_loop(a.s.mlx);
 }

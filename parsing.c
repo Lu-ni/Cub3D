@@ -189,7 +189,7 @@ int malloc_set_empty_spaces(int **map, int cols, int rows)
 	}
 }
 
-int	parse_map(int ***map, char **file, int lines_count, t_dim dim)
+int	parse_map(int ***map, char **file, int lines_count, t_dim dim, t_all *a)
 {
 	char	*num_str;
 
@@ -203,6 +203,12 @@ int	parse_map(int ***map, char **file, int lines_count, t_dim dim)
 				break ;
 			if (ft_isspace(file[dim.start + i][j]))
 				(*map)[i][j] = EMPTY_SPACE;
+			// if (file[dim.start + i][j] == 'P')
+			// {
+			// 	a->p.pos_x = j;
+			// 	a->p.pos_y = i;
+			// 	(*map)[i][j] = EMPTY_SPACE;
+			// }
 			else
 			{
 				num_str = ft_substr(&file[dim.start + i][j], 0, 1);
@@ -255,6 +261,7 @@ int	is_map_walled(int ***map, t_dim dim)
 	int	**map_cpy;
 
 	map_cpy = expand_map_for_checking(map, dim.cols, dim.rows);
+	printmap(map_cpy, dim.cols + 2, dim.rows + 2);
 	for (int i = 0; i < dim.rows + 2; i++)
 	{
 		for (int j = 0; j < dim.cols + 2; j++)
@@ -319,7 +326,7 @@ int scene_errors(t_map *m)
 
 
 
-t_map	parse_mapfile(char *mapfile)
+t_map	parse_mapfile(char *mapfile, t_all *a)
 {
 	int		fd;
 	char	**file;
@@ -357,12 +364,12 @@ t_map	parse_mapfile(char *mapfile)
 	printf("file: %s\n", file[16]);
 
 	get_map_dim(&m.dim, file, lines_count);
-	parse_map(&m.map, file, lines_count, m.dim);
+	parse_map(&m.map, file, lines_count, m.dim, a);
 
 
 	is_map_walled(&m.map, m.dim);
 
-	printmap(m.map, m.dim.cols, m.dim.rows);
+	// printmap(m.map, m.dim.cols, m.dim.rows);
 
 	return (m);
 }

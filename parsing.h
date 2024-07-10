@@ -35,7 +35,6 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
-
 // typedef struct s_map_data
 // {
 // 	int		**map;
@@ -62,7 +61,6 @@ typedef struct s_map
 }				t_map;
 
 
-t_map parse_mapfile(char *mapfile);
 void	free_map(int **map, int rows);
 
 // ERRORS
