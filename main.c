@@ -123,6 +123,14 @@ int weapon_hook(int keycode, t_all *a)
     return 0;
 }
 
+
+int mouse_move(int x, int y, t_all *a)
+{
+
+}
+
+
+
 int	main(void)
 {
 	t_all a;
@@ -186,7 +194,10 @@ int	main(void)
 	mlx_hook(a.s.mlx_win, 2, 1L << 0, key_hook, &a);
 	mlx_hook(a.s.mlx_win, 17, 0, close_window, NULL);
 
-	//mlx_mouse_hook(all.vara.s.win, mouse_hook, &all);
+    mlx_hook(a.s.mlx_win, 6, 1L<<6, mouse_move, &a);
+
+	// mlx_mouse_hook(a.s.mlx_win, mouse_hook, &a);
+
 	//mlx_loop_hook(all.vara.s.mlx, psy, &all);
 	//draw_screen(&a.s.img);
 
