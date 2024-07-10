@@ -107,8 +107,7 @@ void draw_triangle_rotated(int x, int y, int size, int color, t_all *a, float di
 
 void draw_minimap(t_all *a)
 {
-	float precision = 0.1;
-    int minimap_size = screen_height / 10;
+    int minimap_size = 10;
     int size = 8;
     int center = size / 2;
     int step = 20;
@@ -146,38 +145,6 @@ void draw_minimap(t_all *a)
 	draw_triangle_rotated(player_pos, player_pos, step, 0xFFFF0000, a, a->p.dir_y, a->p.dir_x);
 
 }
-
-
-// void draw_minimap(t_all *a)
-// {
-// 	int minimap_width = screen_width / 10;
-// 	int minimap_height = screen_height / 10;
-
-// 	int offset = minimap_width / 10;
-// 	int i = 0;
-// 	int j = 0;
-
-// 	int step = 5;
-// 	while (j < a->m.dim.rows)
-// 	{
-// 		i = 0;
-// 		while (i < a->m.dim.cols)
-// 		{
-// 			if (a->world_map[j][i] == 0)
-// 			{
-// 				draw_square(offset + step * i, offset + step * j, step, 0x00FF0000, a);
-// 			}
-// 			else if (a->world_map[j][i] == 1)
-// 			{
-// 				draw_square(offset + step * i, offset + step * j, step, 0x0000FF00, a);
-// 			}
-
-// 			i++;
-// 		}
-// 	j++;
-// 	}
-// 	draw_square(offset + step * (int)a->p.pos_y, offset + step * (int) a->p.pos_x, step, 0x00FFFF00, a);
-// }
 
 
 void draw_weapon(t_all *a, int frame)

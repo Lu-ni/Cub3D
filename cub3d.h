@@ -7,7 +7,7 @@
 #include <float.h>
 #include "keys.h"
 #include "parsing.h"
-# include "hud.h"
+#include "hud.h"
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
@@ -99,5 +99,6 @@ void	draw_minimap(t_all *a);
 // hud
 void draw_crosshair(t_all *a);
 void draw_weapon(t_all *a, int frame);
+void draw_points(t_all *a);
 
 #endif

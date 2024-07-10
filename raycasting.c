@@ -192,6 +192,8 @@ int draw_screen(t_all *a)
     else
         draw_weapon(a, 0);
 
+    draw_points(a);
+
     mlx_put_image_to_window(a->s.mlx, a->s.mlx_win, a->s.img.img, 0, 0);
 
     // printf("dirx: %f diry: %f\n", a->p.dir_x, a->p.dir_y);
