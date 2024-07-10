@@ -2,6 +2,37 @@
 #include <float.h>
 #include "cub3d.h"
 
+#define ROTATION_SENSITIVITY 0.004
+
+int mouse_move(t_all *a)
+{
+    int center_x = a->s.width / 2;
+    int center_y = a->s.height / 2;
+
+	int x;
+	int y;
+	mlx_mouse_hide();
+	mlx_mouse_get_pos(a->s.mlx_win, &x, &y);
+
+
+    // Calculate rotation angle based on mouse movement
+    double rotation_angle = - (x - center_x) * ROTATION_SENSITIVITY;
+
+    // Update player direction using rotation angle
+    double old_dir_x = a->p.dir_x;
+    a->p.dir_x = a->p.dir_x * cos(rotation_angle) - a->p.dir_y * sin(rotation_angle);
+    a->p.dir_y = old_dir_x * sin(rotation_angle) + a->p.dir_y * cos(rotation_angle);
+
+    // Optional: Rotate camera plane if you have one for FOV
+    double old_plane_x = a->p.plane_x;
+    a->p.plane_x = a->p.plane_x * cos(rotation_angle) - a->p.plane_y * sin(rotation_angle);
+    a->p.plane_y = old_plane_x * sin(rotation_angle) + a->p.plane_y * cos(rotation_angle);
+
+    mlx_mouse_move(a->s.mlx_win, center_x, center_y);
+
+    return (0);
+}
+
 void draw_tex_columm(int column, int start, int end, t_all *a,int texX, int tex_index, t_ray *ray)
 {
 	double ratio =  (float) a->t[tex_index].height / (float) (ray->line_height);
@@ -132,6 +163,9 @@ void calculate_line_height_and_draw_points(t_ray *ray)
 int draw_screen(t_all *a)
 {
     int x = 0;
+
+	mouse_move(a);
+
     while (x < screen_width)
     {
         t_ray ray;
