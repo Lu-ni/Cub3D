@@ -13,8 +13,8 @@
 #define M_PI 3.14159265358979323846
 #endif
 
-#define screen_width 1500
-#define screen_height 1200
+#define screen_width 1000
+#define screen_height 600
 
 typedef struct	s_data {
 	void	*img;

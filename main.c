@@ -10,8 +10,6 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-
-
 int key_hook(int keycode, t_all *a)
 {
     double rotSpeed = 0.05;
@@ -27,7 +25,7 @@ int key_hook(int keycode, t_all *a)
     {
         exit(0);
     }
-    else if (keycode == KEY_D)
+    if (keycode == KEY_D)
     {
         double move_x = a->p.dir_y * moveSpeed;
         double move_y = -a->p.dir_x * moveSpeed;
@@ -36,7 +34,7 @@ int key_hook(int keycode, t_all *a)
         if (a->world_map[(int)(a->p.pos_x)][(int)(a->p.pos_y + move_y)] == 0)
             a->p.pos_y += move_y;
     }
-    else if (keycode == KEY_A)
+    if (keycode == KEY_A)
     {
         double move_x = -a->p.dir_y * moveSpeed;
         double move_y = a->p.dir_x * moveSpeed;
@@ -45,21 +43,21 @@ int key_hook(int keycode, t_all *a)
         if (a->world_map[(int)(a->p.pos_x)][(int)(a->p.pos_y + move_y)] == 0)
             a->p.pos_y += move_y;
     }
-    else if (keycode == KEY_W)
+    if (keycode == KEY_W)
     {
         if (a->world_map[(int)(a->p.pos_x + a->p.dir_x * moveSpeed)][(int)(a->p.pos_y)] == 0)
             a->p.pos_x += a->p.dir_x * moveSpeed;
         if (a->world_map[(int)(a->p.pos_x)][(int)(a->p.pos_y + a->p.dir_y * moveSpeed)] == 0)
             a->p.pos_y += a->p.dir_y * moveSpeed;
     }
-    else if (keycode == KEY_S)
+    if (keycode == KEY_S)
     {
         if (a->world_map[(int)(a->p.pos_x - a->p.dir_x * moveSpeed)][(int)(a->p.pos_y)] == 0)
             a->p.pos_x -= a->p.dir_x * moveSpeed;
         if (a->world_map[(int)(a->p.pos_x)][(int)(a->p.pos_y - a->p.dir_y * moveSpeed)] == 0)
             a->p.pos_y -= a->p.dir_y * moveSpeed;
     }
-    else if (keycode == RIGHT)
+    if (keycode == RIGHT)
     {
         double oldDir_x = a->p.dir_x;
         a->p.dir_x = a->p.dir_x * cos(-rotSpeed) - a->p.dir_y * sin(-rotSpeed);
@@ -68,7 +66,7 @@ int key_hook(int keycode, t_all *a)
         a->p.plane_x = a->p.plane_x * cos(-rotSpeed) - a->p.plane_y * sin(-rotSpeed);
         a->p.plane_y = oldPlane_x * sin(-rotSpeed) + a->p.plane_y * cos(-rotSpeed);
     }
-    else if (keycode == LEFT)
+    if (keycode == LEFT)
     {
         double oldDir_x = a->p.dir_x;
         a->p.dir_x = a->p.dir_x * cos(rotSpeed) - a->p.dir_y * sin(rotSpeed);
@@ -77,11 +75,8 @@ int key_hook(int keycode, t_all *a)
         a->p.plane_x = a->p.plane_x * cos(rotSpeed) - a->p.plane_y * sin(rotSpeed);
         a->p.plane_y = oldPlane_x * sin(rotSpeed) + a->p.plane_y * cos(rotSpeed);
     }
-    else
-        printf("%i\n", keycode);
     return (0);
 }
-
 
 int close_window(t_all *a) {
     free_map(a->m.map, a->m.dim.rows);
@@ -113,57 +108,13 @@ int weapon_animation(t_all *a)
     return 0;
 }
 
-
 int weapon_hook(int keycode, t_all *a)
 {
-    if (keycode = KEY_SPACE)
+    if (keycode == KEY_SPACE)
     {
         a->w.frame = 0;
     }
     return 0;
-}
-
-#define ROTATION_SENSITIVITY 0.004
-
-int mouse_move(int x, int y, t_all *a)
-{
-    static int last_x = -1;
-    int delta_x;
-
-    int center_x = a->s.width / 2;
-    int center_y = a->s.height / 2;
-
-    static int warp;
-
-    // if (warp)
-    // {
-    //     warp = 0;
-    //     return 0;
-    // }
-
-    if (last_x == -1)
-        last_x = x;
-
-    delta_x = x - last_x;
-    last_x = x;
-
-    // Calculate rotation angle based on mouse movement
-    double rotation_angle = - delta_x * ROTATION_SENSITIVITY;
-
-    // Update player direction using rotation angle
-    double old_dir_x = a->p.dir_x;
-    a->p.dir_x = a->p.dir_x * cos(rotation_angle) - a->p.dir_y * sin(rotation_angle);
-    a->p.dir_y = old_dir_x * sin(rotation_angle) + a->p.dir_y * cos(rotation_angle);
-
-    // Optional: Rotate camera plane if you have one for FOV
-    double old_plane_x = a->p.plane_x;
-    a->p.plane_x = a->p.plane_x * cos(rotation_angle) - a->p.plane_y * sin(rotation_angle);
-    a->p.plane_y = old_plane_x * sin(rotation_angle) + a->p.plane_y * cos(rotation_angle);
-
-    // mlx_mouse_move(a->s.mlx, a->s.mlx_win, center_x, center_y);
-    // warp = 1;
-
-    return (0);
 }
 
 int mouse_hook(int keycode, int x, int y, t_all *a)
@@ -246,14 +197,6 @@ int	main(void)
 	mlx_mouse_hook(a.s.mlx_win, mouse_hook, &a);
 	mlx_hook(a.s.mlx_win, 17, 0, close_window, NULL);
 
-    mlx_hook(a.s.mlx_win, 6, 1L<<6, mouse_move, &a);
-
-
-	//mlx_loop_hook(all.vara.s.mlx, psy, &all);
-	//draw_screen(&a.s.img);
-
-    // a.frame = 0;
-    // mlx_loop_hook(a.s.mlx, (int (*)())weapon_animation, &a);
 
 	mlx_loop_hook(a.s.mlx, draw_screen, &a);
 	mlx_loop(a.s.mlx);
