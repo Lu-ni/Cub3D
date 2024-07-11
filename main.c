@@ -173,7 +173,6 @@ int mouse_hook(int keycode, int x, int y, t_all *a)
      )
     {
         // printf("piew\n");
-        printf("asd: %d\n", a->m.c_color);
         a->w.is_anim = 1;
         a->w.frame = 0;
         ;
@@ -189,7 +188,6 @@ int	main(void)
 
     a.m = parse_mapfile("maps/map3.cub", &a);
 
-    printf("player pos: %f %f\n", a.p.pos_x, a.p.pos_y);
 
 	//t_screen s;
 
@@ -203,15 +201,38 @@ int	main(void)
 	// a.world_map = worldMap;
 	a.world_map = a.m.map;
 
+    char p_dir = a.p_dir;
+
+    if (p_dir == 'S')
+    {
+        a.p.dir_x = 1;
+        a.p.dir_y = 0;
+        a.p.plane_x = 0;
+        a.p.plane_y = -0.66;
+    }
+    else if (p_dir == 'E')
+    {
+        a.p.dir_x = 0;
+        a.p.dir_y = 1;
+        a.p.plane_x = 0.66;
+        a.p.plane_y = 0;
+    }
+    else if (p_dir == 'W')
+    {
+        a.p.dir_x = 0;
+        a.p.dir_y = -1;
+        a.p.plane_x = -0.66;
+        a.p.plane_y = 0;
+    }
+    else if (p_dir == 'N')
+    {
+        a.p.dir_x = -1;
+        a.p.dir_y = 0;
+        a.p.plane_x = 0;
+        a.p.plane_y = 0.66;
+    }
 
 
-	a.p.pos_x = 2;
-	a.p.pos_y = 2;      // x and y start position
-	a.p.dir_x = -1;
-	a.p.dir_y = 0;       // initial direction vector
-	a.p.plane_x = 0;
-	a.p.plane_y = 0.66;
-	//my_mlx_pixel_put(&img, 5, 5, 0x00FF0000);
 	mlx_put_image_to_window(a.s.mlx, a.s.mlx_win, a.s.img.img, 0, 0);
 
 	//int size;

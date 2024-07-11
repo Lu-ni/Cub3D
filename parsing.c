@@ -189,10 +189,30 @@ int malloc_set_empty_spaces(int **map, int cols, int rows)
 	}
 }
 
+
+char get_pdir(t_all *a)
+{
+	for (int i =0; i < a->m.dim.rows; i++)
+	{
+		for (int j = 0; j < a->m.dim.cols; j++)
+		{
+			if (a->m.map[i][j] == 'N'
+					|| a->m.map[i][j] == 'S'
+					|| a->m.map[i][j] == 'E'
+					|| a->m.map[i][j] == 'W')
+			{
+				return a->m.map[i][j];
+			}
+
+		}
+	}
+	return (int)'N';
+}
+
+
 int	parse_map(int ***map, char **file, int lines_count, t_dim dim, t_all *a)
 {
 	char	*num_str;
-
 	*map = malloc(sizeof(int *) * (lines_count));
 	malloc_set_empty_spaces(*map, dim.cols, dim.rows);
 	for (int i = 0; i < dim.rows; i++)
@@ -203,20 +223,30 @@ int	parse_map(int ***map, char **file, int lines_count, t_dim dim, t_all *a)
 				break ;
 			if (ft_isspace(file[dim.start + i][j]))
 				(*map)[i][j] = EMPTY_SPACE;
-			// if (file[dim.start + i][j] == 'P')
-			// {
-			// 	a->p.pos_x = j;
-			// 	a->p.pos_y = i;
-			// 	(*map)[i][j] = EMPTY_SPACE;
-			// }
 			else
 			{
+				if (file[dim.start + i][j] == 'N'
+				|| file[dim.start + i][j] == 'S'
+				|| file[dim.start + i][j] == 'E'
+				|| file[dim.start + i][j] == 'W')
+				{
+					(*map)[i][j] = 0;
+					a->p_dir = file[dim.start + i][j];
+					a->p.pos_x = (float)i + 0.5;
+					a->p.pos_y = (float)j + 0.5;
+
+				}
+				else {
+
 				num_str = ft_substr(&file[dim.start + i][j], 0, 1);
 				(*map)[i][j] = ft_atoi(num_str);
 				free(num_str);
+				}
 			}
 		}
 	}
+
+	printmap(*map, dim.cols, dim.rows);
 }
 
 void	get_map_dim(t_dim *dim, char **file, int lines_count)
@@ -261,18 +291,20 @@ int	is_map_walled(int ***map, t_dim dim)
 	int	**map_cpy;
 
 	map_cpy = expand_map_for_checking(map, dim.cols, dim.rows);
-	printmap(map_cpy, dim.cols + 2, dim.rows + 2);
+	// printmap(map_cpy, dim.cols + 2, dim.rows + 2);
 	for (int i = 0; i < dim.rows + 2; i++)
 	{
 		for (int j = 0; j < dim.cols + 2; j++)
 		{
 			if (map_cpy[i][j] == 0)
 			{
-				if (map_cpy[i - 1][j] == EMPTY_SPACE || map_cpy[i
-					+ 1][j] == EMPTY_SPACE || map_cpy[i][j - 1] == EMPTY_SPACE
+				if (map_cpy[i - 1][j] == EMPTY_SPACE
+					|| map_cpy[i + 1][j] == EMPTY_SPACE
+					|| map_cpy[i][j - 1] == EMPTY_SPACE
 					|| map_cpy[i][j + 1] == EMPTY_SPACE)
 				{
-					printf("Error\n");
+					printf("Error!\n");
+					exit(1);
 					free_map(map_cpy, dim.rows + 2);
 					return (INVALID_MAP);
 				}

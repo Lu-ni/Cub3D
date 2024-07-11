@@ -196,7 +196,7 @@ int draw_screen(t_all *a)
 
     mlx_put_image_to_window(a->s.mlx, a->s.mlx_win, a->s.img.img, 0, 0);
 
-    // printf("dirx: %f diry: %f\n", a->p.dir_x, a->p.dir_y);
+    printf("planex: %f planey: %f\n", a->p.plane_x, a->p.plane_y);
 
     return 1;
 }
