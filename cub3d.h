@@ -13,6 +13,11 @@
 #define M_PI 3.14159265358979323846
 #endif
 
+#define NORTH {{1, 0}, {0, -0.66}}
+#define EAST {{0, 1}, {0.66, 0}}
+#define WEST {0, -1}, {-0.66, 0}
+#define SOUTH {-1, 0}, {0, 0.66}
+
 #define screen_width 1500
 #define screen_height 1200
 
@@ -65,10 +70,9 @@ typedef struct s_all {
 	t_weapon w;
 	// t_texture weapon[5];
 	int w_anim;
-	char		p_dir;
 
 	// int (*world_map)[map_width];
-	int **world_map;
+	// int **world_map;
 	int frame;
 } t_all;
 

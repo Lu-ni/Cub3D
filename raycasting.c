@@ -98,7 +98,7 @@ void perform_dda(t_all *a, t_ray *ray, int *map_x, int *map_y, int *hit)
             else
                 ray->hit_direction = 0; // North
         }
-        if (a->world_map[*map_x][*map_y] > 0)
+        if (a->m.map[*map_x][*map_y] > 0)
             *hit = 1;
     }
 }
