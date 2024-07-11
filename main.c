@@ -187,7 +187,11 @@ int	main(void)
 
 
     // mapfile parsing
+<<<<<<< Updated upstream
     a.m = parse_mapfile("", &a);
+=======
+    a.m = parse_mapfile(".cub", &a); //////
+>>>>>>> Stashed changes
 
     a.m.weapon_tex[0] = "w1.xpm";
     a.m.weapon_tex[1] = "w2.xpm";

@@ -76,12 +76,12 @@ void init_scene_null(t_map *m)
 {
 	for (int i = 0; i < 4; i++)
 		m->wall_tex[i] = NULL;
-	m->f_color = 0;
+	m->f_color = 0xFF000000; 
 	m->c_color = 0;
 }
 
 
-t_map	parse_mapfile(char *mapfile, t_all *a)
+t_map	parse_mapfile(char *mapfile, t_all *a) //will segfault if mapfile is NULL 
 {
 	int		fd;
 	char	**file;
@@ -101,7 +101,7 @@ t_map	parse_mapfile(char *mapfile, t_all *a)
 	fd = open(mapfile, O_RDONLY);
 
 	lines_count = count_lines(mapfile);
-	file = malloc(sizeof(char *) * (lines_count + 1));
+	file = malloc(sizeof(char *) * (lines_count + 1)); //protection
 	i = 0;
 	while (1)
 	{
@@ -114,7 +114,19 @@ t_map	parse_mapfile(char *mapfile, t_all *a)
 		i++;
 	}
 	close(fd);
-
+	if(trim whitespace)
+		return;
+	if(trim whitespace)
+		do something;
+		return
+	if(trim whitespace)
+		return;
+	if(trim whitespace)
+		return;
+	if(trim whitespace)
+		return;
+	if(trim whitespace)
+		return;
 	if (scene_errors(&m))
 		exit(1);
 
@@ -124,5 +136,5 @@ t_map	parse_mapfile(char *mapfile, t_all *a)
 	parse_map(&m.map, file, lines_count, m.dim, a);
 	is_map_walled(&m.map, m.dim);
 
-	return (m);
+	return (m); //You get t_all as parameters so you can put your struct directly in it without returning it. this give you the options to use the return for succes evalution
 }

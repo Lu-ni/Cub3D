@@ -8,7 +8,7 @@ char	*get_texture_path(char *line)
 	if (is_line_empty(line))
 		return (NULL);
 
-	texture_path = malloc(sizeof(char) * ft_strlen(line) + 1);
+	texture_path = malloc(sizeof(char) * ft_strlen(line) + 1); //protection !!!
 	while (ft_isspace(*line))
 		line++;
 	i = 0;
@@ -20,17 +20,29 @@ char	*get_texture_path(char *line)
 
 int	get_color(char *line)
 {
+	// this function has multiple problems:
+		// the split dont work for this purpose, yes you get colors but the wrong one
+		// you dont check for special caractere etc
+	// improvement :
+		// trim all space in line and then split.
+		// check correct count
+		// remove the \n in last one
+		// check if only numeric value
+		// then proceed
 	char	**colors;
 	int	new_pos;
 	int	comma_pos;
 	int color_val;
 
 	colors = ft_split(line, ',');
+	for (int i = 0; colors && colors[i]; i++)
+		printf("colors[%i]: \"%s\"\n", i, colors[i]);
 	int i = 0;
-	if (!colors[0] || !colors[1] || !colors[2])
+	if (!colors[0] || !colors[1] || !colors[2]) //this does kind of nothing shoud something like(sizeof array != 3)
 		return -1;
 
-	color_val = argb(255, ft_atoi(colors[0]), ft_atoi(colors[1]), ft_atoi(colors[2]));
+	color_val = argb(255, ft_atoi(colors[0]), ft_atoi(colors[1]), ft_atoi(colors[2])); // your atoi doesnt protect you against bad input
+	printf("color_val: %i\n",color_val);
 
 	for (int i = 0; i < 3; i++)
 		free(colors[i]);

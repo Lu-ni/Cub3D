@@ -6,7 +6,7 @@ void print_errors(char *error)
 	printf("%s\n", error);
 }
 
-int has_textures(char *mapfile)
+int has_textures(char *mapfile) // this does nothing
 {
 
 	return (true);
@@ -28,7 +28,7 @@ int mapfile_exists(char *mapfile)
 
 int is_dotcub(char *mapfile) {
 	int len = ft_strlen(mapfile);
-	if (len < 4 || ft_strncmp(mapfile + len - 4, ".cub", 4) != 0)
+	if (len < 4 || ft_strncmp(mapfile + len - 4, ".cub", 4) != 0) //
 	{
 		print_errors(ERROR_MISSING_DOTCUB);
 		return (false);
@@ -39,22 +39,16 @@ int is_dotcub(char *mapfile) {
 
 
 
-int	is_mapfile_valid(char *mapfile)
+int	is_mapfile_valid(char *mapfile) //bro
 {
-	if (!mapfile_exists(mapfile)
-		&& !is_dotcub(mapfile)
-		&& !has_textures(mapfile)
-	)
+	if (!mapfile_exists(mapfile) && !is_dotcub(mapfile) && !has_textures(mapfile))
 	{
 		return (-1);
-
 	}
-
 	// + contains_colors()
 	// + contains_map()
 	// + is_closed()
 	// + are_char_valid();
-		;
 	return (0);
 }
 
@@ -114,7 +108,6 @@ int	is_map_walled(int ***map, t_dim dim)
 
 int scene_errors(t_map *m)
 {
-
 	for (int i = 0; i < 4; i++)
 	{
 		if (!m->wall_tex[i])
@@ -123,7 +116,7 @@ int scene_errors(t_map *m)
 			return -1;
 		}
 	}
-	if (m->f_color == 0 || m->c_color == 0)
+	if (m->f_color == 0 || m->c_color == 0) // thats not working at all (transparancy & 0 could be a value)
 	{
 		print_errors(ERROR_MISSING_COLOR);
 		return -1;
@@ -132,7 +125,7 @@ int scene_errors(t_map *m)
 	int fd[4];
 
 	for (int i = 0; i < 4; i++)
-		fd[i] = open(m->wall_tex[i], O_RDONLY);
+		fd[i] = open(m->wall_tex[i], O_RDONLY);   //close all that + and yeah, not sure about the fact to open to check, and then open again to use it, could be store and then use
 
 	if (fd[0] < 0 || fd[1] < 0 || fd[2] < 0 || fd[3] < 0)
 	{

@@ -18,8 +18,8 @@
 #define WEST {0, -1}, {-0.66, 0}
 #define SOUTH {-1, 0}, {0, 0.66}
 
-#define screen_width 1500
-#define screen_height 1200
+#define screen_width 800
+#define screen_height 600
 
 typedef struct	s_data {
 	void	*img;
