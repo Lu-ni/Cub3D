@@ -187,7 +187,7 @@ int	main(void)
 
 
     // mapfile parsing
-    a.m = parse_mapfile("maps/map3.cub", &a);
+    a.m = parse_mapfile("", &a);
 
     a.m.weapon_tex[0] = "w1.xpm";
     a.m.weapon_tex[1] = "w2.xpm";
