@@ -76,8 +76,8 @@ void init_scene_null(t_map *m)
 {
 	for (int i = 0; i < 4; i++)
 		m->wall_tex[i] = NULL;
-	m->f_color = NULL;
-	m->c_color = NULL;
+	m->f_color = 0;
+	m->c_color = 0;
 }
 
 

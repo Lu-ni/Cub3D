@@ -1,4 +1,4 @@
 
 # define CROSSHAIR_LENGTH 16
 # define CROSSHAIR_SPACING 8
-
+# define ANIM_SPEED 3

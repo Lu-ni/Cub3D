@@ -90,7 +90,7 @@ int weapon_animation(t_all *a)
 
     mlx_clear_window(a->s.mlx, a->s.mlx_win);
 
-    draw_weapon(a, a->w.frame);
+    draw_weapon_frame(a, a->w.frame);
 
     mlx_put_image_to_window(a->s.mlx, a->s.mlx_win, a->s.img.img, 0, 0);
 
@@ -165,7 +165,7 @@ int mouse_hook(int keycode, int x, int y, t_all *a)
 {
     if (keycode == 1)
     {
-        a->w.is_anim = 1;
+        a->w.is_shooting = 1;
         a->w.frame = 0;
     }
     return 0;
@@ -212,7 +212,7 @@ int	main(void)
 
 
     a.w.frame = 0;
-    a.w.is_anim = 0;
+    a.w.is_shooting = 0;
 
 	mlx_hook(a.s.mlx_win, 2, 1L << 0, key_hook, &a);
 	mlx_mouse_hook(a.s.mlx_win, mouse_hook, &a);

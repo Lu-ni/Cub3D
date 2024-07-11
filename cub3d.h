@@ -59,7 +59,7 @@ typedef struct s_texture {
 typedef struct s_weapon {
 	t_texture t[5];
 	int frame;
-	int is_anim;
+	int is_shooting;
 } t_weapon;
 
 typedef struct s_all {
@@ -103,9 +103,14 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 //minimap.c
 void	draw_minimap(t_all *a);
 
+// draw.c
+void draw_square (int x, int y, int size, int color, t_all *a);
+void draw_line(t_all *a, int x0, int y0, int x1, int y1, int color);
+
+
 // hud
 void draw_crosshair(t_all *a);
-void draw_weapon(t_all *a, int frame);
+void draw_weapon_frame(t_all *a, int frame);
 void draw_points(t_all *a);
-
+void draw_weapon(t_all *a);
 #endif

@@ -59,6 +59,10 @@ fclean: clean
 
 re: fclean all
 
+libs:
+	make -C libft/
+	make -C $(MLX_DIR)
+
 .PHONY: art
 art:
 	@echo "$(CYAN)"

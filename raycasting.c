@@ -175,24 +175,13 @@ int draw_screen(t_all *a)
         x++;
     }
 
-    draw_minimap(a);
+
+    // draw hud
+    draw_weapon(a);
     draw_crosshair(a);
-
-    static int speed;
-    if (a->w.is_anim)
-    {
-        draw_weapon(a, a->w.frame);
-        if (speed++ % 3 == 0)
-        a->w.frame++;
-        if (a->w.frame >= 3) {
-            a->w.is_anim = 0;
-            a->w.frame = 0;
-        }
-    }
-    else
-        draw_weapon(a, 0);
-
+    draw_minimap(a);
     draw_points(a);
+
 
     mlx_put_image_to_window(a->s.mlx, a->s.mlx_win, a->s.img.img, 0, 0);
 
