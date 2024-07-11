@@ -98,7 +98,7 @@ void perform_dda(t_all *a, t_ray *ray, int *map_x, int *map_y, int *hit)
             else
                 ray->hit_direction = 0; // North
         }
-        if (a->world_map[*map_x][*map_y] > 0)
+        if (a->m.map[*map_x][*map_y] > 0)
             *hit = 1;
     }
 }
@@ -196,7 +196,6 @@ int draw_screen(t_all *a)
 
     mlx_put_image_to_window(a->s.mlx, a->s.mlx_win, a->s.img.img, 0, 0);
 
-    // printf("dirx: %f diry: %f\n", a->p.dir_x, a->p.dir_y);
 
     return 1;
 }

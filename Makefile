@@ -40,10 +40,10 @@ $(OBJ_DIR)/%.o: %.c $(DEPS) | $(OBJ_DIR)
 	@echo "$(YELLOW)Compiling $<...$(NO_COLOR)"
 	$(CC) $(CFLAGS) -I$(MLX_DIR) -c $< -o $@
 
-run: art clean $(OBJ_DIR) $(OBJ)
-	@echo "$(CYAN)Rebuilding without compilation flags...$(NO_COLOR)"
-	$(CC) $(OBJ) $(MLX_FLAGS) -o $(NAME)
-	@echo "$(GREEN)Running the program...$(NO_COLOR)"
+run: clean $(OBJ_DIR) $(OBJ)
+	# @echo "$(CYAN)Rebuilding without compilation flags...$(NO_COLOR)"
+	$(CC) $(OBJ) $(LIBFT) $(MLX_FLAGS) -o $(NAME)
+	# @echo "$(GREEN)Running the program...$(NO_COLOR)"
 	./$(NAME)
 
 r: all

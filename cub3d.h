@@ -13,6 +13,11 @@
 #define M_PI 3.14159265358979323846
 #endif
 
+#define NORTH {{1, 0}, {0, -0.66}}
+#define EAST {{0, 1}, {0.66, 0}}
+#define WEST {0, -1}, {-0.66, 0}
+#define SOUTH {-1, 0}, {0, 0.66}
+
 #define screen_width 1500
 #define screen_height 1200
 
@@ -67,7 +72,7 @@ typedef struct s_all {
 	int w_anim;
 
 	// int (*world_map)[map_width];
-	int **world_map;
+	// int **world_map;
 	int frame;
 } t_all;
 
@@ -90,6 +95,8 @@ typedef struct s_ray {
 } t_ray;
 
 t_map	parse_mapfile(char *mapfile, t_all *a);
+char get_pdir(t_all *a);
+
 int argb(unsigned char a, unsigned char b, unsigned char c, unsigned char d);
 int		draw_screen(t_all *a);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
