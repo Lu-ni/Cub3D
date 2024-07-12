@@ -284,11 +284,8 @@ int draw_screen(t_all *a)
     draw_crosshair(a);
     draw_minimap(a);
     draw_points(a);
-    parse_score(a->score.score, a);
-    draw_digit(a, 2, a->score.hundred);
-    draw_digit(a, 1, a->score.ten);
-    draw_digit(a, 0, a->score.unit);
 
+    draw_score(a);
 
 
     mlx_put_image_to_window(a->s.mlx, a->s.mlx_win, a->s.img.img, 0, 0);

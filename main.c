@@ -65,7 +65,7 @@ void check_and_destroy_target(t_all *a, double ray_dir_x, double ray_dir_y)
             {
                 a->m.map[map_x][map_y] = 0;
                 hit = 1;
-                a->score.score += 11;
+                a->score.score += 1;
             }
             else if (a->m.map[map_x][map_y] == 1)
             {

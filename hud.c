@@ -77,10 +77,3 @@ void draw_crosshair(t_all *a)
         my_mlx_pixel_put(&a->s.img, v_center, h_center - i, 0x00FFFFFF);
     }
 }
-
-
-
-void draw_score(t_all *a)
-{
-    
-}
