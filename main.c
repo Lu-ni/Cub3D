@@ -275,11 +275,17 @@ int	main(int ac, char **av)
         return 1;
     PL;
 
+    a.score.points = 0;
+    printf("score: %d\n", a.score.points);
+
     a.m.weapon_tex[0] = "w1.xpm";
     a.m.weapon_tex[1] = "w2.xpm";
     a.m.weapon_tex[2] = "w3.xpm";
     a.m.weapon_tex[3] = "w4.xpm";
     a.m.weapon_tex[4] = "w5.xpm";
+
+
+
 
 
 	mlx_put_image_to_window(a.s.mlx, a.s.mlx_win, a.s.img.img, 0, 0);
@@ -293,6 +299,7 @@ int	main(int ac, char **av)
     for (int i = 0; i < 5; i++)
     {
         a.w.t[i].img = mlx_xpm_file_to_image(a.s.mlx, a.m.weapon_tex[i], &a.w.t[i].height, &a.w.t[i].width);
+        a.w.t[i].height = a.w.t[i].height * 0.85;
         a.w.t[i].pix = mlx_get_data_addr(a.w.t[i].img, &a.w.t[i].bits_per_pixel, &a.w.t[i].size_line, &a.w.t[i].endian);
     }
 
