@@ -69,8 +69,8 @@ typedef struct s_all {
 	t_player p;
 	t_texture t[4];
 	t_weapon w;
-	// t_texture weapon[5];
 	int w_anim;
+	double z_buffer[screen_width];
 
 	// int (*world_map)[map_width];
 	// int **world_map;

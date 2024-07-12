@@ -20,7 +20,7 @@ int set_player_pos_and_dir(int dir, t_all *a, int x, int y)
 
 int is_valid_map_char(char c)
 {
-	char *valid_chars = " 01NSEW\n";
+	char *valid_chars = " 012NSEW\n";
 
 	if (!ft_strchr(valid_chars, c))
 	{

@@ -10,7 +10,81 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
+void check_and_destroy_target(t_all *a, double ray_dir_x, double ray_dir_y)
+{
+    double pos_x = a->p.pos_x;
+    double pos_y = a->p.pos_y;
 
+    int map_x = (int)pos_x;
+    int map_y = (int)pos_y;
+
+    double delta_dist_x = fabs(1 / ray_dir_x);
+    double delta_dist_y = fabs(1 / ray_dir_y);
+
+    int step_x, step_y;
+    double side_dist_x, side_dist_y;
+
+    if (ray_dir_x < 0)
+    {
+        step_x = -1;
+        side_dist_x = (pos_x - map_x) * delta_dist_x;
+    }
+    else
+    {
+        step_x = 1;
+        side_dist_x = (map_x + 1.0 - pos_x) * delta_dist_x;
+    }
+    if (ray_dir_y < 0)
+    {
+        step_y = -1;
+        side_dist_y = (pos_y - map_y) * delta_dist_y;
+    }
+    else
+    {
+        step_y = 1;
+        side_dist_y = (map_y + 1.0 - pos_y) * delta_dist_y;
+    }
+
+    int hit = 0;
+    while (hit == 0)
+    {
+        if (side_dist_x < side_dist_y)
+        {
+            side_dist_x += delta_dist_x;
+            map_x += step_x;
+        }
+        else
+        {
+            side_dist_y += delta_dist_y;
+            map_y += step_y;
+        }
+
+        if (map_x >= 0 && map_x < a->m.dim.cols && map_y >= 0 && map_y < a->m.dim.rows)
+        {
+            if (a->m.map[map_x][map_y] > 1)
+            {
+                a->m.map[map_x][map_y] = 0;
+                hit = 1;
+            }
+            else if (a->m.map[map_x][map_y] == 1)
+            {
+                hit = 1;
+            }
+        }
+        else
+        {
+            hit = 1;
+        }
+    }
+}
+
+void shoot(t_all *a)
+{
+    double ray_dir_x = a->p.dir_x;
+    double ray_dir_y = a->p.dir_y;
+
+    check_and_destroy_target(a, ray_dir_x, ray_dir_y);
+}
 
 int key_hook(int keycode, t_all *a)
 {
@@ -35,32 +109,32 @@ int key_hook(int keycode, t_all *a)
     {
         double move_x = a->p.dir_y * moveSpeed;
         double move_y = -a->p.dir_x * moveSpeed;
-        if (a->m.map[(int)(a->p.pos_x + move_x)][(int)(a->p.pos_y)] == 0)
+        if (a->m.map[(int)(a->p.pos_x + move_x)][(int)(a->p.pos_y)] != 1)
             a->p.pos_x += move_x;
-        if (a->m.map[(int)(a->p.pos_x)][(int)(a->p.pos_y + move_y)] == 0)
+        if (a->m.map[(int)(a->p.pos_x)][(int)(a->p.pos_y + move_y)] != 1)
             a->p.pos_y += move_y;
     }
     else if (keycode == KEY_A)
     {
         double move_x = -a->p.dir_y * moveSpeed;
         double move_y = a->p.dir_x * moveSpeed;
-        if (a->m.map[(int)(a->p.pos_x + move_x)][(int)(a->p.pos_y)] == 0)
+        if (a->m.map[(int)(a->p.pos_x + move_x)][(int)(a->p.pos_y)] != 1)
             a->p.pos_x += move_x;
-        if (a->m.map[(int)(a->p.pos_x)][(int)(a->p.pos_y + move_y)] == 0)
+        if (a->m.map[(int)(a->p.pos_x)][(int)(a->p.pos_y + move_y)] != 1)
             a->p.pos_y += move_y;
     }
     else if (keycode == KEY_W)
     {
-        if (a->m.map[(int)(a->p.pos_x + a->p.dir_x * moveSpeed)][(int)(a->p.pos_y)] == 0)
+        if (a->m.map[(int)(a->p.pos_x + a->p.dir_x * moveSpeed)][(int)(a->p.pos_y)] != 1)
             a->p.pos_x += a->p.dir_x * moveSpeed;
-        if (a->m.map[(int)(a->p.pos_x)][(int)(a->p.pos_y + a->p.dir_y * moveSpeed)] == 0)
+        if (a->m.map[(int)(a->p.pos_x)][(int)(a->p.pos_y + a->p.dir_y * moveSpeed)] != 1)
             a->p.pos_y += a->p.dir_y * moveSpeed;
     }
     else if (keycode == KEY_S)
     {
-        if (a->m.map[(int)(a->p.pos_x - a->p.dir_x * moveSpeed)][(int)(a->p.pos_y)] == 0)
+        if (a->m.map[(int)(a->p.pos_x - a->p.dir_x * moveSpeed)][(int)(a->p.pos_y)] != 1)
             a->p.pos_x -= a->p.dir_x * moveSpeed;
-        if (a->m.map[(int)(a->p.pos_x)][(int)(a->p.pos_y - a->p.dir_y * moveSpeed)] == 0)
+        if (a->m.map[(int)(a->p.pos_x)][(int)(a->p.pos_y - a->p.dir_y * moveSpeed)] != 1)
             a->p.pos_y -= a->p.dir_y * moveSpeed;
     }
     else if (keycode == RIGHT)
@@ -174,6 +248,7 @@ int mouse_hook(int keycode, int x, int y, t_all *a)
 {
     if (keycode == 1)
     {
+		shoot(a);
         a->w.is_shooting = 1;
         a->w.frame = 0;
     }
