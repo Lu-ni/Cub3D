@@ -78,3 +78,9 @@ void draw_crosshair(t_all *a)
     }
 }
 
+
+
+void draw_score(t_all *a)
+{
+    
+}

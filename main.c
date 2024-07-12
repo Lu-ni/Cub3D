@@ -65,6 +65,7 @@ void check_and_destroy_target(t_all *a, double ray_dir_x, double ray_dir_y)
             {
                 a->m.map[map_x][map_y] = 0;
                 hit = 1;
+                a->score.score += 11;
             }
             else if (a->m.map[map_x][map_y] == 1)
             {
@@ -256,6 +257,20 @@ int mouse_hook(int keycode, int x, int y, t_all *a)
 }
 
 
+int init_score_img(t_all *a)
+{
+    char *dir = "numbers/";
+
+    for (int i = 0; i < 10; i++)
+    {
+        char *nbr = ft_itoa(i);
+        char *path = ft_strjoin(dir, nbr);
+        char *xpm_path = ft_strjoin(path, ".xpm");
+        a->score.t[i].img = mlx_xpm_file_to_image(a->s.mlx, xpm_path, &a->score.t[i].height, &a->score.t[i].width);
+        a->score.t[i].pix = mlx_get_data_addr(a->score.t[i].img, &a->score.t[i].bits_per_pixel, &a->score.t[i].size_line, &a->score.t[i].endian);
+    }
+}
+
 
 int	main(int ac, char **av)
 {
@@ -275,8 +290,10 @@ int	main(int ac, char **av)
         return 1;
     PL;
 
-    a.score.points = 0;
-    printf("score: %d\n", a.score.points);
+    a.score.score = 0;
+    printf("score: %d\n", a.score.score);
+
+    parse_score(0, &a);
 
     a.m.weapon_tex[0] = "w1.xpm";
     a.m.weapon_tex[1] = "w2.xpm";
@@ -285,10 +302,12 @@ int	main(int ac, char **av)
     a.m.weapon_tex[4] = "w5.xpm";
 
 
-
-
-
 	mlx_put_image_to_window(a.s.mlx, a.s.mlx_win, a.s.img.img, 0, 0);
+
+
+    init_score_img(&a);
+
+
 
     for (int i = 0; i < 4; i++)
     {

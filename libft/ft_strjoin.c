@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 19:14:17 by lferro            #+#    #+#             */
-/*   Updated: 2024/02/11 11:53:22 by lferro           ###   ########.fr       */
+/*   Updated: 2024/07/12 17:21:18 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,28 +19,21 @@
  * @param s2
  * @return char*
  */
-char	*ft_strjoin(const char *s1, const char *s2)
-{
-	char	*res;
-	size_t	i;
-	size_t	j;
-	size_t	totlen;
 
-	i = 0;
-	j = 0;
-	totlen = ft_strlen(s1) + ft_strlen(s2);
-	res = palloc(totlen + 1, sizeof(char));
-	if (res == NULL)
+char	*ft_strjoin(char *s1, char const *s2)
+{
+	size_t	s1_len = ft_strlen(s1);
+	size_t	s2_len = ft_strlen(s2);
+	char	*join = malloc((s1_len + s2_len + 1));
+
+	if (!s1 || !s2)
 		return (NULL);
-	while (s1[i])
-	{
-		res[i] = s1[i];
-		i++;
-	}
-	while (s2[j])
-		res[i++] = s2[j++];
-	res[i] = 0;
-	return (res);
+	if (!join)
+		return (NULL);
+	ft_strcpy(join, s1);
+	ft_strcpy((join + s1_len), s2);
+	free(s1);
+	return (join);
 }
 
 /**
