@@ -36,18 +36,25 @@ void draw_weapon_frame(t_all *a, int frame)
     int img_w = a->w.t[frame].width;
     int img_h = a->w.t[frame].height;
 
+    float scale = 3;
 
-    int offset_x = screen_width - img_w -100;
-    int offset_y = screen_height - img_h;
+    int scaled_w = img_w * scale;
+    int scaled_h = img_h * scale;
+
+    int offset_x = -198;
+    int offset_y = 100;
 
     int pix_color;
-    for (int x = 0; x < img_w; x++)
+    for (int x = 0; x < scaled_h; x++)
     {
-        for (int y = 0; y < img_h; y++)
+        for (int y = 0; y < scaled_w; y++)
         {
-            int i = y * a->w.t[frame].size_line + x * (a->w.t[frame].bits_per_pixel / 8);
+            int srx_x = x / scale;
+            int src_y = y / scale;
+
+            int i = src_y * a->w.t[frame].size_line + srx_x * (a->w.t[frame].bits_per_pixel / 8);
             pix_color = *(int *)(a->w.t[frame].pix + i) & 0x00FFFFFF;
-            if (pix_color != 0)
+            if (pix_color != 0x00000000)
             {
                 my_mlx_pixel_put(&a->s.img, offset_x + x, offset_y + y, pix_color);
             }

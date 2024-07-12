@@ -295,11 +295,11 @@ int	main(int ac, char **av)
 
     parse_score(0, &a);
 
-    a.m.weapon_tex[0] = "w1.xpm";
-    a.m.weapon_tex[1] = "w2.xpm";
-    a.m.weapon_tex[2] = "w3.xpm";
-    a.m.weapon_tex[3] = "w4.xpm";
-    a.m.weapon_tex[4] = "w5.xpm";
+    a.m.weapon_tex[0] = "weapon/1.xpm";
+    a.m.weapon_tex[1] = "weapon/2.xpm";
+    a.m.weapon_tex[2] = "weapon/3.xpm";
+    a.m.weapon_tex[3] = "weapon/4.xpm";
+    a.m.weapon_tex[4] = "weapon/5.xpm";
 
 
 	mlx_put_image_to_window(a.s.mlx, a.s.mlx_win, a.s.img.img, 0, 0);

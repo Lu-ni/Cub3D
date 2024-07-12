@@ -44,7 +44,7 @@ void draw_digit(t_all *a, int pos_x, int digit)
             pix_color = *(int *)(a->score.t[digit].pix + i) & 0x00FFFFFF;
             if (pix_color != 0x00FFFFFF)
             {
-                my_mlx_pixel_put(&a->s.img, offset_x + x, offset_y + y, pix_color);
+                my_mlx_pixel_put(&a->s.img, offset_x + x, offset_y + y, 0xFFFFFFFF);
             }
         }
     }
