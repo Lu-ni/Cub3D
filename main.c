@@ -90,6 +90,7 @@ int key_hook(int keycode, t_all *a)
 {
     double rotSpeed = 0.05;
     double moveSpeed = 0.1;
+	int correction = 2;
 
 
     if (keycode == KEY_Z)
@@ -109,32 +110,32 @@ int key_hook(int keycode, t_all *a)
     {
         double move_x = a->p.dir_y * moveSpeed;
         double move_y = -a->p.dir_x * moveSpeed;
-        if (a->m.map[(int)(a->p.pos_x + move_x)][(int)(a->p.pos_y)] != 1)
+        if (a->m.map[(int)(a->p.pos_x + correction*move_x)][(int)(a->p.pos_y)] != 1)
             a->p.pos_x += move_x;
-        if (a->m.map[(int)(a->p.pos_x)][(int)(a->p.pos_y + move_y)] != 1)
+        if (a->m.map[(int)(a->p.pos_x)][(int)(a->p.pos_y + correction * move_y)] != 1)
             a->p.pos_y += move_y;
     }
     else if (keycode == KEY_A)
     {
         double move_x = -a->p.dir_y * moveSpeed;
         double move_y = a->p.dir_x * moveSpeed;
-        if (a->m.map[(int)(a->p.pos_x + move_x)][(int)(a->p.pos_y)] != 1)
+        if (a->m.map[(int)(a->p.pos_x + correction * move_x)][(int)(a->p.pos_y)] != 1)
             a->p.pos_x += move_x;
-        if (a->m.map[(int)(a->p.pos_x)][(int)(a->p.pos_y + move_y)] != 1)
+        if (a->m.map[(int)(a->p.pos_x)][(int)(a->p.pos_y + correction * move_y)] != 1)
             a->p.pos_y += move_y;
     }
     else if (keycode == KEY_W)
     {
-        if (a->m.map[(int)(a->p.pos_x + a->p.dir_x * moveSpeed)][(int)(a->p.pos_y)] != 1)
+        if (a->m.map[(int)(a->p.pos_x + correction * a->p.dir_x * moveSpeed)][(int)(a->p.pos_y)] != 1)
             a->p.pos_x += a->p.dir_x * moveSpeed;
-        if (a->m.map[(int)(a->p.pos_x)][(int)(a->p.pos_y + a->p.dir_y * moveSpeed)] != 1)
+        if (a->m.map[(int)(a->p.pos_x)][(int)(a->p.pos_y + correction * a->p.dir_y * moveSpeed)] != 1)
             a->p.pos_y += a->p.dir_y * moveSpeed;
     }
     else if (keycode == KEY_S)
     {
-        if (a->m.map[(int)(a->p.pos_x - a->p.dir_x * moveSpeed)][(int)(a->p.pos_y)] != 1)
+        if (a->m.map[(int)(a->p.pos_x - correction * a->p.dir_x * moveSpeed)][(int)(a->p.pos_y)] != 1)
             a->p.pos_x -= a->p.dir_x * moveSpeed;
-        if (a->m.map[(int)(a->p.pos_x)][(int)(a->p.pos_y - a->p.dir_y * moveSpeed)] != 1)
+        if (a->m.map[(int)(a->p.pos_x)][(int)(a->p.pos_y - correction * a->p.dir_y * moveSpeed)] != 1)
             a->p.pos_y -= a->p.dir_y * moveSpeed;
     }
     else if (keycode == RIGHT)
