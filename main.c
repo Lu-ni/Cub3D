@@ -273,6 +273,7 @@ int	main(int ac, char **av)
     printf("av1: %s\n", av[1]);
     if (parse_mapfile(ac, av[1], &a))
         return 1;
+    PL;
 
     a.m.weapon_tex[0] = "w1.xpm";
     a.m.weapon_tex[1] = "w2.xpm";

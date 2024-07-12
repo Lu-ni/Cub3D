@@ -94,16 +94,15 @@ int	is_map_walled(int ***map, t_dim dim)
 					|| map_cpy[i][j - 1] == EMPTY_SPACE
 					|| map_cpy[i][j + 1] == EMPTY_SPACE)
 				{
-					printf("Error!\n");
-					exit(1);
+					print_errors(ERROR_MAP_NOT_CLOSED);
 					free_map(map_cpy, dim.rows + 2);
-					return (INVALID_MAP);
+					return (-1);
 				}
 			}
 		}
 	}
 	free_map(map_cpy, dim.rows + 2);
-	return (VALID_MAP);
+	return (0);
 }
 
 
