@@ -18,8 +18,8 @@
 #define WEST {0, -1}, {-0.66, 0}
 #define SOUTH {-1, 0}, {0, 0.66}
 
-#define screen_width 1500
-#define screen_height 1200
+#define screen_width 1400
+#define screen_height 800
 
 typedef struct	s_data {
 	void	*img;
@@ -68,8 +68,8 @@ typedef struct s_all {
 	t_player p;
 	t_texture t[4];
 	t_weapon w;
-	// t_texture weapon[5];
 	int w_anim;
+	double z_buffer[screen_width];
 
 	// int (*world_map)[map_width];
 	// int **world_map;
