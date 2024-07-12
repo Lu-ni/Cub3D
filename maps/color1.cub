@@ -3,7 +3,7 @@ SO teapot.xpm
 WE wall.xpm
 EA teapot.xpm
 
-F 400,200,10
+F
 C 40,100,10
 
 11111111111

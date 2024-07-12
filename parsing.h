@@ -18,6 +18,15 @@
 # define ERROR_MALLOC_FAILED (char *)"malloc failed"
 # define ERROR_NO_MAP (char *)"no map in mapfile"
 # define ERROR_MAP_TOO_SMALL (char *)"map is too small"
+# define ERROR_INVALID_MAP_CHAR (char *)"invalid characters in map"
+# define ERROR_MAP_NOT_CLOSED (char *)"map is not surrounded by walls"
+
+
+# define MALLOC_FAILED 9
+
+
+
+
 
 # define TEXTURE_NBR 4
 # define COLOR_NBR 2
@@ -66,8 +75,6 @@ typedef struct s_map
 
 	int			c_color;
 	int			f_color;
-
-	int 		p_direction;
 
 	t_dim		dim;
 	int			**map;

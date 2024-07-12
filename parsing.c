@@ -20,9 +20,14 @@ int set_player_pos_and_dir(int dir, t_all *a, int x, int y)
 
 int is_valid_map_char(char c)
 {
-	if (c == ' ' || c == '1' || c == '0' || c == 'N' || c == 'S' || c == 'W' || c == 'E')
-		return true;
-	return false;
+	char *valid_chars = " 01NSEW\n";
+
+	if (!ft_strchr(valid_chars, c))
+	{
+		print_errors(ERROR_INVALID_MAP_CHAR);
+		return false;
+	}
+	return true;
 }
 
 int	parse_map(int ***map, char **file, int lines_count, t_dim dim, t_all *a)
@@ -34,8 +39,12 @@ int	parse_map(int ***map, char **file, int lines_count, t_dim dim, t_all *a)
 
 	*map = malloc(sizeof(int *) * (lines_count));
 	if (!*map)
+	{
+		PL;
 		return -1;
+	}
 	malloc_set_empty_spaces(*map, dim.cols, dim.rows);
+	PL;
 	for (int i = 0; i < dim.rows; i++)
 	{
 		for (int j = 0; j < dim.cols; j++)
@@ -105,14 +114,44 @@ void	free_map(int **map, int rows)
 
 
 
-void init_scene_null(t_map *m)
+int init_scene(t_map *m, int ac)
 {
+	if (ac != 2)
+	{
+		print_errors(ERROR_WRONG_NUMBER_OF_ARG);
+		return -1;
+	}
+	ft_strlcpy(m->directions, "SEWN", 5);
+
 	for (int i = 0; i < 4; i++)
 		m->wall_tex[i] = NULL;
 	m->f_color = 0;
 	m->c_color = 0;
+	return 0;
 }
 
+
+int open_file(char *file, int *fd)
+{
+	*fd = open(file, O_RDONLY);
+	if (*fd < 0)
+	{
+		print_errors(ERROR_MAPFILE_DOES_NOT_EXIST);
+		return -1;
+	}
+	return 0;
+}
+
+void free_char_array(char **arr)
+{
+	int i = 0;
+	while (arr[i])
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
+}
 
 int	parse_mapfile(int ac, char* mapfile, t_all *a)
 {
@@ -121,35 +160,16 @@ int	parse_mapfile(int ac, char* mapfile, t_all *a)
 	int		lines_count;
 	int		i;
 
-	if (ac != 2)
-	{
-		print_errors(ERROR_WRONG_NUMBER_OF_ARG);
+	if (init_scene(&a->m, ac)
+		|| open_file(mapfile, &fd)
+		|| !is_mapfile_valid(mapfile, fd))
 		return -1;
-	}
-	a->m.p_direction = 0;
-	ft_strlcpy(a->m.directions, "SEWN", 5);
-
-	init_scene_null(&a->m);
-
-
-	fd = open(mapfile, O_RDONLY);
-	if (fd < 0)
-	{
-		print_errors(ERROR_MAPFILE_DOES_NOT_EXIST);
-		return -1;
-	}
-
-	if (!is_mapfile_valid(mapfile, fd))
-		exit(1);
 
 	lines_count = count_lines(mapfile);
 
 	file = malloc(sizeof(char *) * (lines_count + 1));
 	if (!file)
-	{
-		print_errors(ERROR_MALLOC_FAILED);
-		exit(1);
-	}
+		exit(MALLOC_FAILED);
 	i = 0;
 	while (1)
 	{
@@ -163,17 +183,13 @@ int	parse_mapfile(int ac, char* mapfile, t_all *a)
 	close(fd);
 	file[i] = 0;
 
-	if (scene_errors(&a->m))
+	if (scene_errors(&a->m)
+		|| get_map_dim(&a->m.dim, file, lines_count)
+		|| parse_map(&a->m.map, file, lines_count, a->m.dim, a)
+		|| is_map_walled(&a->m.map, a->m.dim))
 		return -1;
 
-	if (get_map_dim(&a->m.dim, file, lines_count))
-		return -1;
-	if (parse_map(&a->m.map, file, lines_count, a->m.dim, a))
-		return -1;
-
-
-
-	is_map_walled(&a->m.map, a->m.dim);
+	free_char_array(file);
 
 	return (0);
 }
