@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:14:58 by lferro            #+#    #+#             */
-/*   Updated: 2024/02/13 17:59:16 by lferro           ###   ########.fr       */
+/*   Updated: 2024/07/12 01:52:05 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ char	*ft_substr(const char *s, unsigned int start, size_t len)
 		return (ft_strdup(""));
 	if (len > ft_strlen(s))
 		len = ft_strlen(s) - start;
-	res = palloc(len + 1, sizeof(char));
-	if (res == 0)
-		return (0);
+	res = malloc(len + 1 * sizeof(char));
+	if (!res)
+		return (NULL);
 	while (i < start && *s)
 		i++;
 	while (i >= start && i < len + start)

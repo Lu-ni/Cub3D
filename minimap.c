@@ -39,10 +39,13 @@ void draw_triangle_rotated(int x, int y, int size, int color, t_all *a, float di
 
 void draw_minimap(t_all *a)
 {
-    int pos_offset = 10;
-    int size = 30;
+    int pos_offset = 8;
+
+
+    int size = 32 / a->m.zoom; // 16
     int center = size / 2;
-    int step = 8;
+    int step = 8 * a->m.zoom + 1; // 16
+
 
     int player_x = (int)(a->p.pos_y );
     int player_y = (int)(a->p.pos_x );

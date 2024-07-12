@@ -17,12 +17,24 @@ int set_player_pos_and_dir(int dir, t_all *a, int x, int y)
 
 }
 
+
+int is_valid_map_char(char c)
+{
+	if (c == ' ' || c == '1' || c == '0' || c == 'N' || c == 'S' || c == 'W' || c == 'E')
+		return true;
+	return false;
+}
+
 int	parse_map(int ***map, char **file, int lines_count, t_dim dim, t_all *a)
 {
 	char	*num_str;
 
+	a->p.pos_x = -1;
+	a->p.pos_y = -1;
 
 	*map = malloc(sizeof(int *) * (lines_count));
+	if (!*map)
+		return -1;
 	malloc_set_empty_spaces(*map, dim.cols, dim.rows);
 	for (int i = 0; i < dim.rows; i++)
 	{
@@ -30,6 +42,9 @@ int	parse_map(int ***map, char **file, int lines_count, t_dim dim, t_all *a)
 		{
 			if (file[dim.start + i][j] == '\0')
 				break ;
+
+			if (!is_valid_map_char(file[dim.start + i][j]))
+				return -1;
 			if (ft_isspace(file[dim.start + i][j]))
 				(*map)[i][j] = EMPTY_SPACE;
 			else
@@ -50,17 +65,35 @@ int	parse_map(int ***map, char **file, int lines_count, t_dim dim, t_all *a)
 			}
 		}
 	}
+	if (a->p.pos_x == -1 || a->p.pos_y == -1)
+	{
+		print_errors(ERROR_NO_PLAYER);
+		return -1;
+	}
 	return 0;
 }
 
-void	get_map_dim(t_dim *dim, char **file, int lines_count)
+int	get_map_dim(t_dim *dim, char **file, int lines_count)
 {
 	while (is_line_empty(file[lines_count - 1]))
 		lines_count--;
 
 	dim->start = get_map_start(file, lines_count);
+	if (dim->start == -1)
+	{
+		print_errors(ERROR_NO_MAP);
+		return -1;
+	}
 	dim->cols = get_longest_map_line(file, lines_count, dim->start) - 1;
 	dim->rows = lines_count - dim->start;
+
+	if (dim->cols < 3 || dim->rows < 3)
+	{
+		print_errors(ERROR_MAP_TOO_SMALL);
+		return -1;
+	}
+
+	return 0;
 }
 
 void	free_map(int **map, int rows)
@@ -81,48 +114,66 @@ void init_scene_null(t_map *m)
 }
 
 
-t_map	parse_mapfile(char *mapfile, t_all *a)
+int	parse_mapfile(int ac, char* mapfile, t_all *a)
 {
 	int		fd;
 	char	**file;
 	int		lines_count;
 	int		i;
-	t_map	m;
 
+	if (ac != 2)
+	{
+		print_errors(ERROR_WRONG_NUMBER_OF_ARG);
+		return -1;
+	}
+	a->m.p_direction = 0;
 	ft_strlcpy(a->m.directions, "SEWN", 5);
 
-	init_scene_null(&m);
+	init_scene_null(&a->m);
 
-
-	a->m.p_direction = 0;
-	if (is_mapfile_valid(mapfile))
-		exit(1);
 
 	fd = open(mapfile, O_RDONLY);
+	if (fd < 0)
+	{
+		print_errors(ERROR_MAPFILE_DOES_NOT_EXIST);
+		return -1;
+	}
+
+	if (!is_mapfile_valid(mapfile, fd))
+		exit(1);
 
 	lines_count = count_lines(mapfile);
+
 	file = malloc(sizeof(char *) * (lines_count + 1));
+	if (!file)
+	{
+		print_errors(ERROR_MALLOC_FAILED);
+		exit(1);
+	}
 	i = 0;
 	while (1)
 	{
 		file[i] = get_next_line(fd);
 		if (!file[i])
 			break ;
-		// if (!is_line_empty(file[i]))
-		get_scene_infos(file[i], &m);
-		// free(file[i]);
+		if (get_scene_infos(file[i], &a->m))
+			return -1;
 		i++;
 	}
 	close(fd);
-
-	if (scene_errors(&m))
-		exit(1);
-
 	file[i] = 0;
 
-	get_map_dim(&m.dim, file, lines_count);
-	parse_map(&m.map, file, lines_count, m.dim, a);
-	is_map_walled(&m.map, m.dim);
+	if (scene_errors(&a->m))
+		return -1;
 
-	return (m);
+	if (get_map_dim(&a->m.dim, file, lines_count))
+		return -1;
+	if (parse_map(&a->m.map, file, lines_count, a->m.dim, a))
+		return -1;
+
+
+
+	is_map_walled(&a->m.map, a->m.dim);
+
+	return (0);
 }

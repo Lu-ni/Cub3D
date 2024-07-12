@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 10:18:59 by lferro            #+#    #+#             */
-/*   Updated: 2024/02/22 09:07:53 by lferro           ###   ########.fr       */
+/*   Updated: 2024/07/12 01:32:52 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	ft_atoi(const char *nptr)
 		k = k * 10 + nptr[j++] - 48;
 	return (k * i);
 }
+
 
 long	ft_atol(const char *nptr)
 {

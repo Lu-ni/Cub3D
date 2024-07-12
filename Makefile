@@ -44,7 +44,7 @@ run: clean $(OBJ_DIR) $(OBJ)
 	# @echo "$(CYAN)Rebuilding without compilation flags...$(NO_COLOR)"
 	$(CC) $(OBJ) $(LIBFT) $(MLX_FLAGS) -o $(NAME)
 	# @echo "$(GREEN)Running the program...$(NO_COLOR)"
-	./$(NAME)
+	./$(NAME) $(MAP)
 
 r: all
 	./$(NAME)

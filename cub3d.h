@@ -94,7 +94,7 @@ typedef struct s_ray {
 	int hit_direction;  // 0 = North, 1 = South, 2 = East, 3 = West
 } t_ray;
 
-t_map	parse_mapfile(char *mapfile, t_all *a);
+int	parse_mapfile(int ac, char *mapfile, t_all *a);
 char get_pdir(t_all *a);
 
 int argb(unsigned char a, unsigned char b, unsigned char c, unsigned char d);

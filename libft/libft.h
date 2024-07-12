@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 13:57:25 by lferro            #+#    #+#             */
-/*   Updated: 2024/07/05 17:30:29 by lferro           ###   ########.fr       */
+/*   Updated: 2024/07/12 00:13:41 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include "gnl/get_next_line.h"
 
 char	*ft_strndup(const char *s, size_t n);
-void	*palloc(int size, int elem_size);
+void	*palloc(int size);
 char	*wordmaker(char const *s, int start, int end);
 size_t	wordcounter(char const *s, char c);
 char	*ft_strjoin_safe(const char *s1, const char *s2);

@@ -18,7 +18,16 @@ int key_hook(int keycode, t_all *a)
     double moveSpeed = 0.1;
 
 
-    if (keycode == KEY_ESC)
+    if (keycode == KEY_Z)
+    {
+        printf("%d\n", a->m.zoom);
+        if (a->m.zoom < 4)
+            a->m.zoom++;
+        else
+            a->m.zoom = 1;
+
+    }
+    else if (keycode == KEY_ESC)
     {
         exit(0);
     }
@@ -173,7 +182,7 @@ int mouse_hook(int keycode, int x, int y, t_all *a)
 
 
 
-int	main(void)
+int	main(int ac, char **av)
 {
 	t_all a;
 
@@ -185,9 +194,10 @@ int	main(void)
 	a.s.img.img = mlx_new_image(a.s.mlx, screen_width, screen_height);
 	a.s.img.addr = mlx_get_data_addr(a.s.img.img, &a.s.img.bits_per_pixel, &a.s.img.line_length, &a.s.img.endian);
 
-
     // mapfile parsing
-    a.m = parse_mapfile("maps/map3.cub", &a);
+    printf("av1: %s\n", av[1]);
+    if (parse_mapfile(ac, av[1], &a))
+        return 1;
 
     a.m.weapon_tex[0] = "w1.xpm";
     a.m.weapon_tex[1] = "w2.xpm";
@@ -210,7 +220,7 @@ int	main(void)
         a.w.t[i].pix = mlx_get_data_addr(a.w.t[i].img, &a.w.t[i].bits_per_pixel, &a.w.t[i].size_line, &a.w.t[i].endian);
     }
 
-
+    a.m.zoom = 1;
     a.w.frame = 0;
     a.w.is_shooting = 0;
 

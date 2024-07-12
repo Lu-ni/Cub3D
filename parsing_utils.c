@@ -14,13 +14,13 @@ int	is_line_empty(char *line)
 }
 
 
-int	count_lines(char *filename)
+int	count_lines(char *mapfile)
 {
-	int		fd;
 	int		count;
 	char	*line;
 
-	fd = open(filename, O_RDONLY);
+	int fd = open(mapfile, O_RDONLY);
+
 	count = 0;
 	while (1)
 	{
@@ -106,6 +106,8 @@ int malloc_set_empty_spaces(int **map, int cols, int rows)
 	for (int i = 0; i < rows; i++)
 	{
 		map[i] = malloc(sizeof(int) * cols);
+		if (!map[i])
+			return (-1);
 		for (int j = 0; j < cols; j++)
 			map[i][j] = EMPTY_SPACE;
 	}
