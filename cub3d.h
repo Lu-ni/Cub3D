@@ -63,6 +63,10 @@ typedef struct s_weapon {
 	int is_shooting;
 } t_weapon;
 
+typedef struct s_score {
+	int points;
+} t_score;
+
 typedef struct s_all {
 	t_map m;
 	t_screen s;
@@ -71,6 +75,8 @@ typedef struct s_all {
 	t_weapon w;
 	int w_anim;
 	double z_buffer[screen_width];
+
+	t_score score;
 
 	// int (*world_map)[map_width];
 	// int **world_map;
