@@ -86,6 +86,10 @@ void shoot(t_all *a)
     check_and_destroy_target(a, ray_dir_x, ray_dir_y);
 }
 
+double calculate_fov(int degrees)
+{
+	return tan((degrees * M_PI / 180) / 2);
+}
 int key_hook(int keycode, t_all *a)
 {
     double rotSpeed = 0.05;
@@ -156,6 +160,16 @@ int key_hook(int keycode, t_all *a)
         a->p.plane_x = a->p.plane_x * cos(rotSpeed) - a->p.plane_y * sin(rotSpeed);
         a->p.plane_y = oldPlane_x * sin(rotSpeed) + a->p.plane_y * cos(rotSpeed);
     }
+	else if (keycode == 48)
+	{
+		a->s.correction = 1;
+		a->s.fov = calculate_fov(60);
+	}
+	else if (keycode == 57)
+	{
+		a->s.correction = 3;
+		a->s.fov = calculate_fov(60) / a->s.correction;
+	}
     else
         printf("%i\n", keycode);
     return (0);
@@ -257,7 +271,6 @@ int mouse_hook(int keycode, int x, int y, t_all *a)
 }
 
 
-
 int	main(int ac, char **av)
 {
 	t_all a;
@@ -269,6 +282,8 @@ int	main(int ac, char **av)
 	a.s.mlx_win = mlx_new_window(a.s.mlx, screen_width, screen_height, "Cub42D");
 	a.s.img.img = mlx_new_image(a.s.mlx, screen_width, screen_height);
 	a.s.img.addr = mlx_get_data_addr(a.s.img.img, &a.s.img.bits_per_pixel, &a.s.img.line_length, &a.s.img.endian);
+	a.s.fov= calculate_fov(60);
+	a.s.correction = 1;
 
     // mapfile parsing
     printf("av1: %s\n", av[1]);
