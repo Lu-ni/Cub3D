@@ -36,6 +36,8 @@ typedef struct s_screen {
 	int width;
 	int	height;
 	t_data img;
+	double fov;
+	int correction;
 } t_screen;
 
 typedef struct s_player {
