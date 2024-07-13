@@ -13,41 +13,120 @@ void draw_points(t_all *a)
 }
 
 
+void draw_sniper(t_all *a)
+{
+    int radius = 250;
+    int color = 0x00000000;
+    int x0 = screen_width / 2;
+    int y0 = screen_height / 2;
+
+
+    int x = radius - 1;
+    int y = 0;
+    int dx = 1;
+    int dy = 1;
+    int err = dx - (radius << 1);
+
+    for (int i = 0; i < screen_width; i++)
+    {
+        for (int j = 0; j < screen_height; j++)
+        {
+            if (!((i - x0) * (i - x0) + (j - y0) * (j - y0) <= radius * radius))
+                my_mlx_pixel_put(&a->s.img, i, j, color);
+            // else
+            // my_mlx_pixel_put(&a->s.img, i, j, 0x000000);
+        }
+    }
+
+
+
+    while (x >= y)
+    {
+        //&a->s.img, offset_x + x, offset_y + y, pix_color
+        my_mlx_pixel_put(&a->s.img, x0 + x, y0 + y, color);
+        my_mlx_pixel_put(&a->s.img, x0 + y, y0 + x, color);
+        my_mlx_pixel_put(&a->s.img, x0 - y, y0 + x, color);
+        my_mlx_pixel_put(&a->s.img, x0 - x, y0 + y, color);
+        my_mlx_pixel_put(&a->s.img, x0 - x, y0 - y, color);
+        my_mlx_pixel_put(&a->s.img, x0 - y, y0 - x, color);
+        my_mlx_pixel_put(&a->s.img, x0 + y, y0 - x, color);
+        my_mlx_pixel_put(&a->s.img, x0 + x, y0 - y, color);
+
+        if (err <= 0)
+        {
+            y++;
+            err += dy;
+            dy += 2;
+        }
+        if (err > 0)
+        {
+            x--;
+            dx += 2;
+            err += dx - (radius << 1);
+        }
+    }
+}
+
 void draw_weapon(t_all *a)
 {
 	static int speed;
-    if (a->w.is_shooting)
+
+    // ak
+    printf("selected weapon: %d\n", a->w.selected_weapon);
+    if (a->w.selected_weapon == 0)
     {
-        draw_weapon_frame(a, a->w.frame);
-        if (speed++ % ANIM_SPEED == 0)
-        a->w.frame++;
-        if (a->w.frame >= 3)
-		{
-            a->w.is_shooting = 0;
-            a->w.frame = 0;
-        }
+        draw_weapon_frame(a, 0, a->w.ak);
+        // if (a->w.is_shooting)
+        // {
+        //     draw_weapon_frame(a, a->w.frame, a->w.ak);
+        //     if (speed++ % ANIM_SPEED == 0)
+        //     a->w.frame++;
+        //     if (a->w.frame >= 3)
+        //     {
+        //         a->w.is_shooting = 0;
+        //         a->w.frame = 0;
+        //     }
+        // }
+        // else
+        //     draw_weapon_frame(a, 0, a->w.ak);
     }
-    else
-        draw_weapon_frame(a, 0);
+    else if (a->w.selected_weapon == 1)
+    {
+        if (a->w.is_aiming)
+            draw_sniper(a);
+        else
+            draw_weapon_frame(a, 0, a->w.awp);
+    }
+
+
+
 }
 
-void draw_weapon_frame(t_all *a, int frame)
+void draw_weapon_frame(t_all *a, int frame, t_texture *weapon)
 {
-    int img_w = a->w.t[frame].width;
-    int img_h = a->w.t[frame].height;
 
+    int img_w = weapon[frame].width;
+    int img_h = weapon[frame].height;
 
-    int offset_x = screen_width - img_w -100;
-    int offset_y = screen_height - img_h;
+    float scale = 3;
+
+    int scaled_w = img_w * scale;
+    int scaled_h = img_h * scale;
+
+    int offset_x = -198;
+    int offset_y = 100;
 
     int pix_color;
-    for (int x = 0; x < img_w; x++)
+    for (int x = 0; x < scaled_h; x++)
     {
-        for (int y = 0; y < img_h; y++)
+        for (int y = 0; y < scaled_w; y++)
         {
-            int i = y * a->w.t[frame].size_line + x * (a->w.t[frame].bits_per_pixel / 8);
-            pix_color = *(int *)(a->w.t[frame].pix + i) & 0x00FFFFFF;
-            if (pix_color != 0)
+            int srx_x = x / scale;
+            int src_y = y / scale;
+
+            int i = src_y * weapon[frame].size_line + srx_x * (weapon[frame].bits_per_pixel / 8);
+            pix_color = *(int *)(weapon[frame].pix + i) & 0x00FFFFFF;
+            if (pix_color != 0x00000000)
             {
                 my_mlx_pixel_put(&a->s.img, offset_x + x, offset_y + y, pix_color);
             }
@@ -77,4 +156,3 @@ void draw_crosshair(t_all *a)
         my_mlx_pixel_put(&a->s.img, v_center, h_center - i, 0x00FFFFFF);
     }
 }
-

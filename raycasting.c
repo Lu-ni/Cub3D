@@ -290,6 +290,9 @@ int draw_screen(t_all *a)
     draw_minimap(a);
     draw_points(a);
 
+    draw_score(a);
+
+
     mlx_put_image_to_window(a->s.mlx, a->s.mlx_win, a->s.img.img, 0, 0);
 
     return 1;

@@ -65,6 +65,7 @@ void check_and_destroy_target(t_all *a, double ray_dir_x, double ray_dir_y)
             {
                 a->m.map[map_x][map_y] = 0;
                 hit = 1;
+                a->score.score += 1;
             }
             else if (a->m.map[map_x][map_y] == 1)
             {
@@ -96,8 +97,17 @@ int key_hook(int keycode, t_all *a)
     double moveSpeed = 0.1;
 	int correction = 2;
 
+    if (keycode == KEY_1)
+    {
+        a->w.selected_weapon = 0;
+    }
+    else if (keycode == KEY_2)
+    {
+        a->w.selected_weapon = 1;
+    }
 
-    if (keycode == KEY_Z)
+
+    else if (keycode == KEY_Z)
     {
         printf("%d\n", a->m.zoom);
         if (a->m.zoom < 4)
@@ -181,30 +191,6 @@ int close_window(t_all *a) {
     exit(0);
 }
 
-int weapon_animation(t_all *a)
-{
-    static int frame_counter = 0;
-    static int frame_delay = 10; // Adjust this value to control animation speed
-
-    mlx_clear_window(a->s.mlx, a->s.mlx_win);
-
-    draw_weapon_frame(a, a->w.frame);
-
-    mlx_put_image_to_window(a->s.mlx, a->s.mlx_win, a->s.img.img, 0, 0);
-
-    frame_counter++;
-    if (frame_counter >= frame_delay)
-    {
-        frame_counter = 0;
-        a->w.frame++;
-        if (a->w.frame >= 5)
-        {
-            a->w.frame = 0;
-        }
-    }
-
-    return 0;
-}
 
 
 int weapon_hook(int keycode, t_all *a)
@@ -261,13 +247,35 @@ int mouse_move(int x, int y, t_all *a)
 
 int mouse_hook(int keycode, int x, int y, t_all *a)
 {
-    if (keycode == 1)
+    if (keycode == 3)
+    {
+        if (a->w.is_aiming)
+            a->w.is_aiming = 0;
+        else
+            a->w.is_aiming = 1;
+    }
+    else if (keycode == 1)
     {
 		shoot(a);
         a->w.is_shooting = 1;
         a->w.frame = 0;
     }
     return 0;
+}
+
+
+int init_score_img(t_all *a)
+{
+    char *dir = "numbers/";
+
+    for (int i = 0; i < 10; i++)
+    {
+        char *nbr = ft_itoa(i);
+        char *path = ft_strjoin(dir, nbr);
+        char *xpm_path = ft_strjoin(path, ".xpm");
+        a->score.t[i].img = mlx_xpm_file_to_image(a->s.mlx, xpm_path, &a->score.t[i].height, &a->score.t[i].width);
+        a->score.t[i].pix = mlx_get_data_addr(a->score.t[i].img, &a->score.t[i].bits_per_pixel, &a->score.t[i].size_line, &a->score.t[i].endian);
+    }
 }
 
 
@@ -291,20 +299,30 @@ int	main(int ac, char **av)
         return 1;
     PL;
 
-    a.score.points = 0;
-    printf("score: %d\n", a.score.points);
+    a.score.score = 0;
+    printf("score: %d\n", a.score.score);
 
-    a.m.weapon_tex[0] = "w1.xpm";
-    a.m.weapon_tex[1] = "w2.xpm";
-    a.m.weapon_tex[2] = "w3.xpm";
-    a.m.weapon_tex[3] = "w4.xpm";
-    a.m.weapon_tex[4] = "w5.xpm";
+    parse_score(0, &a);
 
+    a.w.selected_weapon = 0;
 
-
+    a.m.ak_tex[0] = "weapon/1.xpm";
+    a.m.ak_tex[1] = "weapon/2.xpm";
+    a.m.ak_tex[2] = "weapon/3.xpm";
+    a.m.ak_tex[3] = "weapon/4.xpm";
+    a.m.ak_tex[4] = "weapon/5.xpm";
+    a.m.awp_tex[0] = "weapon/awp1.xpm";
 
 
 	mlx_put_image_to_window(a.s.mlx, a.s.mlx_win, a.s.img.img, 0, 0);
+
+
+    init_score_img(&a);
+
+    a.w.awp[0].img = mlx_xpm_file_to_image(a.s.mlx, a.m.awp_tex[0], &a.w.awp[0].height, &a.w.awp[0].width);
+    a.w.awp[0].height = a.w.awp[0].height;
+    a.w.awp[0].pix = mlx_get_data_addr(a.w.awp[0].img, &a.w.awp[0].bits_per_pixel, &a.w.awp[0].size_line, &a.w.awp[0].endian);
+
 
     for (int i = 0; i < 4; i++)
     {
@@ -314,9 +332,9 @@ int	main(int ac, char **av)
 
     for (int i = 0; i < 5; i++)
     {
-        a.w.t[i].img = mlx_xpm_file_to_image(a.s.mlx, a.m.weapon_tex[i], &a.w.t[i].height, &a.w.t[i].width);
-        a.w.t[i].height = a.w.t[i].height * 0.85;
-        a.w.t[i].pix = mlx_get_data_addr(a.w.t[i].img, &a.w.t[i].bits_per_pixel, &a.w.t[i].size_line, &a.w.t[i].endian);
+        a.w.ak[i].img = mlx_xpm_file_to_image(a.s.mlx, a.m.ak_tex[i], &a.w.ak[i].height, &a.w.ak[i].width);
+        a.w.ak[i].height = a.w.ak[i].height;
+        a.w.ak[i].pix = mlx_get_data_addr(a.w.ak[i].img, &a.w.ak[i].bits_per_pixel, &a.w.ak[i].size_line, &a.w.ak[i].endian);
     }
 
     a.m.zoom = 1;

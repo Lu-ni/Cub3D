@@ -71,7 +71,8 @@ typedef struct s_map
 	// char		*ea;
 
 	char		*wall_tex[5];
-	char 		*weapon_tex[5];
+	char 		*ak_tex[5];
+	char		*awp_tex[5];
 
 	int			c_color;
 	int			f_color;
