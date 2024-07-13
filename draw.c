@@ -18,6 +18,40 @@ void draw_square (int x, int y, int size, int color, t_all *a)
 
 
 
+void draw_digit(t_all *a, int pos_x, int digit)
+{
+    int img_w = a->score.t[digit].width;
+    int img_h = a->score.t[digit].height;
+    float scale = 0.5;
+    // Calculate scaled dimensions
+    int scaled_w = img_w * scale;
+    int scaled_h = img_h * scale;
+
+    // Calculate the offsets
+    int offset_x = screen_width - scaled_w - 20 - pos_x * (scaled_w - 80 * scale);
+    int offset_y = 20;
+
+    int pix_color;
+    for (int x = 0; x < scaled_h; x++)
+    {
+        for (int y = 0; y < scaled_w; y++)
+        {
+            // Calculate the corresponding source pixel coordinates
+            int src_x = x / scale;
+            int src_y = y / scale;
+
+            int i = src_y * a->score.t[digit].size_line + src_x * (a->score.t[digit].bits_per_pixel / 8);
+            pix_color = *(int *)(a->score.t[digit].pix + i) & 0x00FFFFFF;
+            if (pix_color != 0x00FFFFFF)
+            {
+                my_mlx_pixel_put(&a->s.img, offset_x + x, offset_y + y, 0xFFFFFFFF);
+            }
+        }
+    }
+}
+
+
+
 
 
 // Function to draw a line between two points (Bresenham's line algorithm)

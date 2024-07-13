@@ -58,13 +58,25 @@ typedef struct s_texture {
 } t_texture;
 
 typedef struct s_weapon {
-	t_texture t[5];
+
+	int selected_weapon;
+
+	t_texture ak[5];
+	t_texture awp[1];
+
 	int frame;
 	int is_shooting;
+	int is_aiming;
 } t_weapon;
 
 typedef struct s_score {
-	int points;
+	int score;
+
+	int unit;
+	int ten;
+	int hundred;
+
+	t_texture t[10];
 } t_score;
 
 typedef struct s_all {
@@ -117,7 +129,12 @@ void draw_line(t_all *a, int x0, int y0, int x1, int y1, int color);
 
 // hud
 void draw_crosshair(t_all *a);
-void draw_weapon_frame(t_all *a, int frame);
+void draw_weapon_frame(t_all *a, int frame, t_texture *weapon);
 void draw_points(t_all *a);
 void draw_weapon(t_all *a);
+void draw_digit(t_all *a, int pos_x, int digit);
+void draw_score(t_all *a);
+//score
+int parse_score(int score, t_all *a);
+
 #endif
