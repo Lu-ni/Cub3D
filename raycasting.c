@@ -5,7 +5,7 @@
 void draw_tex_columm(int column, int start, int end, t_all *a, int texX, int tex_index, t_ray *ray)
 {
 	///
-	//ray->line_height * a->s.correction;	
+	//ray->line_height * a->s.correction;
 	///
     double ratio = (float)a->t[tex_index].height / (float)(ray->line_height);
     int offset = 0;
@@ -286,7 +286,6 @@ int draw_screen(t_all *a)
 
     // Draw HUD
     draw_weapon(a);
-    draw_crosshair(a);
     draw_minimap(a);
     draw_points(a);
 

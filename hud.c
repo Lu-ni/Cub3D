@@ -13,9 +13,30 @@ void draw_points(t_all *a)
 }
 
 
-void draw_sniper(t_all *a)
+void draw_sniper_cross(t_all *a)
 {
-    int radius = 250;
+    int v_center = screen_width / 2;
+    int h_center = screen_height / 2;
+
+    for (int i = - screen_height / 3; i < screen_height / 3; i++)
+    {
+        for (int offset = -1; offset <= 1; offset += 2)
+        {
+            my_mlx_pixel_put(&a->s.img, v_center + i, h_center + offset, 0);
+            my_mlx_pixel_put(&a->s.img, v_center - i, h_center + offset, 0);
+            my_mlx_pixel_put(&a->s.img, v_center + offset, h_center + i, 0);
+            my_mlx_pixel_put(&a->s.img, v_center + offset, h_center - i, 0);
+        }
+        my_mlx_pixel_put(&a->s.img, v_center + i, h_center, 0x00);
+        my_mlx_pixel_put(&a->s.img, v_center - i, h_center, 0x00);
+        my_mlx_pixel_put(&a->s.img, v_center, h_center + i, 0x00);
+        my_mlx_pixel_put(&a->s.img, v_center, h_center - i, 0x00);
+    }
+}
+
+void draw_sniper_scope(t_all *a)
+{
+    int radius = screen_height / 3;
     int color = 0x00000000;
     int x0 = screen_width / 2;
     int y0 = screen_height / 2;
@@ -38,7 +59,7 @@ void draw_sniper(t_all *a)
         }
     }
 
-
+    draw_sniper_cross(a);
 
     while (x >= y)
     {
@@ -67,35 +88,58 @@ void draw_sniper(t_all *a)
     }
 }
 
+
+
+// void draw_weapon(t_all *a)
+// {
+
+// }
+
+
 void draw_weapon(t_all *a)
 {
 	static int speed;
 
     // ak
-    printf("selected weapon: %d\n", a->w.selected_weapon);
+    // printf("selected weapon: %d\n", a->w.selected_weapon);
     if (a->w.selected_weapon == 0)
     {
-        draw_weapon_frame(a, 0, a->w.ak);
-        // if (a->w.is_shooting)
-        // {
-        //     draw_weapon_frame(a, a->w.frame, a->w.ak);
-        //     if (speed++ % ANIM_SPEED == 0)
-        //     a->w.frame++;
-        //     if (a->w.frame >= 3)
-        //     {
-        //         a->w.is_shooting = 0;
-        //         a->w.frame = 0;
-        //     }
-        // }
-        // else
-        //     draw_weapon_frame(a, 0, a->w.ak);
+        // draw_weapon_frame(a, 0, a->w.ak);
+        draw_crosshair(a);
+
+        if (a->w.is_shooting)
+        {
+            draw_weapon_frame(a, a->w.frame, a->w.ak);
+            if (speed++ % ANIM_SPEED == 0)
+            a->w.frame++;
+            if (a->w.frame >= 3)
+            {
+                a->w.is_shooting = 0;
+                a->w.frame = 0;
+            }
+        }
+        else
+            draw_weapon_frame(a, 0, a->w.ak);
     }
+
+
     else if (a->w.selected_weapon == 1)
     {
         if (a->w.is_aiming)
-            draw_sniper(a);
+        {
+            a->s.correction = 5;
+            a->s.fov = calculate_fov(60) / a->s.correction;
+            draw_sniper_scope(a);
+
+        }
         else
+        {
+            a->s.correction = 1;
+            a->s.fov = calculate_fov(60) / a->s.correction;
             draw_weapon_frame(a, 0, a->w.awp);
+            draw_crosshair(a);
+
+        }
     }
 
 
@@ -113,7 +157,7 @@ void draw_weapon_frame(t_all *a, int frame, t_texture *weapon)
     int scaled_w = img_w * scale;
     int scaled_h = img_h * scale;
 
-    int offset_x = -198;
+    int offset_x =  scaled_w;
     int offset_y = 100;
 
     int pix_color;

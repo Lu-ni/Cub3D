@@ -91,6 +91,7 @@ double calculate_fov(int degrees)
 {
 	return tan((degrees * M_PI / 180) / 2);
 }
+
 int key_hook(int keycode, t_all *a)
 {
     double rotSpeed = 0.05;

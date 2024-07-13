@@ -139,4 +139,6 @@ void draw_score(t_all *a);
 //score
 int parse_score(int score, t_all *a);
 
+double calculate_fov(int degrees);
+
 #endif
