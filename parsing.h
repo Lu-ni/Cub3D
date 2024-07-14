@@ -21,12 +21,7 @@
 # define ERROR_INVALID_MAP_CHAR (char *)"invalid characters in map"
 # define ERROR_MAP_NOT_CLOSED (char *)"map is not surrounded by walls"
 
-
 # define MALLOC_FAILED 9
-
-
-
-
 
 # define TEXTURE_NBR 4
 # define COLOR_NBR 2
@@ -58,10 +53,10 @@
 
 typedef struct s_dim
 {
-	int			cols;	// number of columns
-	int			rows; // number of rows
-	int			start; // start row number
-} 				t_dim;
+	int cols;  // number of columns
+	int rows;  // number of rows
+	int start; // start row number
+}			t_dim;
 
 typedef struct s_map
 {
@@ -70,46 +65,48 @@ typedef struct s_map
 	// char		*we;
 	// char		*ea;
 
-	char		*wall_tex[5];
-	char 		*ak_tex[5];
-	char		*awp_tex[5];
+	char	*wall_tex[5];
+	
+	char	*ak_tex[5];
+	char	*awp_tex[5];
 
-	int			c_color;
-	int			f_color;
+	int		c_color;
+	int		f_color;
 
-	t_dim		dim;
-	int			**map;
+	t_dim	dim;
+	int		**map;
 
-	char 		directions[4];
+	char	directions[4];
 
-	int			zoom;
-}				t_map;
+	int		zoom;
+}			t_map;
 
-
-void	free_map(int **map, int rows);
+void		free_map(int **map, int rows);
 
 // ERRORS
-void print_errors(char *error);
-int is_dotcub(char *mapfile);
-int mapfile_exists(int fd);
-int has_textures(char *mapfile);
-int	is_line_empty(char *line);
-int	is_mapfile_valid(char *mapfile, int fd);
-char	*get_texture_path(char *line);
-int	get_color(char *line, int *color);
-int	get_scene_infos(char *line, t_map *map);
-int malloc_set_empty_spaces(int **map, int cols, int rows);
-void	printmap(int **map, int cols, int rows);
-int	get_longest_map_line(char **file, int lines_count, int map_start);
-int	ft_isnewline(char c);
-int	get_map_start(char **file, int lines_count);
-int	is_line_map(char *line);
-int	count_lines(char *mapfile);
-int	is_map_walled(int ***map, t_dim dim);
-int scene_errors(t_map *m);
+int			print_errors(char *error);
+int			is_dotcub(char *mapfile);
+int			mapfile_exists(int fd);
+int			has_textures(char *mapfile);
+int			is_line_empty(char *line);
+int			is_mapfile_valid(char *mapfile, int fd);
+char		*get_texture_path(char *line);
+int			get_color(char *line, int *color);
+int			get_scene_infos(char *line, t_map *map);
+int			malloc_set_empty_spaces(int **map, int cols, int rows);
+void		printmap(int **map, int cols, int rows);
+int			get_longest_map_line(char **file, int lines_count, int map_start);
+int			ft_isnewline(char c);
+int			get_map_start(char **file, int lines_count);
+int			is_line_map(char *line);
+int			count_lines(char *mapfile);
+int			is_map_walled(int ***map, t_dim dim);
+int			scene_errors(t_map *m);
 
-char *remove_spaces(char *line);
-
+char		*remove_spaces(char *line);
+void		free_char_array(char **arr);
+void		*ft_palloc(size_t size);
+int			open_file(char *file, int *fd);
 
 # define PL printf("line: %d file: %s\n", __LINE__, __FILE__);
 

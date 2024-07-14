@@ -1,80 +1,130 @@
 #include "cub3d.h"
 
-void draw_triangle_rotated(int x, int y, int size, int color, t_all *a, float dir_x, float dir_y)
+void	calculate_rotated_vertices(t_triangle_params *params, t_vertex *v0,
+		t_vertex *v1, t_vertex *v2)
 {
-    double angle;
-    double cos_angle, sin_angle;
-    int half_size = size / 2;
-    double x0, y0, x1, y1, x2, y2;
+	t_verticles_info	i;
 
-	int base_width = half_size / 1.5;
-
-    // Calculate the rotation angle based on direction
-    angle = atan2(dir_y, dir_x) + M_PI/2;
-
-    cos_angle = cos(angle);
-    sin_angle = sin(angle);
-
-    // Define the vertices of the triangle
-    x0 = 0; y0 = -half_size;     // Tip of the arrow
-    x1 = -base_width;
-	y1 = half_size;  // Bottom left
-    x2 = base_width;
-	y2 = half_size;   // Bottom right
-
-    // Rotate the vertices
-    double rx0 = cos_angle * x0 - sin_angle * y0;
-    double ry0 = sin_angle * x0 + cos_angle * y0;
-    double rx1 = cos_angle * x1 - sin_angle * y1;
-    double ry1 = sin_angle * x1 + cos_angle * y1;
-    double rx2 = cos_angle * x2 - sin_angle * y2;
-    double ry2 = sin_angle * x2 + cos_angle * y2;
-
-    // Draw the triangle by drawing lines between the rotated vertices
-    draw_line(a, x + (int)round(rx0), y + (int)round(ry0), x + (int)round(rx1), y + (int)round(ry1), color);
-    draw_line(a, x + (int)round(rx1), y + (int)round(ry1), x + (int)round(rx2), y + (int)round(ry2), color);
-    draw_line(a, x + (int)round(rx2), y + (int)round(ry2), x + (int)round(rx0), y + (int)round(ry0), color);
+	i.angle = -atan2(params->dir_y, params->dir_x) + M_PI;
+	i.cos_angle = cos(i.angle);
+	i.sin_angle = sin(i.angle);
+	i.half_size = params->size / 2;
+	i.base_width = i.half_size / 1.5;
+	i.x0 = 0;
+	i.y0 = -i.half_size;
+	i.x1 = -i.base_width;
+	i.y1 = i.half_size;
+	i.x2 = i.base_width;
+	i.y2 = i.half_size;
+	v0->x = i.cos_angle * i.x0 - i.sin_angle * i.y0;
+	v0->y = i.sin_angle * i.x0 + i.cos_angle * i.y0;
+	v1->x = i.cos_angle * i.x1 - i.sin_angle * i.y1;
+	v1->y = i.sin_angle * i.x1 + i.cos_angle * i.y1;
+	v2->x = i.cos_angle * i.x2 - i.sin_angle * i.y2;
+	v2->y = i.sin_angle * i.x2 + i.cos_angle * i.y2;
 }
 
-
-void draw_minimap(t_all *a)
+void	draw_triangle(t_all *a, t_triangle_params *params, t_vertex *v)
 {
-    int pos_offset = 8;
+	t_line_params	line_params;
 
-
-    int size = 32 / a->m.zoom; // 16
-    int center = size / 2;
-    int step = 8 * a->m.zoom + 1; // 16
-
-
-    int player_x = (int)(a->p.pos_y );
-    int player_y = (int)(a->p.pos_x );
-
-	int color;
-
-    for (int i = -center; i <= center; i++)
-    {
-        for (int j = -center; j <= center; j++)
-        {
-            int map_x = player_x + i;
-            int map_y = player_y + j;
-            int draw_x = pos_offset + (center + i) * step;
-            int draw_y = pos_offset + (center + j) * step;
-
-			draw_square(draw_x, draw_y, step, 0x00808080, a);
-            if (map_x >= 0 && map_x < a->m.dim.cols && map_y >= 0 && map_y < a->m.dim.rows)
-            {
-				if (a->m.map[map_y][map_x] == 1) {
-					draw_square(draw_x, draw_y, step, 0x00000000, a);
-				}
-				else if (a->m.map[map_y][map_x] == 0) {
-					draw_square(draw_x, draw_y, step, 0x00FFFFFF, a);
-				}
-            }
-        }
-    }
-	int player_pos = (pos_offset + center * step) + step / 2;
-	draw_triangle_rotated(player_pos, player_pos, step  * 1.5, 0xFFFF0000, a, a->p.dir_y, a->p.dir_x);
-
+	line_params = (t_line_params){params->x + (int)round(v[0].x), params->y
+		+ (int)round(v[0].y), params->x + (int)round(v[1].x), params->y
+		+ (int)round(v[1].y), params->color};
+	draw_line(a, &line_params);
+	line_params = (t_line_params){params->x + (int)round(v[1].x), params->y
+		+ (int)round(v[1].y), params->x + (int)round(v[2].x), params->y
+		+ (int)round(v[2].y), params->color};
+	draw_line(a, &line_params);
+	line_params = (t_line_params){params->x + (int)round(v[2].x), params->y
+		+ (int)round(v[2].y), params->x + (int)round(v[0].x), params->y
+		+ (int)round(v[0].y), params->color};
+	draw_line(a, &line_params);
 }
 
+void	draw_triangle_rotated(t_all *a, t_triangle_params *params)
+{
+	t_vertex	v[3];
+
+	calculate_rotated_vertices(params, &v[0], &v[1], &v[2]);
+	draw_triangle(a, params, v);
+}
+
+void	draw_minimap_square(t_all *a, t_minimap_params *params, int i, int j)
+{
+	int	map_x;
+	int	map_y;
+	int	draw_x;
+	int	draw_y;
+
+	map_x = params->player_x + i;
+	map_y = params->player_y + j;
+	draw_x = params->pos_offset + (params->center + i) * params->step;
+	draw_y = params->pos_offset + (params->center + j) * params->step;
+	draw_square(draw_x, draw_y, params->step, 0x00808080, a);
+	if (map_x >= 0 && map_x < a->m.dim.cols && map_y >= 0
+		&& map_y < a->m.dim.rows)
+	{
+		if (a->m.map[map_y][map_x] == 1)
+		{
+			draw_square(draw_x, draw_y, params->step, 0x00000000, a);
+		}
+		else if (a->m.map[map_y][map_x] == 0)
+		{
+			draw_square(draw_x, draw_y, params->step, 0x00FFFFFF, a);
+		}
+	}
+}
+
+void	initialize_minimap_params(t_all *a, t_minimap_params *params)
+{
+	params->pos_offset = 8;
+	params->size = 32 / a->m.zoom;
+	params->center = params->size / 2;
+	params->step = 8 * a->m.zoom + 1;
+	params->player_x = (int)(a->p.pos_y);
+	params->player_y = (int)(a->p.pos_x);
+}
+
+void	draw_minimap_grid(t_all *a, t_minimap_params *params)
+{
+	int	i;
+	int	j;
+
+	i = -params->center;
+	while (i <= params->center)
+	{
+		j = -params->center;
+		while (j <= params->center)
+		{
+			draw_minimap_square(a, params, i, j);
+			j++;
+		}
+		i++;
+	}
+}
+
+void	draw_player_on_minimap(t_all *a, t_minimap_params *params)
+{
+	int					player_pos;
+	t_triangle_params	triangle_params;
+
+	player_pos = (params->pos_offset + params->center * params->step)
+		+ params->step / 2;
+	triangle_params.x = player_pos;
+	triangle_params.y = player_pos;
+	triangle_params.size = params->step * 1.5;
+	triangle_params.color = 0xFFFF0000;
+	triangle_params.dir_x = a->p.dir_x;
+	triangle_params.dir_y = a->p.dir_y;
+	draw_triangle_rotated(a, &triangle_params);
+}
+
+void	draw_minimap(t_all *a)
+{
+	t_minimap_params	params;
+
+	initialize_minimap_params(a, &params);
+	draw_minimap_grid(a, &params);
+	draw_player_on_minimap(a, &params);
+}

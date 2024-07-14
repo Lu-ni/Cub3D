@@ -248,13 +248,9 @@ int mouse_move(int x, int y, t_all *a)
 
 int mouse_hook(int keycode, int x, int y, t_all *a)
 {
-    if (keycode == 3)
-    {
-        if (a->w.is_aiming)
-            a->w.is_aiming = 0;
-        else
-            a->w.is_aiming = 1;
-    }
+    if (keycode == 3 && a->w.selected_weapon == AWP)
+        a->w.is_aiming = !a->w.is_aiming;
+
     else if (keycode == 1)
     {
 		shoot(a);
@@ -276,6 +272,9 @@ int init_score_img(t_all *a)
         char *xpm_path = ft_strjoin(path, ".xpm");
         a->score.t[i].img = mlx_xpm_file_to_image(a->s.mlx, xpm_path, &a->score.t[i].height, &a->score.t[i].width);
         a->score.t[i].pix = mlx_get_data_addr(a->score.t[i].img, &a->score.t[i].bits_per_pixel, &a->score.t[i].size_line, &a->score.t[i].endian);
+        free(nbr);
+        free(path);
+        free(xpm_path);
     }
 }
 
@@ -295,24 +294,26 @@ int	main(int ac, char **av)
 	a.s.correction = 1;
 
     // mapfile parsing
-    printf("av1: %s\n", av[1]);
     if (parse_mapfile(ac, av[1], &a))
         return 1;
     PL;
 
     a.score.score = 0;
-    printf("score: %d\n", a.score.score);
 
     parse_score(0, &a);
 
     a.w.selected_weapon = 0;
 
-    a.m.ak_tex[0] = "weapon/1.xpm";
-    a.m.ak_tex[1] = "weapon/2.xpm";
-    a.m.ak_tex[2] = "weapon/3.xpm";
-    a.m.ak_tex[3] = "weapon/4.xpm";
-    a.m.ak_tex[4] = "weapon/5.xpm";
-    a.m.awp_tex[0] = "weapon/awp1.xpm";
+    a.m.ak_tex[0] = "weapon/ak/5.xpm";
+    a.m.ak_tex[1] = "weapon/ak/5.xpm";
+    a.m.ak_tex[2] = "weapon/ak/5.xpm";
+    a.m.ak_tex[3] = "weapon/ak/5.xpm";
+    a.m.ak_tex[4] = "weapon/ak/5.xpm";
+    a.m.awp_tex[0] = "weapon/awp/1.xpm";
+    a.m.awp_tex[1] = "weapon/awp/2.xpm";
+    a.m.awp_tex[2] = "weapon/awp/3.xpm";
+    a.m.awp_tex[3] = "weapon/awp/4.xpm";
+    a.m.awp_tex[4] = "weapon/awp/5.xpm";
 
 
 	mlx_put_image_to_window(a.s.mlx, a.s.mlx_win, a.s.img.img, 0, 0);
@@ -320,9 +321,12 @@ int	main(int ac, char **av)
 
     init_score_img(&a);
 
-    a.w.awp[0].img = mlx_xpm_file_to_image(a.s.mlx, a.m.awp_tex[0], &a.w.awp[0].height, &a.w.awp[0].width);
-    a.w.awp[0].height = a.w.awp[0].height;
-    a.w.awp[0].pix = mlx_get_data_addr(a.w.awp[0].img, &a.w.awp[0].bits_per_pixel, &a.w.awp[0].size_line, &a.w.awp[0].endian);
+    for (int i = 0; i < 5; i++)
+    {
+        a.w.awp[i].img = mlx_xpm_file_to_image(a.s.mlx, a.m.awp_tex[i], &a.w.awp[i].height, &a.w.awp[i].width);
+        a.w.awp[i].height = a.w.awp[i].height;
+        a.w.awp[i].pix = mlx_get_data_addr(a.w.awp[i].img, &a.w.awp[i].bits_per_pixel, &a.w.awp[i].size_line, &a.w.awp[i].endian);
+    }
 
 
     for (int i = 0; i < 4; i++)
@@ -338,6 +342,7 @@ int	main(int ac, char **av)
         a.w.ak[i].pix = mlx_get_data_addr(a.w.ak[i].img, &a.w.ak[i].bits_per_pixel, &a.w.ak[i].size_line, &a.w.ak[i].endian);
     }
 
+    a.w.is_aiming = 0;
     a.m.zoom = 1;
     a.w.frame = 0;
     a.w.is_shooting = 0;

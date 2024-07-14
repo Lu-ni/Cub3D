@@ -1,13 +1,16 @@
 #include "cub3d.h"
 
-void draw_square (int x, int y, int size, int color, t_all *a)
+void	draw_square(int x, int y, int size, int color, t_all *a)
 {
-	int i = 0;
-	int j = 0;
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
 	while (j < size)
 	{
 		i = 0;
-		while ( i < size)
+		while (i < size)
 		{
 			my_mlx_pixel_put(&a->s.img, x + i, y + j, color);
 			i++;
@@ -16,67 +19,78 @@ void draw_square (int x, int y, int size, int color, t_all *a)
 	}
 }
 
-
-
-void draw_digit(t_all *a, int pos_x, int digit)
+void	fill_digit_pixels(t_all *a, t_frame_info *info, int digit)
 {
-    int img_w = a->score.t[digit].width;
-    int img_h = a->score.t[digit].height;
-    float scale = 0.5;
-    // Calculate scaled dimensions
-    int scaled_w = img_w * scale;
-    int scaled_h = img_h * scale;
+	int	x;
+	int	y;
+	int	i;
 
-    // Calculate the offsets
-    int offset_x = screen_width - scaled_w - 20 - pos_x * (scaled_w - 80 * scale);
-    int offset_y = 20;
-
-    int pix_color;
-    for (int x = 0; x < scaled_h; x++)
-    {
-        for (int y = 0; y < scaled_w; y++)
-        {
-            // Calculate the corresponding source pixel coordinates
-            int src_x = x / scale;
-            int src_y = y / scale;
-
-            int i = src_y * a->score.t[digit].size_line + src_x * (a->score.t[digit].bits_per_pixel / 8);
-            pix_color = *(int *)(a->score.t[digit].pix + i) & 0x00FFFFFF;
-            if (pix_color != 0x00FFFFFF)
-            {
-                my_mlx_pixel_put(&a->s.img, offset_x + x, offset_y + y, 0xFFFFFFFF);
-            }
-        }
-    }
+	x = 0;
+	while (x < info->scaled_h)
+	{
+		y = 0;
+		while (y < info->scaled_w)
+		{
+			info->src_x = x / info->scale;
+			info->src_y = y / info->scale;
+			i = info->src_y * a->score.t[digit].size_line + info->src_x
+				* (a->score.t[digit].bits_per_pixel / 8);
+			info->pix_color = *(int *)(a->score.t[digit].pix + i) & 0x00FFFFFF;
+			if (info->pix_color != 0x00FFFFFF)
+			{
+				my_mlx_pixel_put(&a->s.img, info->offset_x + x, info->offset_y
+					+ y, 0xFFFFFFFF);
+			}
+			y++;
+		}
+		x++;
+	}
 }
 
-
-
-
-
-// Function to draw a line between two points (Bresenham's line algorithm)
-void draw_line(t_all *a, int x0, int y0, int x1, int y1, int color)
+void	draw_digit(t_all *a, int pos_x, int digit)
 {
-    int dx = abs(x1 - x0);
-    int dy = -abs(y1 - y0);
+	t_frame_info	info;
 
-    int sx =  -1;
-    int sy = -1;
+	info.img_w = a->score.t[digit].width;
+	info.img_h = a->score.t[digit].height;
+	info.scale = 0.5;
+	info.scaled_w = info.img_w * info.scale;
+	info.scaled_h = info.img_h * info.scale;
+	info.offset_x = screen_width - info.scaled_w - 20 - pos_x * (info.scaled_w
+			- 80 * info.scale);
+	info.offset_y = 20;
+	fill_digit_pixels(a, &info, digit);
+}
 
-    if (x0 < x1)
-        sx = 1;
+void	draw_line(t_all *a, t_line_params *params)
+{
+	int	dx;
+	int	dy;
+	int	sx;
+	int	sy;
+	int	err;
+	int	e2;
 
-    if (y0 < y1)
-        sy = 1;
-
-    int err = dx + dy, e2;
-
-    while (1)
-    {
-        my_mlx_pixel_put(&a->s.img, x0, y0, color);
-        if (x0 == x1 && y0 == y1) break;
-        e2 = 2 * err;
-        if (e2 >= dy) { err += dy; x0 += sx; }
-        if (e2 <= dx) { err += dx; y0 += sy; }
-    }
+	dx = abs(params->x1 - params->x0);
+	dy = -abs(params->y1 - params->y0);
+	sx = params->x0 < params->x1 ? 1 : -1;
+	sy = params->y0 < params->y1 ? 1 : -1;
+	err = dx + dy;
+	while (1)
+	{
+		my_mlx_pixel_put(&a->s.img, params->x0, params->y0, params->color);
+		if (params->x0 == params->x1 && params->y0 == params->y1)
+			break ;
+		e2 = 2 * err;
+		if (e2 >= dy)
+		{
+			err += dy;
+			params->x0 += sx;
+		}
+		if (e2 <= dx)
+		{
+			err += dx;
+			params->y0 += sy;
+		}
+	}
 }

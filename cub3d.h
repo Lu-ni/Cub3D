@@ -13,11 +13,9 @@
 #define M_PI 3.14159265358979323846
 #endif
 
-#define NORTH {{1, 0}, {0, -0.66}}
-#define EAST {{0, 1}, {0.66, 0}}
-#define WEST {0, -1}, {-0.66, 0}
-#define SOUTH {-1, 0}, {0, 0.66}
 
+# define AK		0
+# define AWP	1
 
 #define screen_width 1500
 #define screen_height 1200
@@ -29,6 +27,13 @@ typedef struct	s_data {
 	int		line_length;
 	int		endian;
 }				t_data;
+
+typedef struct s_file {
+	int fd;
+	char **file;
+	int lines_count;
+	char *path;
+}	t_file;
 
 typedef struct s_screen {
 	void *mlx;
@@ -97,6 +102,8 @@ typedef struct s_all {
 	int frame;
 } t_all;
 
+
+
 typedef struct s_ray {
     double ray_dir_x;
     double ray_dir_y;
@@ -126,7 +133,7 @@ void	draw_minimap(t_all *a);
 
 // draw.c
 void draw_square (int x, int y, int size, int color, t_all *a);
-void draw_line(t_all *a, int x0, int y0, int x1, int y1, int color);
+void draw_line(t_all *a, t_line_params *params);
 
 
 // hud

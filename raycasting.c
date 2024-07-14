@@ -287,7 +287,6 @@ int draw_screen(t_all *a)
     // Draw HUD
     draw_weapon(a);
     draw_minimap(a);
-    draw_points(a);
 
     draw_score(a);
 

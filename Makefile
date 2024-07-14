@@ -59,6 +59,10 @@ fclean: clean
 
 re: fclean all
 
+run: re
+	./$(NAME) $(MAPS)
+
+
 libs:
 	make -C libft/
 	make -C $(MLX_DIR)

@@ -6,21 +6,21 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:40:19 by lferro            #+#    #+#             */
-/*   Updated: 2024/07/12 14:00:15 by lferro           ###   ########.fr       */
+/*   Updated: 2024/07/14 15:19:22 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*palloc(int size)
+void	*palloc(size_t size)
 {
 	void	*res;
 
-	res = malloc(size);
+	res = malloc((size_t)size);
 	if (!res)
 	{
 		printf("Error: malloc error\n");
-		exit(1);
+		exit(2);
 	}
 	return (res);
 }
