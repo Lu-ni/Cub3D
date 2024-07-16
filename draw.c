@@ -1,6 +1,6 @@
-#include "cub3d.h"
+#include "cub.h"
 
-void	draw_square(int x, int y, int size, int color, t_all *a)
+void	draw_square(t_draw d, int size, int color, t_all *a)
 {
 	int	i;
 	int	j;
@@ -12,7 +12,7 @@ void	draw_square(int x, int y, int size, int color, t_all *a)
 		i = 0;
 		while (i < size)
 		{
-			my_mlx_pixel_put(&a->s.img, x + i, y + j, color);
+			my_mlx_pixel_put(&a->s.img, d.x + i, d.y + j, color);
 			i++;
 		}
 		j++;
@@ -56,41 +56,47 @@ void	draw_digit(t_all *a, int pos_x, int digit)
 	info.scale = 0.5;
 	info.scaled_w = info.img_w * info.scale;
 	info.scaled_h = info.img_h * info.scale;
-	info.offset_x = screen_width - info.scaled_w - 20 - pos_x * (info.scaled_w
+	info.offset_x = SCREEN_W - info.scaled_w - 20 - pos_x * (info.scaled_w
 			- 80 * info.scale);
 	info.offset_y = 20;
 	fill_digit_pixels(a, &info, digit);
 }
 
+void	draw_line_params(t_line_params *params, t_draw_line_params *p)
+{
+	p->dx = abs(params->x1 - params->x0);
+	p->dy = -abs(params->y1 - params->y0);
+	if (params->x0 < params->x1)
+		p->sx = 1;
+	else
+		p->sx = -1;
+	if (params->y0 < params->y1)
+		p->sy = 1;
+	else
+		p->sy = -1;
+	p->err = p->dx + p->dy;
+}
+
 void	draw_line(t_all *a, t_line_params *params)
 {
-	int	dx;
-	int	dy;
-	int	sx;
-	int	sy;
-	int	err;
-	int	e2;
+	t_draw_line_params	p;
 
-	dx = abs(params->x1 - params->x0);
-	dy = -abs(params->y1 - params->y0);
-	sx = params->x0 < params->x1 ? 1 : -1;
-	sy = params->y0 < params->y1 ? 1 : -1;
-	err = dx + dy;
+	draw_line_params(params, &p);
 	while (1)
 	{
 		my_mlx_pixel_put(&a->s.img, params->x0, params->y0, params->color);
 		if (params->x0 == params->x1 && params->y0 == params->y1)
 			break ;
-		e2 = 2 * err;
-		if (e2 >= dy)
+		p.e2 = 2 * p.err;
+		if (p.e2 >= p.dy)
 		{
-			err += dy;
-			params->x0 += sx;
+			p.err += p.dy;
+			params->x0 += p.sx;
 		}
-		if (e2 <= dx)
+		if (p.e2 <= p.dx)
 		{
-			err += dx;
-			params->y0 += sy;
+			p.err += p.dx;
+			params->y0 += p.sy;
 		}
 	}
 }

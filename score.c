@@ -1,4 +1,4 @@
-#include "cub3d.h"
+#include "cub.h"
 
 int	parse_score(int score, t_all *a)
 {

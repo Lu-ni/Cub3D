@@ -1,4 +1,4 @@
-#include "cub3d.h"
+#include "cub.h"
 
 void	draw_sniper_cross(t_all *a)
 {
@@ -7,10 +7,10 @@ void	draw_sniper_cross(t_all *a)
 	int	i;
 	int	offset;
 
-	v_center = screen_width / 2;
-	h_center = screen_height / 2;
-	i = -screen_height / 3;
-	while (i < screen_height / 3)
+	v_center = SCREEN_W / 2;
+	h_center = SCREEN_H / 2;
+	i = -SCREEN_H / 3;
+	while (i < SCREEN_H / 3)
 	{
 		offset = -1;
 		while (offset <= 1)
@@ -35,10 +35,10 @@ void	draw_scope_background(t_all *a, t_scope *s)
 	int	j;
 
 	i = 0;
-	while (i < screen_width)
+	while (i < SCREEN_W)
 	{
 		j = 0;
-		while (j < screen_height)
+		while (j < SCREEN_H)
 		{
 			if (!((i - s->x0) * (i - s->x0) + (j - s->y0) * (j
 						- s->y0) <= s->radius * s->radius))
@@ -51,10 +51,10 @@ void	draw_scope_background(t_all *a, t_scope *s)
 
 void	init_scope_info(t_scope *s)
 {
-	s->radius = screen_height / 3;
+	s->radius = SCREEN_H / 3;
 	s->color = 0x00000000;
-	s->x0 = screen_width / 2;
-	s->y0 = screen_height / 2;
+	s->x0 = SCREEN_W / 2;
+	s->y0 = SCREEN_H / 2;
 	s->x = s->radius - 1;
 	s->y = 0;
 	s->dx = 1;
@@ -165,30 +165,29 @@ void	draw_weapon_frame(t_all *a, int frame, t_texture *weapon)
 	}
 }
 
-void draw_crosshair(t_all *a)
+void	draw_crosshair(t_all *a)
 {
-    int v_center;
-    int h_center;
-    int i;
-    int offset;
+	int	v_center;
+	int	h_center;
+	int	i;
+	int	offset;
 
-    v_center = screen_width / 2;
-    h_center = screen_height / 2;
-    i = CROSSHAIR_SPACING - 1;
-    while (++i < CROSSHAIR_LENGTH)
-    {
-        offset = -2;
-        while (++offset <= 1)
-        {
+	v_center = SCREEN_W / 2;
+	h_center = SCREEN_H / 2;
+	i = CROSSHAIR_SPACING - 1;
+	while (++i < CROSSHAIR_LENGTH)
+	{
+		offset = -2;
+		while (++offset <= 1)
+		{
 			my_mlx_pixel_put(&a->s.img, v_center + i, h_center + offset, 0);
 			my_mlx_pixel_put(&a->s.img, v_center - i, h_center + offset, 0);
 			my_mlx_pixel_put(&a->s.img, v_center + offset, h_center + i, 0);
 			my_mlx_pixel_put(&a->s.img, v_center + offset++, h_center - i, 0);
-        }
-        my_mlx_pixel_put(&a->s.img, v_center + i, h_center, 0x00FFFFFF);
-        my_mlx_pixel_put(&a->s.img, v_center - i, h_center, 0x00FFFFFF);
-        my_mlx_pixel_put(&a->s.img, v_center, h_center + i, 0x00FFFFFF);
-        my_mlx_pixel_put(&a->s.img, v_center, h_center - i, 0x00FFFFFF);
-    }
+		}
+		my_mlx_pixel_put(&a->s.img, v_center + i, h_center, 0x00FFFFFF);
+		my_mlx_pixel_put(&a->s.img, v_center - i, h_center, 0x00FFFFFF);
+		my_mlx_pixel_put(&a->s.img, v_center, h_center + i, 0x00FFFFFF);
+		my_mlx_pixel_put(&a->s.img, v_center, h_center - i, 0x00FFFFFF);
+	}
 }
-

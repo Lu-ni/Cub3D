@@ -1,4 +1,4 @@
-#include "cub3d.h"
+#include "cub.h"
 
 void	calculate_rotated_vertices(t_triangle_params *params, t_vertex *v0,
 		t_vertex *v1, t_vertex *v2)
@@ -56,23 +56,20 @@ void	draw_minimap_square(t_all *a, t_minimap_params *params, int i, int j)
 	int	map_y;
 	int	draw_x;
 	int	draw_y;
+	t_draw d;
 
 	map_x = params->player_x + i;
 	map_y = params->player_y + j;
-	draw_x = params->pos_offset + (params->center + i) * params->step;
-	draw_y = params->pos_offset + (params->center + j) * params->step;
-	draw_square(draw_x, draw_y, params->step, 0x00808080, a);
+	d.x = params->pos_offset + (params->center + i) * params->step;
+	d.y = params->pos_offset + (params->center + j) * params->step;
+	draw_square(d, params->step, 0x00808080, a);
 	if (map_x >= 0 && map_x < a->m.dim.cols && map_y >= 0
 		&& map_y < a->m.dim.rows)
 	{
 		if (a->m.map[map_y][map_x] == 1)
-		{
-			draw_square(draw_x, draw_y, params->step, 0x00000000, a);
-		}
+			draw_square(d, params->step, 0x00000000, a);
 		else if (a->m.map[map_y][map_x] == 0)
-		{
-			draw_square(draw_x, draw_y, params->step, 0x00FFFFFF, a);
-		}
+			draw_square(d, params->step, 0x00FFFFFF, a);
 	}
 }
 

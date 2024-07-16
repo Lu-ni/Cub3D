@@ -1,4 +1,4 @@
-#include "cub3d.h"
+#include "cub.h"
 
 int	print_errors(char *error)
 {

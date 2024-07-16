@@ -1,10 +1,10 @@
-#include "cub3d.h"
+#include "cub.h"
 
 int	set_player_pos_and_dir(int dir, t_all *a, int x, int y)
 {
 	const double	dir_vals[][2] = {{1, 0}, {0, 1}, {0, -1}, {-1, 0}};
 	const double	plane_vals[][2] = {{0, -0.66}, {0.66, 0}, {-0.66, 0}, {0,
-			0.66}};
+		0.66}};
 
 	a->p.pos_x = (double)x + 0.5;
 	a->p.pos_y = (double)y + 0.5;

@@ -1,4 +1,4 @@
-#include "cub3d.h"
+#include "cub.h"
 
 char	*get_texture_path(char *line)
 {
@@ -37,19 +37,10 @@ int	get_color(char *line, int *color)
 	colors = ft_split(line, ',');
 	i = 0;
 	while (colors[i])
-	{
-		if (!is_color_valid(colors[i]))
-		{
-			print_errors(ERROR_INVALID_COLOR);
-			return (-1);
-		}
-		i++;
-	}
+		if (!is_color_valid(colors[i++]))
+			return (print_errors(ERROR_INVALID_COLOR));
 	if (i != 3)
-	{
-		print_errors(ERROR_INVALID_COLOR);
-		return (-1);
-	}
+		return (print_errors(ERROR_INVALID_COLOR));
 	printf("\n");
 	i = 0;
 	if (!colors[0] || !colors[1] || !colors[2])

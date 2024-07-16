@@ -1,25 +1,25 @@
-#ifndef MAP_H
+#ifndef PARSING_H
+# define PARSING_H
 
 # define INVALID_MAP 0
-
 # define ERROR_WRONG_NUMBER_OF_ARG "wrong number of arguments"
-# define ERROR_MISSING_DOTCUB (char *)"map file must have .cub extension"
-# define ERROR_MISSING_TEXTURE (char *)"missing textures in map file"
-# define ERROR_MISSING_COLOR (char *)"missing color(s) in map file"
-# define ERROR_MISSING_MAP (char *)"missing map"
-# define ERROR_INVALID_MAP (char *)"invalid map"
-# define ERROR_INVALID_COLOR (char *)"invalid color"
-# define ERROR_MISSING_MAPFILE (char *)"mapfile is missing"
-# define ERROR_MAPFILE_DOES_NOT_EXIST (char *)"mapfile does not exist"
-# define ERROR_TEXTURE_DOES_NOT_EXIST (char *)"texture file does not exist"
-# define ERROR_NO_PLAYER (char *)"no player in map"
-# define ERROR_MULTIPLE_PLAYER (char *)"multiple players in map"
-# define ERROR_INVALID_PLAYER_DIRECTION (char *)"invalid player direction"
-# define ERROR_MALLOC_FAILED (char *)"malloc failed"
-# define ERROR_NO_MAP (char *)"no map in mapfile"
-# define ERROR_MAP_TOO_SMALL (char *)"map is too small"
-# define ERROR_INVALID_MAP_CHAR (char *)"invalid characters in map"
-# define ERROR_MAP_NOT_CLOSED (char *)"map is not surrounded by walls"
+# define ERROR_MISSING_DOTCUB "map file must have .cub extension"
+# define ERROR_MISSING_TEXTURE "missing textures in map file"
+# define ERROR_MISSING_COLOR "missing color(s) in map file"
+# define ERROR_MISSING_MAP "missing map"
+# define ERROR_INVALID_MAP "invalid map"
+# define ERROR_INVALID_COLOR "invalid color"
+# define ERROR_MISSING_MAPFILE "mapfile is missing"
+# define ERROR_MAPFILE_DOES_NOT_EXIST "mapfile does not exist"
+# define ERROR_TEXTURE_DOES_NOT_EXIST "texture file does not exist"
+# define ERROR_NO_PLAYER "no player in map"
+# define ERROR_MULTIPLE_PLAYER "multiple players in map"
+# define ERROR_INVALID_PLAYER_DIRECTION "invalid player direction"
+# define ERROR_MALLOC_FAILED "malloc failed"
+# define ERROR_NO_MAP "no map in mapfile"
+# define ERROR_MAP_TOO_SMALL "map is too small"
+# define ERROR_INVALID_MAP_CHAR "invalid characters in map"
+# define ERROR_MAP_NOT_CLOSED "map is not surrounded by walls"
 
 # define MALLOC_FAILED 9
 
@@ -46,27 +46,18 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
-// typedef struct s_map_data
-// {
-// 	int		**map;
-// }				t_map_data;
 
 typedef struct s_dim
 {
-	int cols;  // number of columns
-	int rows;  // number of rows
-	int start; // start row number
+	int		cols;
+	int		rows;
+	int		start;
 }			t_dim;
 
 typedef struct s_map
 {
-	// char		*no;
-	// char		*so;
-	// char		*we;
-	// char		*ea;
-
 	char	*wall_tex[5];
-	
+
 	char	*ak_tex[5];
 	char	*awp_tex[5];
 
@@ -108,6 +99,6 @@ void		free_char_array(char **arr);
 void		*ft_palloc(size_t size);
 int			open_file(char *file, int *fd);
 
-# define PL printf("line: %d file: %s\n", __LINE__, __FILE__);
+// # define PL printf("line: %d file: %s\n", __LINE__, __FILE__);
 
 #endif

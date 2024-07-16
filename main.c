@@ -1,4 +1,4 @@
-#include "cub3d.h"
+#include "cub.h"
 #include "keys.h"
 //#include <endian.h>
 
@@ -263,18 +263,25 @@ int mouse_hook(int keycode, int x, int y, t_all *a)
 
 int init_score_img(t_all *a)
 {
-    char *dir = "numbers/";
+    char *dir;
+    int i;
 
-    for (int i = 0; i < 10; i++)
+    i = 0;
+    dir = "numbers/";
+    while (i < 10)
     {
         char *nbr = ft_itoa(i);
         char *path = ft_strjoin(dir, nbr);
         char *xpm_path = ft_strjoin(path, ".xpm");
-        a->score.t[i].img = mlx_xpm_file_to_image(a->s.mlx, xpm_path, &a->score.t[i].height, &a->score.t[i].width);
-        a->score.t[i].pix = mlx_get_data_addr(a->score.t[i].img, &a->score.t[i].bits_per_pixel, &a->score.t[i].size_line, &a->score.t[i].endian);
+        a->score.t[i].img = mlx_xpm_file_to_image(a->s.mlx, xpm_path,
+            &a->score.t[i].height, &a->score.t[i].width);
+        a->score.t[i].pix = mlx_get_data_addr(a->score.t[i].img,
+            &a->score.t[i].bits_per_pixel, &a->score.t[i].size_line,
+            &a->score.t[i].endian);
         free(nbr);
         free(path);
         free(xpm_path);
+        i++;
     }
 }
 
@@ -284,11 +291,11 @@ int	main(int ac, char **av)
 	t_all a;
 
     // mlx init
-	a.s.height = screen_height;
-	a.s.width = screen_width;
+	a.s.height = SCREEN_H;
+	a.s.width = SCREEN_W;
 	a.s.mlx = mlx_init();
-	a.s.mlx_win = mlx_new_window(a.s.mlx, screen_width, screen_height, "Cub42D");
-	a.s.img.img = mlx_new_image(a.s.mlx, screen_width, screen_height);
+	a.s.mlx_win = mlx_new_window(a.s.mlx, SCREEN_W, SCREEN_H, "Cub42D");
+	a.s.img.img = mlx_new_image(a.s.mlx, SCREEN_W, SCREEN_H);
 	a.s.img.addr = mlx_get_data_addr(a.s.img.img, &a.s.img.bits_per_pixel, &a.s.img.line_length, &a.s.img.endian);
 	a.s.fov= calculate_fov(60);
 	a.s.correction = 1;
@@ -296,56 +303,37 @@ int	main(int ac, char **av)
     // mapfile parsing
     if (parse_mapfile(ac, av[1], &a))
         return 1;
-    PL;
+
 
     a.score.score = 0;
-
-    parse_score(0, &a);
-
     a.w.selected_weapon = 0;
-
-    a.m.ak_tex[0] = "weapon/ak/5.xpm";
-    a.m.ak_tex[1] = "weapon/ak/5.xpm";
-    a.m.ak_tex[2] = "weapon/ak/5.xpm";
-    a.m.ak_tex[3] = "weapon/ak/5.xpm";
-    a.m.ak_tex[4] = "weapon/ak/5.xpm";
-    a.m.awp_tex[0] = "weapon/awp/1.xpm";
-    a.m.awp_tex[1] = "weapon/awp/2.xpm";
-    a.m.awp_tex[2] = "weapon/awp/3.xpm";
-    a.m.awp_tex[3] = "weapon/awp/4.xpm";
-    a.m.awp_tex[4] = "weapon/awp/5.xpm";
-
-
-	mlx_put_image_to_window(a.s.mlx, a.s.mlx_win, a.s.img.img, 0, 0);
-
-
-    init_score_img(&a);
-
-    for (int i = 0; i < 5; i++)
-    {
-        a.w.awp[i].img = mlx_xpm_file_to_image(a.s.mlx, a.m.awp_tex[i], &a.w.awp[i].height, &a.w.awp[i].width);
-        a.w.awp[i].height = a.w.awp[i].height;
-        a.w.awp[i].pix = mlx_get_data_addr(a.w.awp[i].img, &a.w.awp[i].bits_per_pixel, &a.w.awp[i].size_line, &a.w.awp[i].endian);
-    }
-
-
-    for (int i = 0; i < 4; i++)
-    {
-        a.t[i].img = mlx_xpm_file_to_image(a.s.mlx, a.m.wall_tex[i], &a.t[i].height, &a.t[i].width);
-        a.t[i].pix = mlx_get_data_addr(a.t[i].img, &a.t[i].bits_per_pixel, &a.t[i].size_line, &a.t[i].endian);
-    }
-
-    for (int i = 0; i < 5; i++)
-    {
-        a.w.ak[i].img = mlx_xpm_file_to_image(a.s.mlx, a.m.ak_tex[i], &a.w.ak[i].height, &a.w.ak[i].width);
-        a.w.ak[i].height = a.w.ak[i].height;
-        a.w.ak[i].pix = mlx_get_data_addr(a.w.ak[i].img, &a.w.ak[i].bits_per_pixel, &a.w.ak[i].size_line, &a.w.ak[i].endian);
-    }
-
     a.w.is_aiming = 0;
     a.m.zoom = 1;
     a.w.frame = 0;
     a.w.is_shooting = 0;
+
+    for (int i = 0; i < 5; i ++)
+    {
+        a.m.ak_tex[i] = "weapon/ak/5.xpm";
+        a.m.awp_tex[i] = "weapon/awp/5.xpm";
+    }
+
+	mlx_put_image_to_window(a.s.mlx, a.s.mlx_win, a.s.img.img, 0, 0);
+
+    init_score_img(&a);
+
+    int i;
+
+    i = 0;
+    while (i < 4) {
+        a.w.awp[i].img = mlx_xpm_file_to_image(a.s.mlx, a.m.awp_tex[i], &a.w.awp[i].height, &a.w.awp[i].width);
+        a.w.awp[i].pix = mlx_get_data_addr(a.w.awp[i].img, &a.w.awp[i].bits_per_pixel, &a.w.awp[i].size_line, &a.w.awp[i].endian);
+        a.w.ak[i].img = mlx_xpm_file_to_image(a.s.mlx, a.m.ak_tex[i], &a.w.ak[i].height, &a.w.ak[i].width);
+        a.w.ak[i].pix = mlx_get_data_addr(a.w.ak[i].img, &a.w.ak[i].bits_per_pixel, &a.w.ak[i].size_line, &a.w.ak[i].endian);
+        a.t[i].img = mlx_xpm_file_to_image(a.s.mlx, a.m.wall_tex[i], &a.t[i].height, &a.t[i].width);
+        a.t[i].pix = mlx_get_data_addr(a.t[i].img, &a.t[i].bits_per_pixel, &a.t[i].size_line, &a.t[i].endian);
+        i++;
+    }
 
 	mlx_hook(a.s.mlx_win, 2, 1L << 0, key_hook, &a);
 	mlx_mouse_hook(a.s.mlx_win, mouse_hook, &a);
@@ -353,9 +341,6 @@ int	main(int ac, char **av)
 
     mlx_hook(a.s.mlx_win, 6, 1L<<6, mouse_move, &a);
 
-
-	//mlx_loop_hook(all.vara.s.mlx, psy, &all);
-	//draw_screen(&a.s.img);
 
 	mlx_loop_hook(a.s.mlx, draw_screen, &a);
 	mlx_loop(a.s.mlx);

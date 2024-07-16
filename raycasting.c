@@ -1,6 +1,6 @@
 #include <math.h>
 #include <float.h>
-#include "cub3d.h"
+#include "cub.h"
 
 void draw_tex_columm(int column, int start, int end, t_all *a, int texX, int tex_index, t_ray *ray)
 {
@@ -24,13 +24,13 @@ void draw_tex_columm(int column, int start, int end, t_all *a, int texX, int tex
         tex_color = ((int)a->t[tex_index].pix[pos] & 0x00FFFFFF);
         my_mlx_pixel_put(&a->s.img, column, i++, tex_color);
     }
-    while (end < screen_height)
+    while (end < SCREEN_H)
         my_mlx_pixel_put(&a->s.img, column, end++, a->m.f_color & 0x00FFFFFF);
 }
 
 void calculate_ray_pos_and_dir(t_all *a, int x, t_ray *ray)
 {
-    double camera_x = (2 * x / (double)screen_width - 1) * a->s.fov;
+    double camera_x = (2 * x / (double)SCREEN_W - 1) * a->s.fov;
     ray->ray_dir_x = a->p.dir_x + a->p.plane_x * camera_x;
     ray->ray_dir_y = a->p.dir_y + a->p.plane_y * camera_x;
 }
@@ -120,7 +120,7 @@ void calculate_wall_distance_and_texture(t_all *a, t_ray *ray)
 
 void calculate_line_height_and_draw_points(t_ray *ray, t_all *a)
 {
-    double h = screen_height;
+    double h = SCREEN_H;
     ray->line_height = (int)round(h / ray->perp_wall_dist) * a->s.correction;
     ray->draw_start = -(ray->line_height) / 2 + h / 2;
     if (ray->draw_start < 0)
@@ -144,7 +144,7 @@ void draw_circle(t_all *a, int center_x, int center_y, int radius, int color, do
                 int draw_y = center_y + y;
 
                 // Check boundaries
-                if (draw_x >= 0 && draw_x < screen_width && draw_y >= 0 && draw_y < screen_height)
+                if (draw_x >= 0 && draw_x < SCREEN_W && draw_y >= 0 && draw_y < SCREEN_H)
                 {
                     // Only draw if the current pixel is closer than the z-buffer value
                     if (transform_y < a->z_buffer[draw_x])
@@ -173,7 +173,7 @@ void draw_target(t_all *a, int center_x, int center_y, int radius, double transf
                 int draw_y = center_y + y;
 
                 // Check boundaries
-                if (draw_x >= 0 && draw_x < screen_width && draw_y >= 0 && draw_y < screen_height)
+                if (draw_x >= 0 && draw_x < SCREEN_W && draw_y >= 0 && draw_y < SCREEN_H)
                 {
                     // Only draw if the current pixel is closer than the z-buffer value
                     if (transform_y < a->z_buffer[draw_x])
@@ -213,23 +213,23 @@ void draw_objects(t_all *a)
                 double transform_x = inv_det * (a->p.dir_y * sprite_x - a->p.dir_x * sprite_y);
                 double transform_y = inv_det * (-a->p.plane_y * sprite_x + a->p.plane_x * sprite_y);
 
-                int sprite_screen_x = (int)((screen_width / 2) * (1 + transform_x / transform_y / a->s.fov));
+                int sprite_screen_x = (int)((SCREEN_W / 2) * (1 + transform_x / transform_y / a->s.fov));
 
-                int sprite_radius = abs((int)(screen_height * 0.3 / 2.0 / transform_y));
+                int sprite_radius = abs((int)(SCREEN_H * 0.3 / 2.0 / transform_y));
 
-                int draw_start_y = -sprite_radius + screen_height / 2;
+                int draw_start_y = -sprite_radius + SCREEN_H / 2;
                 if (draw_start_y < 0) draw_start_y = 0;
-                int draw_end_y = sprite_radius + screen_height / 2;
-                if (draw_end_y >= screen_height) draw_end_y = screen_height - 1;
+                int draw_end_y = sprite_radius + SCREEN_H / 2;
+                if (draw_end_y >= SCREEN_H) draw_end_y = SCREEN_H - 1;
 
                 int draw_start_x = -sprite_radius + sprite_screen_x;
                 if (draw_start_x < 0) draw_start_x = 0;
                 int draw_end_x = sprite_radius + sprite_screen_x;
-                if (draw_end_x >= screen_width) draw_end_x = screen_width - 1;
+                if (draw_end_x >= SCREEN_W) draw_end_x = SCREEN_W - 1;
 
-                if (transform_y > 0 && sprite_screen_x > 0 && sprite_screen_x < screen_width && transform_y < a->z_buffer[sprite_screen_x])
+                if (transform_y > 0 && sprite_screen_x > 0 && sprite_screen_x < SCREEN_W && transform_y < a->z_buffer[sprite_screen_x])
                 {
-                    draw_target(a, sprite_screen_x, screen_height / 2, sprite_radius, transform_y); // Draw target
+                    draw_target(a, sprite_screen_x, SCREEN_H / 2, sprite_radius, transform_y); // Draw target
 
                 }
             }
@@ -240,7 +240,7 @@ void draw_objects(t_all *a)
 int draw_screen(t_all *a)
 {
     int x = 0;
-    while (x < screen_width)
+    while (x < SCREEN_W)
     {
         t_ray ray;
         int map_x, map_y;
