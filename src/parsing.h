@@ -37,8 +37,8 @@
 # define EA 4
 # define EMPTY_SPACE 9
 
-# include "libft/libft.h"
-# include "mlx/mlx.h"
+# include "../libft/libft.h"
+# include "../mlx/mlx.h"
 # include <fcntl.h>
 # include <math.h>
 # include <stdbool.h>

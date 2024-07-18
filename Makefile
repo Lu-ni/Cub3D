@@ -1,7 +1,7 @@
 NAME = cub3d
 OS := $(shell uname)
 CC = gcc
-CFLAGS =-g # -Wall -Wextra -Werror
+CFLAGS = -g # -Wall -Wextra -Werror
 
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
@@ -14,10 +14,11 @@ else
 	MLX_FLAGS = -L$(MLX_DIR) -lmlx -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz
 endif
 
-SRC = $(wildcard *.c)
+SRC_DIR = src
+SRC = $(wildcard $(SRC_DIR)/*.c)
 OBJ_DIR = obj
-OBJ = $(patsubst %.c, $(OBJ_DIR)/%.o, $(SRC))
-DEPS = $(wildcard *.h)
+OBJ = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC))
+DEPS = $(wildcard $(SRC_DIR)/*.h)
 
 # Colors
 GREEN = \033[0;32m
@@ -36,7 +37,7 @@ $(NAME): $(LIBFT) $(OBJ)
 	@echo "$(CYAN)Linking...$(NO_COLOR)"
 	$(CC) $(OBJ) $(LIBFT) $(MLX_FLAGS) -o $(NAME)
 
-$(OBJ_DIR)/%.o: %.c $(DEPS) | $(OBJ_DIR)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(DEPS) | $(OBJ_DIR)
 	@echo "$(YELLOW)Compiling $<...$(NO_COLOR)"
 	$(CC) $(CFLAGS) -I$(MLX_DIR) -c $< -o $@
 
@@ -61,7 +62,6 @@ re: fclean all
 
 run: re
 	./$(NAME) $(MAPS)
-
 
 libs:
 	make -C libft/
