@@ -8,16 +8,36 @@
 # include <mlx.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <sys/time.h>
 
 # ifndef M_PI
 #  define M_PI 3.14159265358979323846
 # endif
+
+# define PL printf("line: %d file: %s\n", __LINE__, __FILE__);
+# define ROTATION_SENSITIVITY 0.004
 
 # define AK 0
 # define AWP 1
 
 # define SCREEN_W 1500
 # define SCREEN_H 1200
+
+typedef struct s_time
+{
+	unsigned long	last_time;
+	unsigned long	current_time;
+	unsigned long	elapsed_time;
+}					t_time;
+
+typedef struct s_mouse {
+    int			delta_x;
+	int			center_x;
+	int			center_y;
+	double		rotation_angle;
+	double		old_dir_x;
+	double		old_plane_x;
+}               t_mouse;
 
 typedef struct s_data
 {
@@ -79,12 +99,13 @@ typedef struct s_weapon
 {
 	int			selected_weapon;
 
-	t_texture	ak[5];
-	t_texture	awp[1];
+	t_texture	ak[WEAPON_FRAMES];
+	t_texture	awp[WEAPON_FRAMES];
 
 	int			frame;
 	int			is_shooting;
 	int			is_aiming;
+	int			can_shoot;
 }				t_weapon;
 
 typedef struct s_score

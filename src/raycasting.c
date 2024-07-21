@@ -285,6 +285,9 @@ int draw_screen(t_all *a)
     draw_objects(a);
 
     // Draw HUD
+	a->s.correction = 1;
+	a->s.fov = calculate_fov(60) / a->s.correction;
+
     draw_weapon(a);
     draw_minimap(a);
 

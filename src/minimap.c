@@ -52,11 +52,11 @@ void	draw_triangle_rotated(t_all *a, t_triangle_params *params)
 
 void	draw_minimap_square(t_all *a, t_minimap_params *params, int i, int j)
 {
-	int	map_x;
-	int	map_y;
-	int	draw_x;
-	int	draw_y;
-	t_draw d;
+	int		map_x;
+	int		map_y;
+	int		draw_x;
+	int		draw_y;
+	t_draw	d;
 
 	map_x = params->player_x + i;
 	map_y = params->player_y + j;

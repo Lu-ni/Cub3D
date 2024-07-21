@@ -54,12 +54,14 @@ typedef struct s_dim
 	int		start;
 }			t_dim;
 
+# define WEAPON_FRAMES 24
+
 typedef struct s_map
 {
 	char	*wall_tex[5];
 
-	char	*ak_tex[5];
-	char	*awp_tex[5];
+	char	*ak_tex[WEAPON_FRAMES];
+	char	*awp_tex[WEAPON_FRAMES];
 
 	int		c_color;
 	int		f_color;
