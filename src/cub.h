@@ -6,7 +6,7 @@
 /*   By: lnicolli <lucas.nicollier@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 18:54:52 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/07/22 23:12:26 by bob              ###   ########.fr       */
+/*   Updated: 2024/07/22 23:31:47 by bob              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ typedef struct s_weapon
 	int				is_shooting;
 	int				is_aiming;
 	int				can_shoot;
+	int				last_x;
 }					t_weapon;
 
 typedef struct s_score
