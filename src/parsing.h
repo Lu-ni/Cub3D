@@ -6,7 +6,7 @@
 /*   By: lnicolli <lucas.nicollier@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 22:11:31 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/07/22 22:11:32 by lnicolli         ###   ########.fr       */
+/*   Updated: 2024/07/22 22:46:19 by lnicolli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,9 +99,7 @@ char		*get_texture_path(char *line);
 int			get_color(char *line, int *color);
 int			get_scene_infos(char *line, t_map *map);
 int			malloc_set_empty_spaces(int **map, int cols, int rows);
-void		printmap(int **map, int cols, int rows);
 int			get_longest_map_line(char **file, int lines_count, int map_start);
-int			ft_isnewline(char c);
 int			get_map_start(char **file, int lines_count);
 int			is_line_map(char *line);
 int			count_lines(char *mapfile);

@@ -6,7 +6,7 @@
 /*   By: lnicolli <lucas.nicollier@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 21:28:15 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/07/22 21:28:17 by lnicolli         ###   ########.fr       */
+/*   Updated: 2024/07/22 22:37:19 by lnicolli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,4 +101,25 @@ void	init_mlx(t_all *a)
 			&a->s.img.line_length, &a->s.img.endian);
 	a->s.fov = calculate_fov(60);
 	a->s.correction = 1;
+}
+
+int	init_scene(t_all *a, int ac, t_file *f)
+{
+	int	i;
+
+	f->lines_count = count_lines(f->path);
+	if (ac != 2)
+	{
+		print_errors(ERROR_WRONG_NUMBER_OF_ARG);
+		return (-1);
+	}
+	ft_strlcpy(a->m.directions, "SEWN", 5);
+	i = 0;
+	while (i < 4)
+		a->m.wall_tex[i++] = NULL;
+	a->m.f_color = 0;
+	a->m.c_color = 0;
+	a->p.pos_x = -1;
+	a->p.pos_y = -1;
+	return (0);
 }

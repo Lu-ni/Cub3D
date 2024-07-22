@@ -1,21 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mapfile_errors.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lnicolli <lucas.nicollier@gmail.com>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/07/22 22:55:40 by lnicolli          #+#    #+#             */
+/*   Updated: 2024/07/22 22:55:41 by lnicolli         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub.h"
-
-int	print_errors(char *error)
-{
-	printf("Error: ");
-	printf("%s\n", error);
-	return (-1);
-}
-
-int	mapfile_exists(int fd)
-{
-	if (fd < 0)
-	{
-		print_errors(ERROR_MAPFILE_DOES_NOT_EXIST);
-		return (false);
-	}
-	return (true);
-}
 
 int	is_dotcub(char *mapfile)
 {
@@ -28,15 +23,6 @@ int	is_dotcub(char *mapfile)
 		return (false);
 	}
 	return (true);
-}
-
-int	is_mapfile_valid(char *mapfile, int fd)
-{
-	if (mapfile_exists(fd) && is_dotcub(mapfile))
-	{
-		return (true);
-	}
-	return (false);
 }
 
 int	**allocate_map(int rows, int cols)
@@ -66,24 +52,6 @@ int	**allocate_map(int rows, int cols)
 		i++;
 	}
 	return (map_cpy);
-}
-
-void	init_map(int **map_cpy, int rows, int cols)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < rows + 2)
-	{
-		j = 0;
-		while (j < cols + 2)
-		{
-			map_cpy[i][j] = EMPTY_SPACE;
-			j++;
-		}
-		i++;
-	}
 }
 
 void	copy_original_map(int **map_cpy, int ***map, int rows, int cols)
@@ -139,45 +107,6 @@ int	check_walls(int **map_cpy, t_dim dim)
 			j++;
 		}
 		i++;
-	}
-	return (0);
-}
-
-int	is_map_walled(int ***map, t_dim dim)
-{
-	int	**map_cpy;
-
-	map_cpy = expand_map_for_checking(map, dim.cols, dim.rows);
-	if (!map_cpy)
-		return (-1);
-	if (check_walls(map_cpy, dim))
-	{
-		free_map(map_cpy, dim.rows + 2);
-		return (print_errors(ERROR_MAP_NOT_CLOSED));
-	}
-	free_map(map_cpy, dim.rows + 2);
-	return (0);
-}
-
-int	scene_errors(t_map *m)
-{
-	int	fd[4];
-	int	i;
-
-	i = 0;
-	while (i < 4)
-	{
-		if (!m->wall_tex[i++])
-			return (print_errors(ERROR_MISSING_TEXTURE));
-	}
-	if (m->f_color == 0 || m->c_color == 0)
-		return (print_errors(ERROR_MISSING_COLOR));
-	i = 0;
-	while (i < 4)
-	{
-		fd[i] = open(m->wall_tex[i], O_RDONLY);
-		if (fd[i++] < 0)
-			return (print_errors(ERROR_TEXTURE_DOES_NOT_EXIST));
 	}
 	return (0);
 }

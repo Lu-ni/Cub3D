@@ -6,11 +6,21 @@
 /*   By: lnicolli <lucas.nicollier@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 18:40:34 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/07/22 20:31:14 by lnicolli         ###   ########.fr       */
+/*   Updated: 2024/07/22 22:36:30 by lnicolli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub.h"
+
+void	free_map(int **map, int rows)
+{
+	int	i;
+
+	i = 0;
+	while (i < rows)
+		free(map[i++]);
+	free(map);
+}
 
 int	argb(unsigned char a, unsigned char b, unsigned char c, unsigned char d)
 {

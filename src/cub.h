@@ -6,7 +6,7 @@
 /*   By: lnicolli <lucas.nicollier@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 18:54:52 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/07/22 21:59:19 by lnicolli         ###   ########.fr       */
+/*   Updated: 2024/07/22 23:04:35 by lnicolli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,6 +189,11 @@ int					argb(unsigned char a, unsigned char b, unsigned char c,
 						unsigned char d);
 int					draw_screen(t_all *a);
 void				my_mlx_pixel_put(t_data *data, int x, int y, int color);
+// parsin.ch
+int					set_player_pos_and_dir(int dir, t_all *a, int x, int y);
+// map_utils.c
+int					parse_map(t_file *f, t_all *a);
+int					get_map_dim(t_dim *dim, char **file, int lines_count);
 // minimap.c
 void				draw_minimap(t_all *a);
 // raycasting_utils.c
@@ -222,6 +227,15 @@ void				init_score_img(t_all *a);
 void				init_textures(t_all *a);
 void				init_game(t_all *a);
 void				init_mlx(t_all *a);
+int					init_scene(t_all *a, int ac, t_file *f);
+// map.c
+int					check_walls(int **map_cpy, t_dim dim);
+int					**expand_map_for_checking(int ***map, int cols, int rows);
+void				init_map(int **map_cpy, int rows, int cols);
+void				draw_triangle_rotated(t_all *a, t_triangle_params *params);
+void				draw_sniper_scope(t_all *a);
+void				init_scope_info(t_scope *s);
+unsigned long		get_time_in_milliseconds(void);
 
 int					key_hook(int keycode, t_all *a);
 #endif
