@@ -6,7 +6,7 @@
 /*   By: lnicolli <lucas.nicollier@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 21:28:55 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/07/22 22:07:26 by lnicolli         ###   ########.fr       */
+/*   Updated: 2024/07/22 23:28:28 by bob              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,21 @@ int	mouse_move_hook(int x, int y, t_all *a)
 {
 	static int	last_x;
 	t_mouse		m;
-
+	printf("xy: %i %i\n",x,y);
+	printf("mouse moving\n");
+	printf("%f %f %f %f\n",a->p.dir_x, a->p.dir_y, a->p.plane_x, a->p.plane_y);
 	last_x = -1;
 	(void)y;
 	m.center_x = a->s.width / 2;
 	m.center_y = a->s.height / 2;
+	printf("last_x : %i\n",last_x);
 	if (last_x == -1)
+	{
+		printf("setting up last_x to %i\n", x);
 		last_x = x;
+	}
 	m.delta_x = x - last_x;
+	printf("delta %i\n", m.delta_x);
 	last_x = x;
 	m.rotation_angle = -m.delta_x * ROTATION_SENSITIVITY;
 	m.old_dir_x = a->p.dir_x;
@@ -52,5 +59,6 @@ int	mouse_move_hook(int x, int y, t_all *a)
 		* sin(m.rotation_angle);
 	a->p.plane_y = m.old_plane_x * sin(m.rotation_angle) + a->p.plane_y
 		* cos(m.rotation_angle);
+	printf("%f %f %f %f\n",a->p.dir_x, a->p.dir_y, a->p.plane_x, a->p.plane_y);
 	return (0);
 }
