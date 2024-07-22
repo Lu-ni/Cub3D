@@ -6,7 +6,7 @@
 /*   By: lnicolli <lucas.nicollier@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 21:27:48 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/07/22 21:27:49 by lnicolli         ###   ########.fr       */
+/*   Updated: 2024/07/22 23:47:43 by bob              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,8 @@ int	key_hook(int keycode, t_all *a)
 	{
 		exit(0);
 	}
-	else if ((keycode == KEY_W) || (keycode >= KEY_A && keycode <= KEY_D))
+	else if (keycode == KEY_W || keycode == KEY_A
+		|| keycode <= KEY_D || keycode == KEY_S)
 		move(a, keycode);
 	else if (keycode == RIGHT || keycode == LEFT)
 		rotate(a, keycode);
