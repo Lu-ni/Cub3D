@@ -3,7 +3,6 @@
 char	*get_texture_path(char *line)
 {
 	char	*texture_path;
-	int		i;
 
 	if (is_line_empty(line))
 		return (NULL);
@@ -29,9 +28,6 @@ int	is_color_valid(char *color)
 int	get_color(char *line, int *color)
 {
 	char	**colors;
-	int		new_pos;
-	int		comma_pos;
-	int		color_val;
 	int		i;
 
 	colors = ft_split(line, ',');

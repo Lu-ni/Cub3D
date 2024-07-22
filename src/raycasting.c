@@ -1,12 +1,8 @@
-#include <math.h>
-#include <float.h>
+
 #include "cub.h"
 
 void draw_tex_columm(int column, int start, int end, t_all *a, int texX, int tex_index, t_ray *ray)
 {
-	///
-	//ray->line_height * a->s.correction;
-	///
     double ratio = (float)a->t[tex_index].height / (float)(ray->line_height);
     int offset = 0;
     if (ray->line_height > a->s.height)
@@ -85,9 +81,9 @@ void perform_dda(t_all *a, t_ray *ray, int *map_x, int *map_y, int *hit)
             *map_x += ray->step_x;
             ray->side = 0;
             if (ray->step_x > 0)
-                ray->hit_direction = 2; // East
+                ray->hit_direction = 2;
             else
-                ray->hit_direction = 3; // West
+                ray->hit_direction = 3;
         }
         else
         {
@@ -95,9 +91,9 @@ void perform_dda(t_all *a, t_ray *ray, int *map_x, int *map_y, int *hit)
             *map_y += ray->step_y;
             ray->side = 1;
             if (ray->step_y > 0)
-                ray->hit_direction = 1; // South
+                ray->hit_direction = 1;
             else
-                ray->hit_direction = 0; // North
+                ray->hit_direction = 0;
         }
         if (a->m.map[*map_x][*map_y] == 1)
             *hit = 1;
@@ -143,10 +139,8 @@ void draw_circle(t_all *a, int center_x, int center_y, int radius, int color, do
                 int draw_x = center_x + x;
                 int draw_y = center_y + y;
 
-                // Check boundaries
                 if (draw_x >= 0 && draw_x < SCREEN_W && draw_y >= 0 && draw_y < SCREEN_H)
                 {
-                    // Only draw if the current pixel is closer than the z-buffer value
                     if (transform_y < a->z_buffer[draw_x])
                     {
                         my_mlx_pixel_put(&a->s.img, draw_x, draw_y, color);
@@ -172,19 +166,16 @@ void draw_target(t_all *a, int center_x, int center_y, int radius, double transf
                 int draw_x = center_x + x;
                 int draw_y = center_y + y;
 
-                // Check boundaries
                 if (draw_x >= 0 && draw_x < SCREEN_W && draw_y >= 0 && draw_y < SCREEN_H)
                 {
-                    // Only draw if the current pixel is closer than the z-buffer value
                     if (transform_y < a->z_buffer[draw_x])
                     {
-                        // Determine color based on distance to center
                         if (distance <= (radius / 3) * (radius / 3))
-                            color = 0xFF0000; // Red (innermost)
+                            color = 0xFF0000;
                         else if (distance <= (2 * radius / 3) * (2 * radius / 3))
-                            color = 0xFFFFFF; // White (middle)
+                            color = 0xFFFFFF;
                         else
-                            color = 0xFF0000; // Red (outermost)
+                            color = 0xFF0000;
 
                         my_mlx_pixel_put(&a->s.img, draw_x, draw_y, color);
                     }
@@ -200,7 +191,6 @@ void draw_objects(t_all *a)
     {
         for (int x = 0; x < (a->m.dim.cols - 1); x++)
         {
-            // Check if player is on the same tile as the object
             if (a->m.map[x][y] == 2 && !(a->p.pos_x >= x && a->p.pos_x < x + 1 && a->p.pos_y >= y && a->p.pos_y < y + 1))
             {
                 double obj_x = x + 0.5;
@@ -229,7 +219,7 @@ void draw_objects(t_all *a)
 
                 if (transform_y > 0 && sprite_screen_x > 0 && sprite_screen_x < SCREEN_W && transform_y < a->z_buffer[sprite_screen_x])
                 {
-                    draw_target(a, sprite_screen_x, SCREEN_H / 2, sprite_radius, transform_y); // Draw target
+                    draw_target(a, sprite_screen_x, SCREEN_H / 2, sprite_radius, transform_y);
 
                 }
             }
@@ -261,30 +251,30 @@ int draw_screen(t_all *a)
         if (ray.side == 0)
         {
             if (ray.ray_dir_x > 0)
-                tex_index = 2;  // EA
+                tex_index = 2;  
             else
-                tex_index = 3;  // WE
+                tex_index = 3;  
         }
         else
         {
             if (ray.ray_dir_y > 0)
-                tex_index = 0;  // NO
+                tex_index = 0;  
             else
-                tex_index = 1;  // SO
+                tex_index = 1;  
         }
 
         draw_tex_columm(x, ray.draw_start, ray.draw_end, a, tex_x, tex_index, &ray);
 
-        // Store the distance to the wall in the z_buffer
+        
         a->z_buffer[x] = ray.perp_wall_dist;
 
         x++;
     }
 
-    // Draw objects
+    
     draw_objects(a);
 
-    // Draw HUD
+    
 	a->s.correction = 1;
 	a->s.fov = calculate_fov(60) / a->s.correction;
 

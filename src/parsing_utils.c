@@ -51,12 +51,8 @@ int	is_line_map(char *line)
 
 int	get_map_start(char **file, int lines_count)
 {
-	int	height;
-	int	map_start;
 	int	i;
 
-	height = 0;
-	map_start = 0;
 	i = 0;
 	while (i < lines_count)
 	{

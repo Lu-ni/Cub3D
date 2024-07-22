@@ -1,7 +1,7 @@
 NAME = cub3d
 OS := $(shell uname)
 CC = gcc
-CFLAGS = -g # -Wall -Wextra -Werror
+CFLAGS =  -Wall -Wextra -Werror
 
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a

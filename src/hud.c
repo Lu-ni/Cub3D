@@ -138,7 +138,6 @@ int	update_weapon_state(t_all *a, t_time *t)
 void	draw_weapon(t_all *a)
 {
 	static t_time	t;
-	int				i;
 
 	t.last_time = 0;
 	if (!update_weapon_state(a, &t))

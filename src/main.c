@@ -217,7 +217,7 @@ int	close_window(t_all *a)
 
 int	weapon_hook(int keycode, t_all *a)
 {
-	if (keycode = KEY_SPACE)
+	if (keycode == KEY_SPACE)
 	{
 		a->w.frame = 0;
 	}
@@ -230,9 +230,9 @@ int	weapon_hook(int keycode, t_all *a)
 int	mouse_move(int x, int y, t_all *a)
 {
 	static int	last_x = -1;
-	static int	warp;
     t_mouse     m;
 
+	(void) y;
 	m.center_x = a->s.width / 2;
 	m.center_y = a->s.height / 2;
 	if (last_x == -1)
@@ -255,6 +255,8 @@ int	mouse_move(int x, int y, t_all *a)
 
 int	mouse_hook(int keycode, int x, int y, t_all *a)
 {
+	(void) x;
+	(void) y;
 	if (keycode == 3)
 		a->w.is_aiming = !a->w.is_aiming;
 	else if (keycode == 1 && a->w.can_shoot)
@@ -267,7 +269,7 @@ int	mouse_hook(int keycode, int x, int y, t_all *a)
 	return (0);
 }
 
-int	init_score_img(t_all *a)
+void	init_score_img(t_all *a)
 {
 	char	*dir;
 	int		i;

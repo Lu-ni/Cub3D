@@ -9,6 +9,8 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/time.h>
+# include <math.h>
+# include <float.h>
 
 # ifndef M_PI
 #  define M_PI 3.14159265358979323846
@@ -175,7 +177,7 @@ void			draw_weapon(t_all *a);
 void			draw_digit(t_all *a, int pos_x, int digit);
 void			draw_score(t_all *a);
 // score
-int				parse_score(int score, t_all *a);
+void				parse_score(int score, t_all *a);
 
 double			calculate_fov(int degrees);
 
