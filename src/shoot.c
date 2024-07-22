@@ -1,7 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   shoot.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lnicolli <lucas.nicollier@gmail.com>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/07/22 22:19:29 by lnicolli          #+#    #+#             */
+/*   Updated: 2024/07/22 22:19:30 by lnicolli         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "cub.h"
 #include "keys.h"
-
 
 void	set_step_and_side_dist(t_ray *ray, double pos_x, double pos_y)
 {
@@ -29,7 +39,8 @@ void	set_step_and_side_dist(t_ray *ray, double pos_x, double pos_y)
 
 int	is_valid_map_position(t_all *a, int map_x, int map_y)
 {
-	return (map_x >= 0 && map_x < a->m.dim.cols && map_y >= 0 && map_y < a->m.dim.rows);
+	return (map_x >= 0 && map_x < a->m.dim.cols && map_y >= 0
+		&& map_y < a->m.dim.rows);
 }
 
 void	update_map_and_score(t_all *a, t_ray *ray, int *hit)
@@ -65,28 +76,22 @@ void	perform_dda_s(t_all *a, t_ray *ray, int *hit)
 	}
 }
 
-void	check_and_destroy_target(t_all *a, double ray_dir_x, double ray_dir_y)
+void	shoot(t_all *a)
 {
 	t_ray	ray;
-	double	pos_x = a->p.pos_x;
-	double	pos_y = a->p.pos_y;
-	int		hit = 0;
+	double	pos_x;
+	double	pos_y;
+	int		hit;
 
-	ray.ray_dir_x = ray_dir_x;
-	ray.ray_dir_y = ray_dir_y;
-	ray.delta_dist_x = fabs(1 / ray_dir_x);
-	ray.delta_dist_y = fabs(1 / ray_dir_y);
+	pos_x = a->p.pos_x;
+	pos_y = a->p.pos_y;
+	hit = 0;
+	ray.ray_dir_x = a->p.dir_x;
+	ray.ray_dir_y = a->p.dir_y;
+	ray.delta_dist_x = fabs(1 / a->p.dir_x);
+	ray.delta_dist_y = fabs(1 / a->p.dir_y);
 	ray.map_x = (int)pos_x;
 	ray.map_y = (int)pos_y;
 	set_step_and_side_dist(&ray, pos_x, pos_y);
 	perform_dda_s(a, &ray, &hit);
 }
-
-void	shoot(t_all *a)
-{
-	double	ray_dir_x = a->p.dir_x;
-	double	ray_dir_y = a->p.dir_y;
-
-	check_and_destroy_target(a, ray_dir_x, ray_dir_y);
-}
-
