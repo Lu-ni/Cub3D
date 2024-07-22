@@ -6,7 +6,7 @@
 /*   By: lnicolli <lucas.nicollier@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 18:40:34 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/07/22 22:36:30 by lnicolli         ###   ########.fr       */
+/*   Updated: 2024/07/22 23:42:36 by bob              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ double	calculate_fov(int degrees)
 
 int	close_window(t_all *a)
 {
+	mlx_destroy_window(a->s.mlx, a->s.mlx_win);
 	free_map(a->m.map, a->m.dim.rows);
 	exit(0);
 }
