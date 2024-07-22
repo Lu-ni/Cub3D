@@ -41,11 +41,6 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(DEPS) | $(OBJ_DIR)
 	@echo "$(YELLOW)Compiling $<...$(NO_COLOR)"
 	$(CC) $(CFLAGS) -I$(MLX_DIR) -c $< -o $@
 
-run: clean $(OBJ_DIR) $(OBJ)
-	# @echo "$(CYAN)Rebuilding without compilation flags...$(NO_COLOR)"
-	$(CC) $(OBJ) $(LIBFT) $(MLX_FLAGS) -o $(NAME)
-	# @echo "$(GREEN)Running the program...$(NO_COLOR)"
-	./$(NAME) $(MAP)
 
 r: all
 	./$(NAME)

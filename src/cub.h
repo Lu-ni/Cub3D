@@ -6,7 +6,7 @@
 /*   By: lnicolli <lucas.nicollier@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 18:54:52 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/07/22 18:54:54 by lnicolli         ###   ########.fr       */
+/*   Updated: 2024/07/22 21:59:19 by lnicolli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,20 +191,16 @@ int					draw_screen(t_all *a);
 void				my_mlx_pixel_put(t_data *data, int x, int y, int color);
 // minimap.c
 void				draw_minimap(t_all *a);
-
 // raycasting_utils.c
-
 void				draw_tex_columm(int col, t_all *a, int i_tex, t_ray *ray);
 void				calculate_ray_pos_and_dir(t_all *a, int x, t_ray *ray);
 void				initialize_dda(t_all *a, t_ray *ray);
 void				calculate_step_and_side_dist(t_all *a, t_ray *ray);
-
 // objects.c
 void				draw_objects(t_all *a);
 // draw.c
 void				draw_square(t_draw d, int size, int color, t_all *a);
 void				draw_line(t_all *a, t_line_params *params);
-
 // hud
 void				draw_crosshair(t_all *a);
 void				draw_weapon_frame(t_all *a, int frame, t_texture *weapon);
@@ -214,7 +210,18 @@ void				draw_digit(t_all *a, int pos_x, int digit);
 void				draw_score(t_all *a);
 // score
 void				parse_score(int score, t_all *a);
-
+// utils.c
+void				shoot(t_all *a);
+int					close_window(t_all *a);
 double				calculate_fov(int degrees);
+// mouse_hook.c
+int					mouse_hook(int keycode, int x, int y, t_all *a);
+int					mouse_move_hook(int x, int y, t_all *a);
+// inits.c
+void				init_score_img(t_all *a);
+void				init_textures(t_all *a);
+void				init_game(t_all *a);
+void				init_mlx(t_all *a);
 
+int					key_hook(int keycode, t_all *a);
 #endif

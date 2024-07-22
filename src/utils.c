@@ -6,9 +6,11 @@
 /*   By: lnicolli <lucas.nicollier@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 18:40:34 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/07/22 18:40:36 by lnicolli         ###   ########.fr       */
+/*   Updated: 2024/07/22 20:31:14 by lnicolli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "cub.h"
 
 int	argb(unsigned char a, unsigned char b, unsigned char c, unsigned char d)
 {
@@ -25,18 +27,21 @@ int	argb(unsigned char a, unsigned char b, unsigned char c, unsigned char d)
 	return (val);
 }
 
-/*
-int main(int argc, char **argv)
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
-	t_all all;
+	char	*dst;
 
-	init(&all, argc, argv);
-	calculate_set(&all);
-	mlx_put_image_to_window(all.vars.mlx, all.vars.win, all.img.img, 0, 0);
-	mlx_hook(all.vars.win, 2, 1L << 0, key_hook, &all);
-	mlx_hook(all.vars.win, 17, 0, close_window, &all);
-	mlx_mouse_hook(all.vars.win, mouse_hook, &all);
-	mlx_loop_hook(all.vars.mlx, psy, &all);
-	mlx_loop(all.vars.mlx);
+	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+	*(unsigned int *)dst = color;
 }
- */
+
+double	calculate_fov(int degrees)
+{
+	return (tan((degrees * M_PI / 180) / 2));
+}
+
+int	close_window(t_all *a)
+{
+	free_map(a->m.map, a->m.dim.rows);
+	exit(0);
+}

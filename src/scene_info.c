@@ -6,7 +6,7 @@
 /*   By: lnicolli <lucas.nicollier@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 18:40:16 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/07/22 18:40:20 by lnicolli         ###   ########.fr       */
+/*   Updated: 2024/07/22 20:28:46 by lnicolli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ char	*get_texture_path(char *line)
 	if (is_line_empty(line))
 		return (NULL);
 	texture_path = ft_strdup(line);
-	printf("texture_path: |%s|\n", texture_path);
 	return (texture_path);
 }
 
