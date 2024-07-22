@@ -6,7 +6,7 @@
 /*   By: lnicolli <lucas.nicollier@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 17:53:21 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/07/22 17:53:24 by lnicolli         ###   ########.fr       */
+/*   Updated: 2024/07/23 00:45:31 by bob              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,10 +89,10 @@ void	draw_objects(t_all *a)
 
 	inv_det = 1.0 / (a->p.plane_x * a->p.dir_y - a->p.dir_x * a->p.plane_y);
 	y = 0;
-	while (y < (a->m.dim.rows - 1))
+	while (y < (a->m.dim.cols - 1))
 	{
 		x = 0;
-		while (x < (a->m.dim.cols - 1))
+		while (x < (a->m.dim.rows - 1))
 		{
 			if (a->m.map[x][y] == 2 && !(a->p.pos_x >= x && a->p.pos_x < x + 1
 					&& a->p.pos_y >= y && a->p.pos_y < y + 1))
