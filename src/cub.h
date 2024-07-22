@@ -155,6 +155,20 @@ typedef struct s_ray
 	int			hit_direction;
 }				t_ray;
 
+typedef struct s_object
+{
+    int sprite_screen_x;
+    int sprite_radius;
+    int draw_start_y;
+    int draw_end_y;
+    int draw_start_x;
+    int draw_end_x;
+    float sprite_x;
+    float sprite_y;
+    float transform_x;
+    float transform_y;
+} t_object;
+
 int				parse_mapfile(int ac, char *mapfile, t_all *a);
 char			get_pdir(t_all *a);
 
@@ -165,6 +179,8 @@ void			my_mlx_pixel_put(t_data *data, int x, int y, int color);
 // minimap.c
 void			draw_minimap(t_all *a);
 
+//objects.c
+void draw_objects(t_all *a);
 // draw.c
 void			draw_square(t_draw d, int size, int color, t_all *a);
 void			draw_line(t_all *a, t_line_params *params);

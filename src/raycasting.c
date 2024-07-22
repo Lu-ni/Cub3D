@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   raycasting.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lnicolli <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/07/22 17:45:49 by lnicolli          #+#    #+#             */
+/*   Updated: 2024/07/22 17:45:52 by lnicolli         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "cub.h"
 
@@ -26,7 +37,8 @@ void draw_tex_columm(int column, int start, int end, t_all *a, int texX, int tex
 
 void calculate_ray_pos_and_dir(t_all *a, int x, t_ray *ray)
 {
-    double camera_x = (2 * x / (double)SCREEN_W - 1) * a->s.fov;
+    double camera_x;
+	camera_x = (2 * x / (double)SCREEN_W - 1) * a->s.fov;
     ray->ray_dir_x = a->p.dir_x + a->p.plane_x * camera_x;
     ray->ray_dir_y = a->p.dir_y + a->p.plane_y * camera_x;
 }
@@ -116,7 +128,8 @@ void calculate_wall_distance_and_texture(t_all *a, t_ray *ray)
 
 void calculate_line_height_and_draw_points(t_ray *ray, t_all *a)
 {
-    double h = SCREEN_H;
+    double h;
+	h = SCREEN_H;
     ray->line_height = (int)round(h / ray->perp_wall_dist) * a->s.correction;
     ray->draw_start = -(ray->line_height) / 2 + h / 2;
     if (ray->draw_start < 0)
@@ -126,106 +139,7 @@ void calculate_line_height_and_draw_points(t_ray *ray, t_all *a)
         ray->draw_end = h - 1;
 }
 
-void draw_circle(t_all *a, int center_x, int center_y, int radius, int color, double transform_y)
-{
-    int x, y;
-	radius = a->s.correction * radius;
-    for (y = -radius; y <= radius; y++)
-    {
-        for (x = -radius; x <= radius; x++)
-        {
-            if (x * x + y * y <= radius * radius)
-            {
-                int draw_x = center_x + x;
-                int draw_y = center_y + y;
 
-                if (draw_x >= 0 && draw_x < SCREEN_W && draw_y >= 0 && draw_y < SCREEN_H)
-                {
-                    if (transform_y < a->z_buffer[draw_x])
-                    {
-                        my_mlx_pixel_put(&a->s.img, draw_x, draw_y, color);
-                    }
-                }
-            }
-        }
-    }
-}
-void draw_target(t_all *a, int center_x, int center_y, int radius, double transform_y)
-{
-    int x, y;
-    int color;
-
-	radius = a->s.correction * radius;
-    for (y = -radius; y <= radius; y++)
-    {
-        for (x = -radius; x <= radius; x++)
-        {
-            int distance = x * x + y * y;
-            if (distance <= radius * radius)
-            {
-                int draw_x = center_x + x;
-                int draw_y = center_y + y;
-
-                if (draw_x >= 0 && draw_x < SCREEN_W && draw_y >= 0 && draw_y < SCREEN_H)
-                {
-                    if (transform_y < a->z_buffer[draw_x])
-                    {
-                        if (distance <= (radius / 3) * (radius / 3))
-                            color = 0xFF0000;
-                        else if (distance <= (2 * radius / 3) * (2 * radius / 3))
-                            color = 0xFFFFFF;
-                        else
-                            color = 0xFF0000;
-
-                        my_mlx_pixel_put(&a->s.img, draw_x, draw_y, color);
-                    }
-                }
-            }
-        }
-    }
-}
-
-void draw_objects(t_all *a)
-{
-    for (int y = 0; y < (a->m.dim.rows - 1); y++)
-    {
-        for (int x = 0; x < (a->m.dim.cols - 1); x++)
-        {
-            if (a->m.map[x][y] == 2 && !(a->p.pos_x >= x && a->p.pos_x < x + 1 && a->p.pos_y >= y && a->p.pos_y < y + 1))
-            {
-                double obj_x = x + 0.5;
-                double obj_y = y + 0.5;
-                double sprite_x = obj_x - a->p.pos_x;
-                double sprite_y = obj_y - a->p.pos_y;
-
-                double inv_det = 1.0 / (a->p.plane_x * a->p.dir_y - a->p.dir_x * a->p.plane_y);
-
-                double transform_x = inv_det * (a->p.dir_y * sprite_x - a->p.dir_x * sprite_y);
-                double transform_y = inv_det * (-a->p.plane_y * sprite_x + a->p.plane_x * sprite_y);
-
-                int sprite_screen_x = (int)((SCREEN_W / 2) * (1 + transform_x / transform_y / a->s.fov));
-
-                int sprite_radius = abs((int)(SCREEN_H * 0.3 / 2.0 / transform_y));
-
-                int draw_start_y = -sprite_radius + SCREEN_H / 2;
-                if (draw_start_y < 0) draw_start_y = 0;
-                int draw_end_y = sprite_radius + SCREEN_H / 2;
-                if (draw_end_y >= SCREEN_H) draw_end_y = SCREEN_H - 1;
-
-                int draw_start_x = -sprite_radius + sprite_screen_x;
-                if (draw_start_x < 0) draw_start_x = 0;
-                int draw_end_x = sprite_radius + sprite_screen_x;
-                if (draw_end_x >= SCREEN_W) draw_end_x = SCREEN_W - 1;
-
-                if (transform_y > 0 && sprite_screen_x > 0 && sprite_screen_x < SCREEN_W && transform_y < a->z_buffer[sprite_screen_x])
-                {
-                    draw_target(a, sprite_screen_x, SCREEN_H / 2, sprite_radius, transform_y);
-
-                }
-            }
-        }
-    }
-}
 
 int draw_screen(t_all *a)
 {
