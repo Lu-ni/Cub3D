@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keys_hook.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lnicolli <lucas.nicollier@gmail.com>       +#+  +:+       +#+        */
+/*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 21:27:48 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/07/22 23:47:43 by bob              ###   ########.fr       */
+/*   Updated: 2024/08/05 17:52:02 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,6 @@ int	key_hook(int keycode, t_all *a)
 		a->w.selected_weapon = 1;
 	else if (keycode == KEY_Z)
 	{
-		printf("%d\n", a->m.zoom);
 		if (a->m.zoom < 4)
 			a->m.zoom++;
 		else
