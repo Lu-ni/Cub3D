@@ -26,10 +26,10 @@ int	main(int ac, char **av)
 {
 	t_all	a;
 
-	init_mlx(&a);
 	if (parse_mapfile(ac, av[1], &a))
 		return (1);
 	init_game(&a);
+	init_mlx(&a);
 	mlx_hook(a.s.mlx_win, 2, 1L << 0, key_hook, &a);
 	mlx_mouse_hook(a.s.mlx_win, mouse_hook, &a);
 	mlx_hook(a.s.mlx_win, 17, 0, close_window, &a);
