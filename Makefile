@@ -53,14 +53,16 @@ fclean: clean
 	@echo "$(YELLOW)Cleaning all build files...$(NO_COLOR)"
 	rm -f $(NAME)
 
-re: fclean all
+libs:
+	make -C libft/
+	make -C $(MLX_DIR)
+
+re: fclean libs all
+
 
 run: re
 	./$(NAME) $(MAPS)
 
-libs:
-	make -C libft/
-	make -C $(MLX_DIR)
 
 .PHONY: art
 art:
