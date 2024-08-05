@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 22:11:48 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/08/05 22:41:41 by lferro           ###   ########.fr       */
+/*   Updated: 2024/08/05 23:27:05 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,10 @@ int	main(int ac, char **av)
 {
 	t_all	a;
 
-	init_mlx(&a);
-	if (parse_mapfile(ac, av[1], &a))
+	if (parse_mapfile(ac, av, &a))
 		return (1);
+	a.s.mlx = mlx_init();
+	init_mlx(&a);
 	init_game(&a);
 	mlx_hook(a.s.mlx_win, 2, 1L << 0, key_hook, &a);
 	mlx_mouse_hook(a.s.mlx_win, mouse_hook, &a);

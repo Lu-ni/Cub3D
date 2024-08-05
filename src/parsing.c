@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lnicolli <lucas.nicollier@gmail.com>       +#+  +:+       +#+        */
+/*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 22:41:53 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/07/22 22:47:38 by lnicolli         ###   ########.fr       */
+/*   Updated: 2024/08/05 23:35:24 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,12 @@ int	set_player_pos_and_dir(int dir, t_all *a, int x, int y)
 	return (0);
 }
 
-int	parse_mapfile(int ac, char *mapfile, t_all *a)
+int	parse_mapfile(int ac, char **av, t_all *a)
 {
 	t_file	f;
 	int		i;
 
-	f.path = mapfile;
+	f.path = av[1];
 	if (init_scene(a, ac, &f) || open_file(f.path, &f.fd)
 		|| !is_mapfile_valid(f.path, f.fd))
 		return (-1);
@@ -93,13 +93,22 @@ int	parse_mapfile(int ac, char *mapfile, t_all *a)
 		if (!f.file[i])
 			break ;
 		if (get_scene_infos(f.file[i++], &a->m))
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				if (a->m.wall_tex[j])
+					free(a->m.wall_tex[j]);
+			}
+			f.file[i] = 0;
+			free_char_array(f.file);
 			return (-1);
+		}
 	}
 	close(f.fd);
 	f.file[i] = 0;
 	if (scene_errors(&a->m) || get_map_dim(&a->m.dim, f.file, f.lines_count)
 		|| parse_map(&f, a) || is_map_walled(&a->m.map, a->m.dim))
-		return (-1);
+			return (free_char_array(f.file), 1);
 	free_char_array(f.file);
 	return (0);
 }

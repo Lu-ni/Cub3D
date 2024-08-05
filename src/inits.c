@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   inits.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lnicolli <lucas.nicollier@gmail.com>       +#+  +:+       +#+        */
+/*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 21:28:15 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/07/22 22:37:19 by lnicolli         ###   ########.fr       */
+/*   Updated: 2024/08/05 23:18:35 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ void	init_mlx(t_all *a)
 {
 	a->s.height = SCREEN_H;
 	a->s.width = SCREEN_W;
-	a->s.mlx = mlx_init();
 	a->s.mlx_win = mlx_new_window(a->s.mlx, SCREEN_W, SCREEN_H, "Cub42D");
 	a->s.img.img = mlx_new_image(a->s.mlx, SCREEN_W, SCREEN_H);
 	a->s.img.addr = mlx_get_data_addr(a->s.img.img, &a->s.img.bits_per_pixel,

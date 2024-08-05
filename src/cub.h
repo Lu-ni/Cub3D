@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 18:54:52 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/08/05 17:33:28 by lferro           ###   ########.fr       */
+/*   Updated: 2024/08/05 22:48:24 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,7 @@ typedef struct s_object
 	float			transform_y;
 }					t_object;
 
-int					parse_mapfile(int ac, char *mapfile, t_all *a);
+int					parse_mapfile(int ac, char **av, t_all *a);
 char				get_pdir(t_all *a);
 
 int					argb(unsigned char a, unsigned char b, unsigned char c,
