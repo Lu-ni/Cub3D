@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lnicolli <lucas.nicollier@gmail.com>       +#+  +:+       +#+        */
+/*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 22:41:17 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/07/22 22:41:21 by lnicolli         ###   ########.fr       */
+/*   Updated: 2024/08/05 17:35:20 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	is_valid_map_char(char c)
 
 void	initialize_map(int ***map, t_all *a, t_file *f)
 {
+	a->m.nbr_of_players = 0;
 	*map = ft_palloc(sizeof(int *) * (f->lines_count));
 	malloc_set_empty_spaces(*map, a->m.dim.cols, a->m.dim.rows);
 }
@@ -46,6 +47,7 @@ int	process_map_cell(char cell, int i, int j, t_all *a)
 		{
 			if (cell == a->m.directions[k])
 			{
+				a->m.nbr_of_players++;
 				(a->m.map)[i][j] = 0;
 				set_player_pos_and_dir(k, a, i, j);
 				break ;
@@ -53,6 +55,8 @@ int	process_map_cell(char cell, int i, int j, t_all *a)
 			k++;
 		}
 	}
+	if (a->m.nbr_of_players > 1)
+		return (print_errors(ERROR_TOO_MANY_PLAYERS));
 	return (0);
 }
 

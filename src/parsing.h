@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lnicolli <lucas.nicollier@gmail.com>       +#+  +:+       +#+        */
+/*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 22:11:31 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/07/22 22:46:19 by lnicolli         ###   ########.fr       */
+/*   Updated: 2024/08/05 17:35:42 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 # define ERROR_MAP_TOO_SMALL "map is too small"
 # define ERROR_INVALID_MAP_CHAR "invalid characters in map"
 # define ERROR_MAP_NOT_CLOSED "map is not surrounded by walls"
+# define ERROR_TOO_MANY_PLAYERS "too many players in map"
 
 # define MALLOC_FAILED 9
 
@@ -84,6 +85,7 @@ typedef struct s_map
 	char	directions[4];
 
 	int		zoom;
+	int		nbr_of_players;
 }			t_map;
 
 void		free_map(int **map, int rows);
