@@ -1,10 +1,10 @@
-NO wall.xpm
-SO teapot.xpm
-WE wall.xpm
-EA teapot.xpm
+NO n.xpm
+SO s.xpm
+WE w.xpm
+EA e.xpm
 
-F 400,200,10
-C 40,100,10
+F 100,100,100
+C 100,100,100
 
 11111111111
 1222000000111
