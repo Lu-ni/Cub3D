@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 22:12:33 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/08/05 13:40:40 by lferro           ###   ########.fr       */
+/*   Updated: 2024/08/05 14:22:57 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,11 @@ void	fill_digit_pixels(t_all *a, t_frame_info *info, int digit)
 			info->src_y = y / info->scale;
 			i = info->src_y * a->score.t[digit].size_line + info->src_x
 				* (a->score.t[digit].bits_per_pixel / 8);
-			info->pix_color = *(int *)(a->score.t[digit].pix + i) & 0xFFFFFFFF;
-			if (info->pix_color != 0x00FFFFFF)
+			info->pix_color = *(int *)(a->score.t[digit].pix + i) & 0x00FFFFFF;
+			if (info->pix_color == (int)0x002A2A2A)
 			{
 				my_mlx_pixel_put(&a->s.img, info->offset_x + x, info->offset_y
-					+ y, 0xFFFFFFFF);
+					+ y, 0x00FFFFFF);
 			}
 			y++;
 		}
