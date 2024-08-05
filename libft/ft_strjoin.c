@@ -6,11 +6,12 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 19:14:17 by lferro            #+#    #+#             */
-/*   Updated: 2024/08/05 13:35:24 by lferro           ###   ########.fr       */
+/*   Updated: 2024/08/05 17:23:16 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+
 /**
  * @brief Allocates (with malloc(3)) and returns a new string, which is the
  * result of the concatenation of ’s1’ and ’s2’.
@@ -31,17 +32,19 @@ void	ft_strcpy(char *d, char const *s)
 
 char	*ft_strjoin(char *s1, char const *s2)
 {
-	size_t	s1_len = ft_strlen(s1);
-	size_t	s2_len = ft_strlen(s2);
-	char	*join = malloc((s1_len + s2_len + 1));
+	size_t	s1_len;
+	size_t	s2_len;
+	char	*join;
 
+	s1_len = ft_strlen(s1);
+	s2_len = ft_strlen(s2);
+	join = malloc((s1_len + s2_len + 1));
 	if (!s1 || !s2)
 		return (NULL);
 	if (!join)
 		return (NULL);
 	ft_strcpy(join, s1);
 	ft_strcpy((join + s1_len), s2);
-	// free(s1);
 	return (join);
 }
 

@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 13:57:25 by lferro            #+#    #+#             */
-/*   Updated: 2024/08/05 13:28:54 by lferro           ###   ########.fr       */
+/*   Updated: 2024/08/05 17:20:21 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 # include <ctype.h>
 # include "printf/ft_printf.h"
 # include "gnl/get_next_line.h"
-
 
 char	*ft_strndup(const char *s, size_t n);
 void	*palloc2(size_t size);

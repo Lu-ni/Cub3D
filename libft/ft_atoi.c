@@ -35,7 +35,6 @@ int	ft_atoi(const char *nptr)
 	return (k * i);
 }
 
-
 long	ft_atol(const char *nptr)
 {
 	size_t	i;

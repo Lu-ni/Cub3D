@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+
 /**
 
 	* @brief Returns a pointer to a new string which is a duplicate of the string s.
@@ -37,7 +38,6 @@ char	*ft_strdup(const char *s)
 	ds[i] = 0;
 	return (ds);
 }
-
 
 char	*ft_strndup(const char *s, size_t n)
 {
