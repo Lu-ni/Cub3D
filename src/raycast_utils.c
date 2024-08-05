@@ -6,7 +6,7 @@
 /*   By: lnicolli <lucas.nicollier@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 18:38:42 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/07/22 18:41:35 by lnicolli         ###   ########.fr       */
+/*   Updated: 2024/08/05 16:37:53 by lnicolli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	draw_tex_columm(int col, t_all *a, int i_tex, t_ray *ray)
 		pos = (int)round(pos * a->t[i_tex].size_line + ray->tex_x
 				* (float)(a->t[i_tex].bits_per_pixel / (float)8));
 		my_mlx_pixel_put(&a->s.img, col, i++,
-			(int)a->t[i_tex].pix[pos] & 0x00FFFFFF);
+			*(int *)(a->t[i_tex].pix + pos) & 0x00FFFFFF);
 	}
 	while (ray->draw_end < SCREEN_H)
 		my_mlx_pixel_put(&a->s.img, col, ray->draw_end++,
