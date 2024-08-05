@@ -6,13 +6,15 @@
 /*   By: lnicolli <lucas.nicollier@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 22:12:20 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/07/22 22:12:22 by lnicolli         ###   ########.fr       */
+/*   Updated: 2024/08/05 17:19:28 by lnicolli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#define CROSSHAIR_LENGTH 16
-#define CROSSHAIR_SPACING 8
-#define ANIM_SPEED 3
+#ifndef HUD_H
+# define HUD_H
+# define CROSSHAIR_LENGTH 16
+# define CROSSHAIR_SPACING 8
+# define ANIM_SPEED 3
 
 typedef struct s_scope
 {
@@ -112,3 +114,4 @@ typedef struct s_verticles_info
 	double	y1;
 	double	y2;
 }			t_verticles_info;
+#endif
