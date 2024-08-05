@@ -1,7 +1,7 @@
-NO n.xpm
-SO s.xpm
-WE w.xpm
-EA e.xpm
+NO ./wall/n.xpm
+SO ./wall/s.xpm
+WE ./wall/w.xpm
+EA ./wall/e.xpm
 
 F 100,100,100
 C 100,100,100
