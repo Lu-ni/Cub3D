@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 18:09:35 by lferro            #+#    #+#             */
-/*   Updated: 2023/11/27 14:29:41 by lferro           ###   ########.fr       */
+/*   Updated: 2024/08/05 13:29:45 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static char	*max_int_or_zero_mngmt(int n)
 
 	if (n == 0)
 	{
-		str = palloc(2, sizeof(char));
+		str = palloc2(2 * sizeof(char));
 		if (str == 0)
 			return (0);
 		str[0] = '0';
@@ -51,7 +51,7 @@ static char	*mallocator(int count)
 {
 	char	*anbr;
 
-	anbr = palloc(count, sizeof(char));
+	anbr = palloc2(count * sizeof(char));
 	if (anbr == 0)
 		return (0);
 	return (anbr);

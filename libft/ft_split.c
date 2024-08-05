@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 11:18:47 by lferro            #+#    #+#             */
-/*   Updated: 2024/03/25 13:24:25 by lferro           ###   ########.fr       */
+/*   Updated: 2024/08/05 13:29:37 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*wordmaker(char const *s, int start, int end)
 	size_t	i;
 
 	i = 0;
-	word = palloc(end - start + 1, sizeof(char));
+	word = palloc2((end - start + 1) * sizeof(char));
 	if (word == 0)
 		return (0);
 	while (start < end)
@@ -60,7 +60,7 @@ char	**ft_split(char const *s, char c)
 	i = 0;
 	j = 0;
 	index = -1;
-	res = palloc(wordcounter(s, c) + 1, sizeof(char *));
+	res = palloc2((wordcounter(s, c) + 1) * sizeof(char *));
 	if (res == 0)
 		return (0);
 	while (i <= ft_strlen(s))

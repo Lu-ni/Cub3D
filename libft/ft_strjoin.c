@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 19:14:17 by lferro            #+#    #+#             */
-/*   Updated: 2024/07/12 17:21:18 by lferro           ###   ########.fr       */
+/*   Updated: 2024/08/05 13:35:24 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,15 @@
  * @return char*
  */
 
+void	ft_strcpy(char *d, char const *s)
+{
+	while (*s)
+	{
+		*d++ = *s++;
+	}
+	*d = 0;
+}
+
 char	*ft_strjoin(char *s1, char const *s2)
 {
 	size_t	s1_len = ft_strlen(s1);
@@ -32,7 +41,7 @@ char	*ft_strjoin(char *s1, char const *s2)
 		return (NULL);
 	ft_strcpy(join, s1);
 	ft_strcpy((join + s1_len), s2);
-	free(s1);
+	// free(s1);
 	return (join);
 }
 
@@ -60,7 +69,7 @@ char	*ft_strjoin_safe(const char *s1, const char *s2)
 	else if (!s2)
 		return (ft_strdup(s1));
 	totlen = ft_strlen(s1) + ft_strlen(s2);
-	res = palloc(totlen + 1, sizeof(char));
+	res = palloc2((totlen + 1) * sizeof(char));
 	if (res == NULL)
 		return (NULL);
 	while (s1[++i])

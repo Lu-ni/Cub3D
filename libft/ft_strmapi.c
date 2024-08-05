@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 15:44:41 by lferro            #+#    #+#             */
-/*   Updated: 2023/10/12 11:45:29 by lferro           ###   ########.fr       */
+/*   Updated: 2024/08/05 13:30:18 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 	int		i;
 
 	i = 0;
-	res = palloc(ft_strlen(s) + 1, sizeof(char));
+	res = palloc2((ft_strlen(s) + 1) * sizeof(char));
 	if (res == NULL)
 		return (NULL);
 	while (s[i])

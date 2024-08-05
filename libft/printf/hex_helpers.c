@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 16:57:01 by lferro            #+#    #+#             */
-/*   Updated: 2023/11/13 16:36:13 by lferro           ###   ########.fr       */
+/*   Updated: 2024/08/05 13:31:41 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*dectohex_str(unsigned int decnbr)
 	index = 0;
 	if (decnbr == 0 || (unsigned int)decnbr == (unsigned int)-2147483648)
 		return (max_or_zero(decnbr));
-	nbrstr = (char *)palloc(get_hexnbr_len(decnbr) + 1, sizeof(char));
+	nbrstr = (char *)palloc2((get_hexnbr_len(decnbr) + 1) * sizeof(char));
 	if (nbrstr == 0)
 		return (0);
 	while (decnbr > 0)
@@ -78,7 +78,7 @@ char	*dectohex_sptr(t_ull decnbr)
 	index = 0;
 	if (decnbr == 0)
 		return (ft_strdup("0x0"));
-	nbrstr = (char *)palloc(get_hexnbr_len(decnbr) + 3, sizeof(char));
+	nbrstr = (char *)palloc2((get_hexnbr_len(decnbr) + 3) * sizeof(char));
 	if (nbrstr == 0)
 		return (0);
 	while (decnbr > 0)
@@ -107,7 +107,7 @@ char	*dectohex_scap(unsigned int decnbr)
 	index = 0;
 	if (decnbr == 0 || (unsigned int)decnbr == (unsigned int)-2147483648)
 		return (max_or_zero(decnbr));
-	nbrstr = (char *)palloc(get_hexnbr_len(decnbr) + 1, sizeof(char));
+	nbrstr = (char *)palloc2((get_hexnbr_len(decnbr) + 1) * sizeof(char));
 	if (nbrstr == 0)
 		return (0);
 	while (decnbr > 0)

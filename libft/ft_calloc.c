@@ -6,13 +6,13 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:40:19 by lferro            #+#    #+#             */
-/*   Updated: 2024/07/14 15:19:22 by lferro           ###   ########.fr       */
+/*   Updated: 2024/08/05 13:25:52 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*palloc(size_t size)
+void	*palloc2(size_t size)
 {
 	void	*res;
 

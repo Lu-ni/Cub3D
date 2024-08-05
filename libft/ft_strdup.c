@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 18:27:04 by lferro            #+#    #+#             */
-/*   Updated: 2024/07/05 17:33:41 by lferro           ###   ########.fr       */
+/*   Updated: 2024/08/05 13:26:37 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*ft_strdup(const char *s)
 
 	if (s == NULL)
 		return (NULL);
-	ds = (char *)palloc(ft_strlen(s) + 1, sizeof(char));
+	ds = (char *)palloc2((ft_strlen(s) + 1) * sizeof(char));
 	if (ds == NULL)
 		return (NULL);
 	i = 0;

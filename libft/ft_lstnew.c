@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 20:20:29 by lferro            #+#    #+#             */
-/*   Updated: 2023/10/17 13:44:24 by lferro           ###   ########.fr       */
+/*   Updated: 2024/08/05 13:29:57 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_list	*ft_lstnew(void *content)
 {
 	t_list	*new;
 
-	new = palloc(1, sizeof(t_list));
+	new = palloc2(sizeof(t_list));
 	if (new == NULL)
 		return (NULL);
 	new->content = content;
