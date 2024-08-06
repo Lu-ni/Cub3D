@@ -53,7 +53,7 @@ CYAN = \033[0;36m
 YELLOW = \033[1;33m
 NO_COLOR = \033[0m
 
-$(NAME): $(LIBFT) $(OBJ)
+$(NAME): libs $(OBJ)
 	@echo "$(CYAN)Linking...$(NO_COLOR)"
 	$(CC) $(OBJ) $(LIBFT) $(MLX_FLAGS) -o $(NAME)
 
@@ -78,17 +78,23 @@ clean:
 fclean: clean
 	@echo "$(YELLOW)Cleaning all build files...$(NO_COLOR)"
 	rm -f $(NAME)
+	rm -f $(LIBFT)
+	rm -f $(MLX_DIR)/libmlx.a
 
-libs:
-	make -C libft/
+libs: $(LIBFT) $(MLX_DIR)/libmlx.a
+
+$(LIBFT):
+	@echo "$(YELLOW)Building libft...$(NO_COLOR)"
+	make -C $(LIBFT_DIR)
+
+$(MLX_DIR)/libmlx.a:
+	@echo "$(YELLOW)Building mlx...$(NO_COLOR)"
 	make -C $(MLX_DIR)
 
-re: fclean libs all
-
+re: fclean all
 
 run: re
 	./$(NAME) $(MAPS)
-
 
 .PHONY: art
 art:
