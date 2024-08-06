@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   inits.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lnicolli <lucas.nicollier@gmail.com>       +#+  +:+       +#+        */
+/*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 21:28:15 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/07/22 22:37:19 by lnicolli         ###   ########.fr       */
+/*   Updated: 2024/08/06 03:38:41 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	init_textures(t_all *a)
 				&a->t[i].height, &a->t[i].width);
 		a->t[i].pix = mlx_get_data_addr(a->t[i].img, &a->t[i].bits_per_pixel,
 				&a->t[i].size_line, &a->t[i].endian);
+		free(a->m.wall_tex[i]);
 		i++;
 	}
 }

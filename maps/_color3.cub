@@ -1,7 +1,7 @@
-NO wall.xpm
-SO teapot.xpm
-WE wall.xpm
-EA teapot.xpm
+NO wall/n.xpm
+SO wall/s.xpm
+WE wall/w.xpm
+EA wall/e.xpm
 
 F 400,200,10,20
 C 40,100,10

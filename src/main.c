@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lnicolli <lucas.nicollier@gmail.com>       +#+  +:+       +#+        */
+/*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 22:11:48 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/07/22 23:40:40 by bob              ###   ########.fr       */
+/*   Updated: 2024/08/06 04:23:55 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,15 @@ int	main(int ac, char **av)
 	t_all	a;
 
 	if (parse_mapfile(ac, av[1], &a))
+	{
+		for (int j = 0; j<4; j++)
+		{
+			free(a.m.wall_tex[j]);
+		}
 		return (1);
-	init_game(&a);
+	}
 	init_mlx(&a);
+	init_game(&a);
 	mlx_hook(a.s.mlx_win, 2, 1L << 0, key_hook, &a);
 	mlx_mouse_hook(a.s.mlx_win, mouse_hook, &a);
 	mlx_hook(a.s.mlx_win, 17, 0, close_window, &a);
