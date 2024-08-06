@@ -15,16 +15,50 @@ else
 endif
 
 SRC_DIR = src
-SRC = $(wildcard $(SRC_DIR)/*.c)
+SRC =   src/draw.c \
+		src/errors.c \
+		src/hud.c \
+		src/inits.c \
+		src/keys_hook.c \
+		src/main.c \
+		src/map.c \
+		src/mapfile_errors.c \
+		src/map_utils.c \
+		src/minimap.c \
+		src/mini_player.c \
+		src/mouse_hook.c \
+		src/objects.c \
+		src/parsing.c \
+		src/parsing_utils.c \
+		src/raycasting.c \
+		src/raycast_utils.c \
+		src/scene_info.c \
+		src/score.c \
+		src/shoot.c \
+		src/sniper.c \
+		src/time_utils.c \
+		src/utils.c
 OBJ_DIR = obj
 OBJ = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC))
-DEPS = $(wildcard $(SRC_DIR)/*.h)
-
+DEPS =  src/cub.h \
+		src/hud.h \
+		src/keys.h \
+		src/keys_hook.c \
+		src/mouse_hook.c \
+		src/parsing.h \
+		src/shoot.c
 # Colors
 GREEN = \033[0;32m
 CYAN = \033[0;36m
 YELLOW = \033[1;33m
 NO_COLOR = \033[0m
+
+$(NAME): libs $(OBJ)
+	@echo "$(CYAN)Linking...$(NO_COLOR)"
+	$(CC) $(OBJ) $(LIBFT) $(MLX_FLAGS) -o $(NAME)
+
+r: all
+	./$(NAME)
 
 # Create object directory if it doesn't exist
 $(OBJ_DIR):
@@ -33,17 +67,9 @@ $(OBJ_DIR):
 all: $(OBJ_DIR) $(NAME)
 	@echo "$(GREEN)Build complete!$(NO_COLOR)"
 
-$(NAME): $(LIBFT) $(OBJ)
-	@echo "$(CYAN)Linking...$(NO_COLOR)"
-	$(CC) $(OBJ) $(LIBFT) $(MLX_FLAGS) -o $(NAME)
-
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(DEPS) | $(OBJ_DIR)
 	@echo "$(YELLOW)Compiling $<...$(NO_COLOR)"
 	$(CC) $(CFLAGS) -I$(MLX_DIR) -c $< -o $@
-
-
-r: all
-	./$(NAME)
 
 clean:
 	@echo "$(YELLOW)Cleaning object files...$(NO_COLOR)"
@@ -52,17 +78,23 @@ clean:
 fclean: clean
 	@echo "$(YELLOW)Cleaning all build files...$(NO_COLOR)"
 	rm -f $(NAME)
+	rm -f $(LIBFT)
+	rm -f $(MLX_DIR)/libmlx.a
 
-libs:
-	make -C libft/
+libs: $(LIBFT) $(MLX_DIR)/libmlx.a
+
+$(LIBFT):
+	@echo "$(YELLOW)Building libft...$(NO_COLOR)"
+	make -C $(LIBFT_DIR)
+
+$(MLX_DIR)/libmlx.a:
+	@echo "$(YELLOW)Building mlx...$(NO_COLOR)"
 	make -C $(MLX_DIR)
 
-re: fclean libs all
-
+re: fclean all
 
 run: re
 	./$(NAME) $(MAPS)
-
 
 .PHONY: art
 art:
