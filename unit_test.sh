@@ -3,6 +3,8 @@
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m'
+BOLD=$(tput bold)
+RG=$(tput sgr0)
 
 FILENAME=log_unit_test
 KO_PREFIX='_'
@@ -15,11 +17,59 @@ args=("$@")
 touch $FILENAME
 truncate -s 0 $FILENAME
 
+
+
+test_all() {
+    echo "Testing Cub3d"
+    echo -e "${BOLD}test leaks\ttest maps\tmap file${RG}"
+    for file in maps/*/*; do
+        dir=$(dirname "$file")
+        NBR_TESTS=$((NBR_TESTS+1))
+        val_output=$(timeout 0.5s valgrind --leak-check=yes --error-exitcode=10 ./cub3d "$file" >> $FILENAME 2>&1)
+        val_status=$?
+        cub_output=$(timeout 0.5s ./cub3d "$file")
+        cub_status=$?
+
+        if [ "$val_status" -eq 10 ]; then
+            echo -en "${RED}KO${NC}"
+            printf "\n============ $file ============\n\n" >> $FILENAME
+            printf "\n=================================================\n" >> $FILENAME
+        else
+            TEST_PASSED=$((TEST_PASSED+1))
+            echo -en "${GREEN}OK${NC}"
+        fi
+        echo -en "\t\t"
+        if [[ $dir == "maps/valid" ]]; then
+            if [ "$cub_status" -ne 124 ]; then
+                echo -en "${RED}KO${NC}"
+            else
+                echo -en "${GREEN}OK${NC}"
+            fi
+        elif [[ $dir == "maps/invalid" ]]; then
+            if [ "$cub_status" -ne 1 ]; then
+                echo -en "${RED}KO${NC}"
+            else
+                echo -en "${GREEN}OK${NC}"
+            fi
+        else
+            echo -en "-"
+        fi
+        echo -en "\t\t"
+        echo -en "$file"
+        echo -en "\n"
+    done
+}
+
+
+
+
+
+
 test_leaks() {
     echo "Testing leaks"
     for file in maps/*/*; do
         NBR_TESTS=$((NBR_TESTS+1))
-        output=$(timeout 0.5s valgrind --leak-check=yes --error-exitcode=10 ./cub3d "$file" >> $FILENAME 2>&1)
+        leak_output=$(timeout 0.5s valgrind --leak-check=yes --error-exitcode=10 "./cub3d "$file" >> $FILENAME 2>&1")
         val_status=$?
 
         if [ "$val_status" -eq 10 ]; then
@@ -73,7 +123,7 @@ run_all() {
 
 
 if [ -z "$1" ]; then
-        run_all
+        test_all
         exit 0
 fi
 
