@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 22:11:31 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/08/05 17:35:42 by lferro           ###   ########.fr       */
+/*   Updated: 2024/10/27 15:55:26 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # define ERROR_MISSING_COLOR "missing color(s) in map file"
 # define ERROR_MISSING_MAP "missing map"
 # define ERROR_INVALID_MAP "invalid map"
-# define ERROR_INVALID_COLOR "invalid color"
+# define ERROR_INVALID_COL "invalid color"
 # define ERROR_MISSING_MAPFILE "mapfile is missing"
 # define ERROR_MAPFILE_DOES_NOT_EXIST "mapfile does not exist"
 # define ERROR_TEXTURE_DOES_NOT_EXIST "texture file does not exist"
@@ -33,6 +33,7 @@
 # define ERROR_INVALID_MAP_CHAR "invalid characters in map"
 # define ERROR_MAP_NOT_CLOSED "map is not surrounded by walls"
 # define ERROR_TOO_MANY_PLAYERS "too many players in map"
+# define ERROR_DUPLICATE_TEXTURE "duplicate texture"
 
 # define MALLOC_FAILED 9
 

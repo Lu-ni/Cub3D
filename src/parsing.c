@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 22:41:53 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/08/06 18:07:19 by lferro           ###   ########.fr       */
+/*   Updated: 2024/10/27 15:51:12 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,52 +76,12 @@ int	set_player_pos_and_dir(int dir, t_all *a, int x, int y)
 	return (0);
 }
 
-void free_int_array(int **arr, int rows)
+void	free_int_array(int **arr, int rows)
 {
-	int i = 0;
+	int	i;
+
+	i = 0;
 	while (i < rows)
 		free(arr[i++]);
 	free(arr);
-}
-
-int	parse_mapfile(int ac, char *mapfile, t_all *a)
-{
-	t_file	f;
-	int		i;
-
-	f.path = mapfile;
-	if (init_scene(a, ac, &f) || open_file(f.path, &f.fd)
-		|| !is_mapfile_valid(f.path, f.fd))
-		return (-1);
-	f.file = ft_palloc(sizeof(char *) * (f.lines_count + 1));
-	i = 0;
-	while (1)
-	{
-		f.file[i] = get_next_line(f.fd);
-		if (!f.file[i])
-			break ;
-		if (get_scene_infos(f.file[i++], &a->m))
-		{
-			f.file[i] = 0;
-			free_char_array(f.file);
-			return (-1);
-		}
-	}
-	close(f.fd);
-	f.file[i] = 0;
-	if (scene_errors(&a->m) || get_map_dim(&a->m.dim, f.file, f.lines_count))
-		{
-			free_char_array(f.file);
-			return (-1);
-		}
-	if (parse_map(&f, a) || is_map_walled(&a->m.map, a->m.dim))
-	{
-		free_char_array(f.file);
-		free_int_array(a->m.map, a->m.dim.rows);
-		return (-1);
-	}
-
-
-	free_char_array(f.file);
-	return (0);
 }

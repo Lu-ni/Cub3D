@@ -58,6 +58,14 @@ test_all() {
         echo -en "$file"
         echo -en "\n"
     done
+    echo -e "${BOLD}Test passed: $TEST_PASSED / $NBR_TESTS${RG}"
+    if [ "$TEST_PASSED" -eq "$NBR_TESTS" ]; then
+        echo -e "${GREEN}SUCCESS${NC}"
+        exit 0
+    else
+        echo -e "${RED}FAILURE${NC}"
+        exit 1
+    fi
 }
 
 

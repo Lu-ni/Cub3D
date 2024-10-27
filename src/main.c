@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 22:11:48 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/08/06 17:33:23 by lferro           ###   ########.fr       */
+/*   Updated: 2024/10/27 16:19:30 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,14 @@ int	weapon_hook(int keycode, t_all *a)
 int	main(int ac, char **av)
 {
 	t_all	a;
+	int		i;
 
-	if (parse_mapfile(ac, av[1], &a))
+	if (read_mapfile(ac, av[1], &a))
 	{
-		for (int j = 0; j<4; j++)
+		while (i < 4)
 		{
-			free(a.m.wall_tex[j]);
+			free(a.m.wall_tex[i]);
+			i++;
 		}
 		return (1);
 	}

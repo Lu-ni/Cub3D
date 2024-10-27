@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 18:40:16 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/08/06 03:53:32 by lferro           ###   ########.fr       */
+/*   Updated: 2024/10/27 15:56:22 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,22 +45,13 @@ int	get_color(char *line, int *color)
 	i = 0;
 	while (colors[i])
 		if (!is_color_valid(colors[i++]))
-		{
-			free_char_array(colors);
-			return (print_errors(ERROR_INVALID_COLOR));
-		}
+			return (free_char_array(colors), print_errors(ERROR_INVALID_COL));
 	if (i != 3)
-	{
-		free_char_array(colors);
-		return (print_errors(ERROR_INVALID_COLOR));
-	}
+		return (free_char_array(colors), print_errors(ERROR_INVALID_COL));
 	printf("\n");
 	i = 0;
 	if (!colors[0] || !colors[1] || !colors[2])
-	{
-		free_char_array(colors);
-		return (-1);
-	}
+		return (free_char_array(colors), -1);
 	*color = argb(255, ft_atoi(colors[0]), ft_atoi(colors[1]),
 			ft_atoi(colors[2]));
 	i = 0;
@@ -107,19 +98,12 @@ int	get_scene_infos(char *line, t_map *map)
 	else if (clean_line[i] == 'F')
 	{
 		if (get_color(clean_line + 1, &map->f_color))
-		{
-			free(clean_line);
-			return (-1);
-		}
+			return (free(clean_line), -1);
 	}
 	else if (clean_line[i] == 'C')
 	{
 		if (get_color(clean_line + 1, &map->c_color))
-		{
-			free(clean_line);
-			return (-1);
-		}
+			return (free(clean_line), -1);
 	}
-	free(clean_line);
-	return (0);
+	return (free(clean_line), 0);
 }
