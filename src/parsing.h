@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 22:11:31 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/10/28 23:20:47 by lferro           ###   ########.fr       */
+/*   Updated: 2024/10/28 23:38:30 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int			is_line_empty(char *line);
 int			is_mapfile_valid(char *mapfile, int fd);
 char		*get_texture_path(char *line);
 int			get_color(char *line, int *color);
-int			get_scene_infos(char *line, t_map *map, int *set_textures_colors);
+int			get_scene_infos(char *line, t_map *map);
 int			malloc_set_empty_spaces(int **map, int cols, int rows);
 int			get_longest_map_line(char **file, int lines_count, int map_start);
 int			get_map_start(char **file, int lines_count);
