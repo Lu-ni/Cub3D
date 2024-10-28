@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 22:11:31 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/10/27 15:55:26 by lferro           ###   ########.fr       */
+/*   Updated: 2024/10/28 23:20:47 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 # define ERROR_INVALID_MAP_CHAR "invalid characters in map"
 # define ERROR_MAP_NOT_CLOSED "map is not surrounded by walls"
 # define ERROR_TOO_MANY_PLAYERS "too many players in map"
-# define ERROR_DUPLICATE_TEXTURE "duplicate texture"
+# define ERROR_DUPLICATE_TEXTURE "duplicate texture or color in mapfile"
 
 # define MALLOC_FAILED 9
 
@@ -90,6 +90,8 @@ typedef struct s_map
 }			t_map;
 
 void		free_map(int **map, int rows);
+void		free_char_array(char **arr);
+void		free_int_array(int **arr, int rows);
 
 // ERRORS
 int			print_errors(char *error);
@@ -100,7 +102,7 @@ int			is_line_empty(char *line);
 int			is_mapfile_valid(char *mapfile, int fd);
 char		*get_texture_path(char *line);
 int			get_color(char *line, int *color);
-int			get_scene_infos(char *line, t_map *map);
+int			get_scene_infos(char *line, t_map *map, int *set_textures_colors);
 int			malloc_set_empty_spaces(int **map, int cols, int rows);
 int			get_longest_map_line(char **file, int lines_count, int map_start);
 int			get_map_start(char **file, int lines_count);

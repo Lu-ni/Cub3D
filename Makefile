@@ -29,7 +29,7 @@ SRC =   src/draw.c \
 		src/mouse_hook.c \
 		src/objects.c \
 		src/parsing.c \
-		src/parsin2.c \
+		src/parsing2.c \
 		src/parsing_utils.c \
 		src/raycasting.c \
 		src/raycast_utils.c \
