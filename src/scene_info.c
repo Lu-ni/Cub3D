@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 18:40:16 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/10/27 15:56:22 by lferro           ###   ########.fr       */
+/*   Updated: 2024/10/29 00:25:34 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,30 +80,11 @@ char	*remove_spaces(char *line)
 	return (clean_line);
 }
 
-int	get_scene_infos(char *line, t_map *map)
+void	handle_texture(int index, char *line, t_map *map)
 {
-	int		i;
-	char	*clean_line;
-
-	i = 0;
-	clean_line = remove_spaces(line);
-	if (clean_line[i] == 'N' && clean_line[i + 1] == 'O')
-		map->wall_tex[0] = get_texture_path(clean_line + 2);
-	else if (clean_line[i] == 'S' && clean_line[i + 1] == 'O')
-		map->wall_tex[1] = get_texture_path(clean_line + 2);
-	else if (clean_line[i] == 'E' && clean_line[i + 1] == 'A')
-		map->wall_tex[2] = get_texture_path(clean_line + 2);
-	else if (clean_line[i] == 'W' && clean_line[i + 1] == 'E')
-		map->wall_tex[3] = get_texture_path(clean_line + 2);
-	else if (clean_line[i] == 'F')
+	if (index < 4)
 	{
-		if (get_color(clean_line + 1, &map->f_color))
-			return (free(clean_line), -1);
+		free(map->wall_tex[index]);
+		map->wall_tex[index] = get_texture_path(line);
 	}
-	else if (clean_line[i] == 'C')
-	{
-		if (get_color(clean_line + 1, &map->c_color))
-			return (free(clean_line), -1);
-	}
-	return (free(clean_line), 0);
 }

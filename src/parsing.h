@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 22:11:31 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/10/28 23:38:30 by lferro           ###   ########.fr       */
+/*   Updated: 2024/10/29 00:25:47 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ typedef struct s_map
 void		free_map(int **map, int rows);
 void		free_char_array(char **arr);
 void		free_int_array(int **arr, int rows);
+void		handle_texture(int index, char *line, t_map *map);
 
 // ERRORS
 int			print_errors(char *error);
