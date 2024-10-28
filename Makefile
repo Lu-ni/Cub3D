@@ -1,4 +1,4 @@
-NAME = cub3d
+NAME = cub3D
 OS := $(shell uname)
 CC = gcc
 CFLAGS =  -Wall -Wextra -Werror
@@ -56,7 +56,7 @@ NO_COLOR = \033[0m
 
 $(NAME): libs $(OBJ)
 	@echo "$(CYAN)Linking...$(NO_COLOR)"
-	$(CC) $(OBJ) $(LIBFT) $(MLX_FLAGS) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) $(MLX_FLAGS) -o $(NAME)
 
 r: all
 	./$(NAME)

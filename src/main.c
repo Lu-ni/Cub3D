@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 22:11:48 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/10/27 16:19:30 by lferro           ###   ########.fr       */
+/*   Updated: 2024/10/28 23:31:24 by bob              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	main(int ac, char **av)
 	t_all	a;
 	int		i;
 
+	i = 0;
 	if (read_mapfile(ac, av[1], &a))
 	{
 		while (i < 4)
