@@ -44,10 +44,7 @@ OBJ = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC))
 DEPS =  src/cub.h \
 		src/hud.h \
 		src/keys.h \
-		src/keys_hook.c \
-		src/mouse_hook.c \
-		src/parsing.h \
-		src/shoot.c
+		src/parsing.h 
 # Colors
 GREEN = \033[0;32m
 CYAN = \033[0;36m
