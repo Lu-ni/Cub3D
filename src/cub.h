@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 18:54:52 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/10/27 15:49:26 by lferro           ###   ########.fr       */
+/*   Updated: 2024/10/29 21:38:47 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/time.h>
+# include <errno.h>
+
+# define O_DIRECTORY __O_DIRECTORY
 
 # ifndef M_PI
 #  define M_PI 3.14159265358979323846

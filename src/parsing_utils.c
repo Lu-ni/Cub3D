@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lnicolli <lucas.nicollier@gmail.com>       +#+  +:+       +#+        */
+/*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 22:51:00 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/07/22 22:51:02 by lnicolli         ###   ########.fr       */
+/*   Updated: 2024/10/29 21:56:54 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ int	malloc_set_empty_spaces(int **map, int cols, int rows)
 	}
 	return (0);
 }
+
+
 
 int	open_file(char *file, int *fd)
 {

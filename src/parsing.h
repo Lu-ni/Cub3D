@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 22:11:31 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/10/29 00:25:47 by lferro           ###   ########.fr       */
+/*   Updated: 2024/10/29 22:12:38 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@
 # define ERROR_MAP_NOT_CLOSED "map is not surrounded by walls"
 # define ERROR_TOO_MANY_PLAYERS "too many players in map"
 # define ERROR_DUPLICATE_TEXTURE "duplicate texture or color in mapfile"
+# define ERROR_TEX_IS_DIR "texture file is a directory"
+# define ERROR_COLOR_RANGE "color range is not valid"
 
 # define MALLOC_FAILED 9
 

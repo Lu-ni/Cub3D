@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 15:51:20 by lferro            #+#    #+#             */
-/*   Updated: 2024/10/29 00:25:57 by lferro           ###   ########.fr       */
+/*   Updated: 2024/10/29 22:13:19 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,10 @@ int	get_scene_infos(char *line, t_map *map)
 	else if (clean_line[i] == 'F')
 	{
 		if (get_color(clean_line + 1, &map->f_color))
+		{
+			// print_errors(ERROR_COLOR_RANGE);
 			return (free(clean_line), -1);
+		}
 	}
 	else if (clean_line[i] == 'C')
 	{
