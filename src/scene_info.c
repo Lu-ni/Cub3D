@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 18:40:16 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/10/29 22:17:53 by lferro           ###   ########.fr       */
+/*   Updated: 2025/02/15 23:52:12 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ int is_not_directory(const char *path) {
     close(fd);
     return 1;
 }
-
-
 
 char	*get_texture_path(char *line)
 {
@@ -77,7 +75,10 @@ int	get_color(char *line, int *color)
 	i = 0;
 	while (colors[i])
 		if (!is_color_valid(colors[i++]))
+		{
 			return (free_char_array(colors), print_errors(ERROR_INVALID_COL));
+		}
+
 	if (i != 3)
 		return (free_char_array(colors), print_errors(ERROR_INVALID_COL));
 	// printf("\n");
@@ -121,6 +122,7 @@ char	*remove_spaces(char *line)
 
 void	handle_texture(int index, char *line, t_map *map)
 {
+
 	if (index < 4)
 	{
 		free(map->wall_tex[index]);

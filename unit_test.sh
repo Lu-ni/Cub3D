@@ -13,7 +13,7 @@ TEST_PASSED=0
 NBR_TESTS=0
 
 PROGRAM_NAME="./cub3D"
-TIMEOUT=5s
+TIMEOUT=2s
 
 args=("$@")
 
@@ -27,7 +27,8 @@ test_all() {
     echo -e "${BOLD}test leaks\ttest maps\tmap file${RG}"
     for file in maps/*/*; do
         dir=$(dirname "$file")
-        NBR_TESTS=$((NBR_TESTS+1))
+        NBR_TESTS=$((NBR_TESTS+2))
+
         val_output=$(timeout $TIMEOUT valgrind --leak-check=yes --error-exitcode=10 $PROGRAM_NAME "$file" >> $FILENAME 2>&1)
         val_status=$?
         cub_output=$(timeout $TIMEOUT $PROGRAM_NAME "$file")
@@ -47,12 +48,14 @@ test_all() {
                 echo -en "${RED}KO${NC}"
             else
                 echo -en "${GREEN}OK${NC}"
+                TEST_PASSED=$((TEST_PASSED+1))
             fi
         elif [[ $dir == "maps/invalid" ]]; then
             if [ "$cub_status" -ne 1 ]; then
                 echo -en "${RED}KO${NC}"
             else
                 echo -en "${GREEN}OK${NC}"
+                TEST_PASSED=$((TEST_PASSED+1))
             fi
         else
             echo -en "-"
@@ -98,7 +101,7 @@ test_valid_maps() {
     echo "Testing valid maps"
     for file in maps/valid/*; do
         NBR_TESTS=$((NBR_TESTS+1))
-        output=$(timeout 0.2s $PROGRAM_NAME "$file" 2>&1)
+        output=$(timeout $TIMEOUT $PROGRAM_NAME "$file" 2>&1)
         cub_status=$?
         if [[ "$cub_status" -eq 124 ]]; then
             echo -e "${GREEN}OK $file${NC}"
@@ -113,7 +116,7 @@ test_invalid_maps() {
     echo "Testing invalid maps"
     for file in maps/invalid/*; do
         NBR_TESTS=$((NBR_TESTS+1))
-        output=$(timeout 0.2s $PROGRAM_NAME "$file" 2>&1)
+        output=$(timeout $TIMEOUT $PROGRAM_NAME "$file" 2>&1)
         cub_status=$?
         if [[ "$cub_status" -ne 124   ]]; then
             TEST_PASSED=$((TEST_PASSED+1))

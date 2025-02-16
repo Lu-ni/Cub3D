@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 22:11:48 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/10/28 23:31:24 by bob              ###   ########.fr       */
+/*   Updated: 2025/02/15 23:22:51 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,11 @@ int	main(int ac, char **av)
 	t_all	a;
 	int		i;
 
+	// char *str = malloc(100);
+	// str = "Hello World!";
+
+	// printf("%s\n", str);
+
 	i = 0;
 	if (read_mapfile(ac, av[1], &a))
 	{
@@ -38,7 +43,13 @@ int	main(int ac, char **av)
 		return (1);
 	}
 	init_mlx(&a);
-	init_game(&a);
+
+
+	if (init_game(&a)) {
+		return (1);
+	}
+
+
 	mlx_hook(a.s.mlx_win, 2, 1L << 0, key_hook, &a);
 	mlx_mouse_hook(a.s.mlx_win, mouse_hook, &a);
 	mlx_hook(a.s.mlx_win, 17, 0, close_window, &a);

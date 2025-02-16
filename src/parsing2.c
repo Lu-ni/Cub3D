@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 15:51:20 by lferro            #+#    #+#             */
-/*   Updated: 2024/10/29 22:13:19 by lferro           ###   ########.fr       */
+/*   Updated: 2025/02/15 19:38:42 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	read_mapfile(int ac, char *mapfile, t_all *a)
 		return (-1);
 	f.file = ft_palloc(sizeof(char *) * (f.lines_count + 1));
 	i = 0;
+
 	while (1)
 	{
 		f.file[i] = get_next_line(f.fd);

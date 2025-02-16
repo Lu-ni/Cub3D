@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 18:54:52 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/10/29 21:38:47 by lferro           ###   ########.fr       */
+/*   Updated: 2025/02/15 23:09:25 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,7 +214,7 @@ void				draw_line(t_all *a, t_line_params *params);
 // hud
 void				draw_crosshair(t_all *a);
 void				draw_weapon_frame(t_all *a, int frame, t_texture *weapon);
-void				draw_points(t_all *a);
+// void				draw_points(t_all *a);
 void				draw_weapon(t_all *a);
 void				draw_digit(t_all *a, int pos_x, int digit);
 void				draw_score(t_all *a);
@@ -230,7 +230,7 @@ int					mouse_move_hook(int x, int y, t_all *a);
 // inits.c
 void				init_score_img(t_all *a);
 void				init_textures(t_all *a);
-void				init_game(t_all *a);
+int				init_game(t_all *a);
 void				init_mlx(t_all *a);
 int					init_scene(t_all *a, int ac, t_file *f);
 // map.c

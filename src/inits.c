@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 21:28:15 by lnicolli          #+#    #+#             */
-/*   Updated: 2024/08/06 03:38:41 by lferro           ###   ########.fr       */
+/*   Updated: 2025/02/15 23:59:20 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	init_score_img(t_all *a)
 	}
 }
 
-void	init_textures(t_all *a)
+int	init_game_textures(t_all *a)
 {
 	int	i;
 
@@ -48,7 +48,7 @@ void	init_textures(t_all *a)
 	{
 		a->w.ak[i].img = mlx_xpm_file_to_image(a->s.mlx, a->m.ak_tex[i],
 				&a->w.ak[i].height, &a->w.ak[i].width);
-		a->w.ak[i].pix = mlx_get_data_addr(a->w.ak[i].img,
+			a->w.ak[i].pix = mlx_get_data_addr(a->w.ak[i].img,
 				&a->w.ak[i].bits_per_pixel, &a->w.ak[i].size_line,
 				&a->w.ak[i].endian);
 		free(a->m.ak_tex[i++]);
@@ -57,15 +57,21 @@ void	init_textures(t_all *a)
 	while (i < 4)
 	{
 		a->t[i].img = mlx_xpm_file_to_image(a->s.mlx, a->m.wall_tex[i],
-				&a->t[i].height, &a->t[i].width);
-		a->t[i].pix = mlx_get_data_addr(a->t[i].img, &a->t[i].bits_per_pixel,
-				&a->t[i].size_line, &a->t[i].endian);
+			&a->t[i].height, &a->t[i].width);
+			if (!a->t[i].img) {
+				print_errors(ERROR_INVALID_TEX);
+				exit(1);
+				return (1);
+			}
+				a->t[i].pix = mlx_get_data_addr(a->t[i].img, &a->t[i].bits_per_pixel,
+					&a->t[i].size_line, &a->t[i].endian);
 		free(a->m.wall_tex[i]);
 		i++;
 	}
+	return (0);
 }
 
-void	init_game(t_all *a)
+int	init_game(t_all *a)
 {
 	int		i;
 	char	*path;
@@ -88,7 +94,8 @@ void	init_game(t_all *a)
 		free(xpm_path);
 	}
 	init_score_img(a);
-	init_textures(a);
+	return (init_game_textures(a));
+
 }
 
 void	init_mlx(t_all *a)
