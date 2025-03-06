@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 18:54:52 by lnicolli          #+#    #+#             */
-/*   Updated: 2025/02/15 23:09:25 by lferro           ###   ########.fr       */
+/*   Updated: 2025/03/06 10:55:46 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,7 +230,7 @@ int					mouse_move_hook(int x, int y, t_all *a);
 // inits.c
 void				init_score_img(t_all *a);
 void				init_textures(t_all *a);
-int				init_game(t_all *a);
+int					init_game(t_all *a);
 void				init_mlx(t_all *a);
 int					init_scene(t_all *a, int ac, t_file *f);
 // map.c
@@ -241,6 +241,10 @@ void				draw_triangle_rotated(t_all *a, t_triangle_params *params);
 void				draw_sniper_scope(t_all *a);
 void				init_scope_info(t_scope *s);
 unsigned long		get_time_in_milliseconds(void);
+// scene_info2.c
+void				handle_texture(int index, char *line, t_map *map);
+int					init_scene(t_all *a, int ac, t_file *f);
+char				*remove_spaces(char *line);
 
 int					key_hook(int keycode, t_all *a);
 #endif

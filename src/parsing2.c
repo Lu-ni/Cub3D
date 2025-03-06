@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 15:51:20 by lferro            #+#    #+#             */
-/*   Updated: 2025/02/15 19:38:42 by lferro           ###   ########.fr       */
+/*   Updated: 2025/03/06 10:50:05 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ int	read_mapfile(int ac, char *mapfile, t_all *a)
 		return (-1);
 	f.file = ft_palloc(sizeof(char *) * (f.lines_count + 1));
 	i = 0;
-
 	while (1)
 	{
 		f.file[i] = get_next_line(f.fd);
@@ -76,10 +75,7 @@ int	get_scene_infos(char *line, t_map *map)
 	else if (clean_line[i] == 'F')
 	{
 		if (get_color(clean_line + 1, &map->f_color))
-		{
-			// print_errors(ERROR_COLOR_RANGE);
 			return (free(clean_line), -1);
-		}
 	}
 	else if (clean_line[i] == 'C')
 	{

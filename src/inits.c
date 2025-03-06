@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 21:28:15 by lnicolli          #+#    #+#             */
-/*   Updated: 2025/02/15 23:59:20 by lferro           ###   ########.fr       */
+/*   Updated: 2025/03/06 10:52:49 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	init_score_img(t_all *a)
 	}
 }
 
-int	init_game_textures(t_all *a)
+int	init_game_weapon_textures(t_all *a)
 {
 	int	i;
 
@@ -48,23 +48,32 @@ int	init_game_textures(t_all *a)
 	{
 		a->w.ak[i].img = mlx_xpm_file_to_image(a->s.mlx, a->m.ak_tex[i],
 				&a->w.ak[i].height, &a->w.ak[i].width);
-			a->w.ak[i].pix = mlx_get_data_addr(a->w.ak[i].img,
+		a->w.ak[i].pix = mlx_get_data_addr(a->w.ak[i].img,
 				&a->w.ak[i].bits_per_pixel, &a->w.ak[i].size_line,
 				&a->w.ak[i].endian);
 		free(a->m.ak_tex[i++]);
 	}
+	return (0);
+}
+
+int	init_game_textures(t_all *a)
+{
+	int	i;
+
+	init_game_weapon_textures(a);
 	i = 0;
 	while (i < 4)
 	{
 		a->t[i].img = mlx_xpm_file_to_image(a->s.mlx, a->m.wall_tex[i],
-			&a->t[i].height, &a->t[i].width);
-			if (!a->t[i].img) {
-				print_errors(ERROR_INVALID_TEX);
-				exit(1);
-				return (1);
-			}
-				a->t[i].pix = mlx_get_data_addr(a->t[i].img, &a->t[i].bits_per_pixel,
-					&a->t[i].size_line, &a->t[i].endian);
+				&a->t[i].height, &a->t[i].width);
+		if (!a->t[i].img)
+		{
+			print_errors(ERROR_INVALID_TEX);
+			exit(1);
+			return (1);
+		}
+		a->t[i].pix = mlx_get_data_addr(a->t[i].img, &a->t[i].bits_per_pixel,
+				&a->t[i].size_line, &a->t[i].endian);
 		free(a->m.wall_tex[i]);
 		i++;
 	}
@@ -95,7 +104,6 @@ int	init_game(t_all *a)
 	}
 	init_score_img(a);
 	return (init_game_textures(a));
-
 }
 
 void	init_mlx(t_all *a)
@@ -109,25 +117,4 @@ void	init_mlx(t_all *a)
 			&a->s.img.line_length, &a->s.img.endian);
 	a->s.fov = calculate_fov(60);
 	a->s.correction = 1;
-}
-
-int	init_scene(t_all *a, int ac, t_file *f)
-{
-	int	i;
-
-	f->lines_count = count_lines(f->path);
-	if (ac != 2)
-	{
-		print_errors(ERROR_WRONG_NUMBER_OF_ARG);
-		return (-1);
-	}
-	ft_strlcpy(a->m.directions, "SEWN", 5);
-	i = 0;
-	while (i < 4)
-		a->m.wall_tex[i++] = NULL;
-	a->m.f_color = 0;
-	a->m.c_color = 0;
-	a->p.pos_x = -1;
-	a->p.pos_y = -1;
-	return (0);
 }

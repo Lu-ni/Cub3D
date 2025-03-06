@@ -34,6 +34,7 @@ SRC =   src/draw.c \
 		src/raycasting.c \
 		src/raycast_utils.c \
 		src/scene_info.c \
+		src/scene_info2.c \
 		src/score.c \
 		src/shoot.c \
 		src/sniper.c \
@@ -44,7 +45,7 @@ OBJ = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC))
 DEPS =  src/cub.h \
 		src/hud.h \
 		src/keys.h \
-		src/parsing.h 
+		src/parsing.h
 
 # Colors
 GREEN = \033[0;32m
