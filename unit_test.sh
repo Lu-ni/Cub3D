@@ -34,7 +34,7 @@ test_all() {
         cub_output=$(timeout $TIMEOUT $PROGRAM_NAME "$file")
         cub_status=$?
 
-        if [ "$val_status" -eq 10 ]; then
+        if [ "$val_status" -eq 10 ]; then # valgrind status when leaks
             echo -en "${RED}KO${NC}"
             printf "\n============ $file ============\n\n" >> $FILENAME
             printf "\n=================================================\n" >> $FILENAME
@@ -44,14 +44,14 @@ test_all() {
         fi
         echo -en "\t\t"
         if [[ $dir == "maps/valid" ]]; then
-            if [ "$cub_status" -ne 124 ]; then
+            if [ "$cub_status" -ne 124 ]; then # not timedout => invalid map
                 echo -en "${RED}KO${NC}"
             else
                 echo -en "${GREEN}OK${NC}"
                 TEST_PASSED=$((TEST_PASSED+1))
             fi
         elif [[ $dir == "maps/invalid" ]]; then
-            if [ "$cub_status" -ne 1 ]; then
+            if [ "$cub_status" -ne 1 ]; then # cub3d not returning 1 => not detected as invalid map
                 echo -en "${RED}KO${NC}"
             else
                 echo -en "${GREEN}OK${NC}"
